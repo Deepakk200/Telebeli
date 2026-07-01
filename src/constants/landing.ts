@@ -7,7 +7,6 @@ import {
   Workflow,
   BarChart3,
   Gauge,
-  Users,
 } from "lucide-react";
 
 export type Feature = {
@@ -18,10 +17,10 @@ export type Feature = {
 
 export const features: Feature[] = [
   {
-    icon: Gauge,
-    title: "Sub-400ms responses",
+    icon: BarChart3,
+    title: "See every call",
     description:
-      "Streaming speech-to-speech keeps conversations natural. Callers never hear the awkward pause that gives a bot away.",
+      "Live dashboards for volume, outcomes, and sentiment, with searchable transcripts on demand. Nothing happens on your lines that you can't watch.",
   },
   {
     icon: PhoneIncoming,
@@ -36,18 +35,6 @@ export const features: Feature[] = [
       "Run thousands of concurrent outbound calls for reminders, renewals, and follow-ups, each one personalized from your data.",
   },
   {
-    icon: Users,
-    title: "Human handoff, mid-sentence",
-    description:
-      "When intent gets complex, the agent warm-transfers to a live rep with the full transcript and context already attached.",
-  },
-  {
-    icon: Languages,
-    title: "32 languages",
-    description:
-      "Detects and switches language automatically, matching accent and cadence so every caller feels spoken to, not processed.",
-  },
-  {
     icon: Workflow,
     title: "Wired into your stack",
     description:
@@ -60,10 +47,16 @@ export const features: Feature[] = [
       "Encryption in transit and at rest, PII redaction, granular retention, and audit logs on every conversation.",
   },
   {
-    icon: BarChart3,
-    title: "Every call, measurable",
+    icon: Languages,
+    title: "32 languages",
     description:
-      "Live dashboards for volume, latency, resolution rate, and sentiment — with searchable transcripts on demand.",
+      "Detects and switches language automatically, matching accent and cadence so every caller feels spoken to, not processed.",
+  },
+  {
+    icon: Gauge,
+    title: "Natural turn-taking",
+    description:
+      "Handles interruptions and backchannels and stays fast enough to feel human — not a hero number, just table stakes we keep.",
   },
 ];
 
@@ -102,11 +95,13 @@ export type Metric = {
   label: string;
 };
 
+// [verify] Illustrative pre-GA figures — replace with sourced numbers before GA.
+// Leads with visibility + reliability (never latency/voice fidelity — see non-goals).
 export const metrics: Metric[] = [
-  { value: 128, suffix: "ms", label: "Median voice latency" },
-  { value: 99.98, decimals: 2, suffix: "%", label: "Platform uptime" },
-  { value: 41, suffix: "M+", label: "Calls handled" },
-  { value: 87, suffix: "%", label: "Resolved without a human" },
+  { value: 100, suffix: "%", label: "Of calls visible live" }, // [verify]
+  { value: 99.9, decimals: 1, suffix: "%", label: "Uptime target" }, // [verify]
+  { value: 20, suffix: "+", label: "Concurrent calls on the free tier" }, // [verify]
+  { value: 1, prefix: "<", suffix: " day", label: "Self-serve to live" }, // [verify]
 ];
 
 export type PricingTier = {
@@ -170,24 +165,24 @@ export type Faq = { question: string; answer: string };
 
 export const faqs: Faq[] = [
   {
-    question: "How natural does the agent actually sound?",
-    answer:
-      "TeleBeli streams speech-to-speech with a median 128ms turn latency, so there is no robotic gap before it replies. It handles interruptions, backchannels (\"mm-hmm\"), and mid-sentence corrections the way a person does.",
-  },
-  {
     question: "What happens when a call is too complex for AI?",
     answer:
       "You define the escalation rules. When the agent hits them — an angry caller, a request outside scope, a compliance trigger — it warm-transfers to a live rep and passes the full transcript and detected intent so the human starts informed.",
   },
   {
-    question: "How fast can we go live?",
+    question: "How do you stay reliable at high call volume?",
     answer:
-      "Most teams ship a production agent within a day. Describe the task, connect your knowledge base and tools, test in the console, then port a number or connect your SIP trunk.",
+      "Reliability is the product. Calls are load-tested for long-duration stability and high concurrency, every call is scored automatically, and failures surface on your dashboard in real time — so quiet degradation gets caught before customers feel it, not after.",
   },
   {
     question: "Is it secure and compliant?",
     answer:
       "Yes. Data is encrypted in transit and at rest, PII is redacted before storage, and retention is configurable per workspace. We support SOC 2 Type II, HIPAA with a BAA, SSO, and full audit logging.",
+  },
+  {
+    question: "How fast can we go live?",
+    answer:
+      "Most teams ship a production agent within a day. Describe the task, connect your knowledge base and tools, test in the console, then port a number or connect your SIP trunk.",
   },
   {
     question: "Which telephony and CRM systems does it integrate with?",
@@ -198,5 +193,10 @@ export const faqs: Faq[] = [
     question: "How does pricing work?",
     answer:
       "You pay per minute of connected call time, billed by the second, with volume tiers. There are no per-seat fees and no charge for idle capacity. Enterprise plans move to committed-use pricing with a dedicated SLA.",
+  },
+  {
+    question: "How natural does the agent actually sound?",
+    answer:
+      "Natural enough that callers stay on task: it handles interruptions, backchannels (\"mm-hmm\"), and mid-sentence corrections without the robotic gap. We treat voice quality as table stakes, not the headline.",
   },
 ];

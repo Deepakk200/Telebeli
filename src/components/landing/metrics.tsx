@@ -19,6 +19,9 @@ export function Metrics() {
           </StaggerItem>
         ))}
       </Stagger>
+      <p className="mt-8 text-center text-xs text-muted-foreground">
+        Illustrative — pre-GA benchmarks.
+      </p>
     </section>
   );
 }

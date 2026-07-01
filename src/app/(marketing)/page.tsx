@@ -1,7 +1,10 @@
 import type { Organization, SoftwareApplication } from "schema-dts";
 import { Hero } from "@/components/landing/hero";
 import { Logos } from "@/components/landing/logos";
+import { Reliability } from "@/components/landing/reliability";
+import { Handoff } from "@/components/landing/handoff";
 import { Features } from "@/components/landing/features";
+import { ProductTour } from "@/components/landing/product-tour";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { Metrics } from "@/components/landing/metrics";
 import { Pricing } from "@/components/landing/pricing";
@@ -42,7 +45,10 @@ export default function HomePage() {
     <>
       <Hero />
       <Logos />
+      <Reliability />
+      <Handoff />
       <Features />
+      <ProductTour />
       <HowItWorks />
       <Metrics />
       <Pricing />

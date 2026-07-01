@@ -3,6 +3,7 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Stagger, StaggerItem } from "@/components/motion";
 import { SectionHeading } from "./section-heading";
+import { PricingCalculator } from "./pricing-calculator";
 import { cn } from "@/lib/utils";
 import { pricingTiers } from "@/constants/landing";
 
@@ -14,6 +15,8 @@ export function Pricing() {
         title="Pay for talk time, nothing else"
         description="Per-minute billing by the second. No seats, no idle fees. Scale down to zero and up to fifty thousand concurrent calls."
       />
+
+      <PricingCalculator />
 
       <Stagger className="mt-14 grid gap-6 lg:grid-cols-3 lg:items-start">
         {pricingTiers.map((tier) => (

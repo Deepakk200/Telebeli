@@ -26,7 +26,7 @@ const columns = [
     links: [
       { label: "Privacy", href: "#" },
       { label: "Terms", href: "#" },
-      { label: "Security", href: "#" },
+      { label: "Security", href: "/security" },
       { label: "DPA", href: "#" },
     ],
   },

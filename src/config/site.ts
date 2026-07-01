@@ -2,9 +2,9 @@ export const siteConfig = {
   name: "TeleBeli",
   shortName: "TeleBeli",
   url: "https://telebeli.com",
-  tagline: "AI voice agents that answer every call",
+  tagline: "Voice AI you can watch working",
   description:
-    "TeleBeli runs enterprise-grade AI voice agents that handle inbound and outbound calls 24/7 — sub-400ms responses, human handoff, and every conversation logged.",
+    "TeleBeli runs enterprise voice agents on your phone lines and shows you every call as it happens — resolving on their own, escalating to a human when they should, and never failing in silence.",
   ogImage: "https://telebeli.com/og.png",
   email: "hello@telebeli.com",
   links: {
@@ -19,6 +19,7 @@ export const mainNav = [
   { title: "How it works", href: "/#how-it-works" },
   { title: "Pricing", href: "/#pricing" },
   { title: "FAQ", href: "/#faq" },
+  { title: "Security", href: "/security" },
 ] as const;
 
 export const dashboardNav = [
