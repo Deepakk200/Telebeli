@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRightLeft, PhoneCall } from "lucide-react";
 import { Waveform } from "@/components/common/waveform";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
@@ -36,6 +37,12 @@ export function LiveConsole() {
   const [step, setStep] = useState(reduce ? SCRIPT.length : 1);
   const [seconds, setSeconds] = useState(reduce ? 47 : 0);
 
+  // Whisper of depth: the console settles from a hair small to full size on scroll.
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.9", "start 0.35"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [0.965, 1]);
+  const y = useTransform(scrollYProgress, [0, 1], [12, 0]);
+
   useEffect(() => {
     if (reduce) return;
     const reveal = setInterval(() => {
@@ -59,7 +66,11 @@ export function LiveConsole() {
   const handedOff = step >= SCRIPT.length;
 
   return (
-    <div className="rounded-2xl border border-border bg-card/70 p-2 shadow-floating backdrop-blur">
+    <motion.div
+      ref={ref}
+      style={reduce ? undefined : { scale, y }}
+      className="rounded-2xl border border-border bg-card/70 p-2 shadow-floating backdrop-blur"
+    >
       <div className="rounded-xl border border-border/70 bg-background/60">
         <div className="flex items-center justify-between border-b border-border/70 px-5 py-3">
           <div className="flex items-center gap-2.5">
@@ -127,6 +138,6 @@ export function LiveConsole() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

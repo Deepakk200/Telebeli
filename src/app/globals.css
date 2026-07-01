@@ -42,6 +42,7 @@
   --brand: oklch(0.54 0.223 286);
   --brand-2: oklch(0.62 0.19 300);
   --brand-accent: oklch(0.68 0.13 196);
+  --live: oklch(0.78 0.16 72);
 
   --chart-1: oklch(0.54 0.223 286);
   --chart-2: oklch(0.66 0.15 220);
@@ -90,6 +91,7 @@
   --brand: oklch(0.67 0.2 286);
   --brand-2: oklch(0.72 0.18 300);
   --brand-accent: oklch(0.79 0.13 196);
+  --live: oklch(0.82 0.16 72);
 
   --chart-1: oklch(0.67 0.2 286);
   --chart-2: oklch(0.7 0.14 220);
@@ -135,6 +137,7 @@
   --color-brand: var(--brand);
   --color-brand-2: var(--brand-2);
   --color-brand-accent: var(--brand-accent);
+  --color-live: var(--live);
 
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
@@ -160,11 +163,12 @@
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
 
-  /* Modular type scale (1.25). Tight tracking on display, roomy body leading. */
-  --text-display: 4.5rem;
-  --text-display--line-height: 1.02;
+  /* Modular type scale (1.25). Fluid on the largest steps so phones don't get
+     oversized headings; clamps to the original size at desktop widths (identical). */
+  --text-display: clamp(2.75rem, 6vw + 1rem, 4.5rem);
+  --text-display--line-height: 1.05;
   --text-display--letter-spacing: -0.035em;
-  --text-h1: 3rem;
+  --text-h1: clamp(1.875rem, 4vw + 1rem, 3rem);
   --text-h1--line-height: 1.06;
   --text-h1--letter-spacing: -0.03em;
   --text-h2: 2.25rem;
@@ -308,4 +312,123 @@
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   First-load preloader: centered brand splash + count-up + curtain wipe.
+--------------------------------------------------------------------------- */
+html.is-loading {
+  overflow: hidden;
+}
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--background);
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 0.7s var(--ease-out-expo);
+}
+.preloader[data-reveal="true"] {
+  clip-path: inset(0 0 100% 0); /* curtain wipe upward */
+}
+.preloader__mesh {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+}
+.preloader__inner {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+}
+.preloader__mark {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.preloader__dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: var(--live);
+  box-shadow: 0 0 0 0 color-mix(in oklch, var(--live) 60%, transparent);
+  animation: pl-pulse 2s var(--ease-out-expo) infinite;
+}
+.preloader__wave {
+  width: 220px;
+  height: 56px;
+}
+.preloader__count {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.15em;
+}
+
+@keyframes pl-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--live) 55%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 14px transparent;
+  }
+}
+
+/* Route-transition top progress bar (client navigations only). */
+.route-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  height: 2px;
+  width: 100%;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--brand), var(--brand-accent));
+  box-shadow: 0 0 8px color-mix(in oklch, var(--brand-accent) 60%, transparent);
+  transition:
+    transform 0.3s var(--ease-out-expo),
+    opacity 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    transition: opacity 0.25s ease;
+    clip-path: none;
+  }
+  .preloader[data-reveal="true"] {
+    opacity: 0;
+  }
+  .preloader__dot {
+    animation: none;
+  }
+  .route-progress {
+    transition: opacity 0.2s ease;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive pass: mobile section rhythm, anchor offsets, safety net.
+--------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  :root {
+    --spacing-section: 4rem;
+  }
+}
+
+/* Anchored sections clear the sticky header when targeted by nav / progress dots. */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Safety net — never scroll sideways (real offenders are fixed at source). */
+html {
+  overflow-x: clip;
 }

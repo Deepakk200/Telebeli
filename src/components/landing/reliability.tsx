@@ -28,7 +28,7 @@ const proofs = [
 
 export function Reliability() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-[var(--spacing-section)]">
+    <section id="reliability" className="mx-auto max-w-6xl px-6 py-[var(--spacing-section)] scroll-mt-24">
       <SectionHeading
         eyebrow="Reliability at scale"
         title="It doesn't break on call #5,000"

@@ -3,6 +3,8 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Preloader } from "@/components/common/preloader";
+import { RouteProgress } from "@/components/common/route-progress";
 import { Providers } from "@/providers";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
@@ -47,6 +49,8 @@ export default function RootLayout({
       className={`${GeistSans.variable} ${GeistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
+        <Preloader />
+        <RouteProgress />
         <Providers>{children}</Providers>
         {process.env.VERCEL ? (
           <>

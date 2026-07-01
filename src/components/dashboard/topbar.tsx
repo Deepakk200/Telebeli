@@ -26,7 +26,7 @@ export function Topbar() {
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-xl md:px-6">
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild className="md:hidden">
+        <SheetTrigger asChild className="lg:hidden">
           <Button variant="ghost" size="icon" aria-label="Open navigation">
             <Menu className="size-5" />
           </Button>
