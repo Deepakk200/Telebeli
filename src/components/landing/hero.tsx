@@ -29,7 +29,7 @@ export function Hero() {
           <div className="animate-enter">
             <Link
               href="#live"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <span className="relative flex size-2">
                 <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-brand-accent" />

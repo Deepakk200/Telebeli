@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 type Tag = "h1" | "h2" | "h3" | "p" | "span";
@@ -34,22 +35,24 @@ export function TextReveal({ children, as: Tag = "span", delay = 0, className }:
         style={{ display: "inline" }}
       >
         {words.map((w, i) => (
-          <span
-            key={i}
-            // overflow-hidden is the mask; the pb/-mb pair keeps descenders (g,y,p,j) unclipped.
-            style={{
-              display: "inline-block",
-              overflow: "hidden",
-              verticalAlign: "top",
-              paddingBottom: "0.15em",
-              marginBottom: "-0.15em",
-            }}
-          >
-            <motion.span variants={word} style={{ display: "inline-block", willChange: "transform" }}>
-              {w}
-            </motion.span>
+          <Fragment key={i}>
+            <span
+              // overflow-hidden is the mask; the pb/-mb pair keeps descenders (g,y,p,j) unclipped.
+              style={{
+                display: "inline-block",
+                overflow: "hidden",
+                verticalAlign: "top",
+                paddingBottom: "0.15em",
+                marginBottom: "-0.15em",
+              }}
+            >
+              <motion.span variants={word} style={{ display: "inline-block", willChange: "transform" }}>
+                {w}
+              </motion.span>
+            </span>
+            {/* space must be a sibling of the mask — inline-block trims trailing whitespace */}
             {i < words.length - 1 ? " " : ""}
-          </span>
+          </Fragment>
         ))}
       </motion.span>
     </Tag>

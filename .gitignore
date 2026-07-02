@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Claude local
 .claude/
+
+# Playwright MCP browser-test artifacts
+.playwright-mcp/

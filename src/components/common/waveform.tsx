@@ -25,7 +25,8 @@ export function Waveform({
     const envelope = Math.sin(t * Math.PI); // taper at edges
     const detail = 0.55 + 0.45 * Math.abs(Math.sin(t * Math.PI * 6 + 1.2));
     const height = Math.max(0.12, envelope * detail);
-    const delay = `${(Math.sin(t * Math.PI * 4) * 0.5 + 0.5) * -1.4}s`;
+    // toFixed keeps the SSR and client strings identical (full floats hydration-mismatch).
+    const delay = `${((Math.sin(t * Math.PI * 4) * 0.5 + 0.5) * -1.4).toFixed(3)}s`;
     return { height, delay };
   });
 
