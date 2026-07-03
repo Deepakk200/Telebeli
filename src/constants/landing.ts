@@ -1,5 +1,14 @@
 import type { LucideIcon } from "lucide-react";
 import {
+  ArrowRightLeft,
+  BrainCircuit,
+  ClipboardCheck,
+  Clock,
+  Eye,
+  FileCheck2,
+  HeartHandshake,
+  Target,
+  UserCheck,
   PhoneIncoming,
   PhoneOutgoing,
   Languages,
@@ -18,10 +27,19 @@ import {
   Bot,
   CircleAlert,
   UserRound,
-  Lock,
-  Globe,
-  ScrollText,
+  PhoneForwarded,
+  Webhook,
   KeyRound,
+  BookOpen,
+  Cross,
+  Home,
+  Landmark,
+  Plane,
+  ShoppingBag,
+  BadgeCheck,
+  Focus,
+  Layers,
+  SlidersHorizontal,
 } from "lucide-react";
 
 import type { CallRecord, Kpi } from "@/services/dashboard";
@@ -44,7 +62,7 @@ export const hero = {
   subhead:
     "Telebeli builds and configures your complete voice AI calling system using Twilio and OpenAI — from infrastructure to personalized dashboards.",
   primaryCta: { label: "Book a Demo", href: bookDemoHref },
-  secondaryCta: { label: "See How It Works", href: "/#how-it-works" },
+  secondaryCta: { label: "See How It Works", href: "/#lifecycle" },
 };
 
 // Trust row under the hero CTAs (approved image): recognized infrastructure and
@@ -54,6 +72,191 @@ export const heroTrustBadges: HeroTrustBadge[] = [
   { mark: "openai", lead: "Powered by", name: "OpenAI" },
   { mark: "twilio", lead: "Built on", name: "Twilio" },
   { mark: "shield", lead: "Enterprise", name: "Grade Security" },
+];
+
+// P07 — Integrations (position 7). Only truthful entries: the infrastructure
+// Telebeli is built on (real brand marks) and generically-stated connector
+// categories. Never an invented named third-party logo. `mark` renders the
+// shared BrandMark; `icon` renders a lucide category glyph.
+export type Integration = {
+  name: string;
+  mark?: "openai" | "twilio";
+  icon?: LucideIcon;
+  description: string;
+};
+
+export const integrationsBuiltOn: Integration[] = [
+  {
+    name: "OpenAI",
+    mark: "openai",
+    description:
+      "Speech, reasoning, and voice models power what the agent understands and how it responds.",
+  },
+  {
+    name: "Twilio",
+    mark: "twilio",
+    description:
+      "Carrier-grade telephony carries the calls on your numbers, inbound and outbound.",
+  },
+];
+
+export const integrationsConnect: Integration[] = [
+  {
+    name: "CRM & telephony integrations",
+    icon: Workflow,
+    description:
+      "Push calls, outcomes, and structured leads into the tools your team already runs on.",
+  },
+  {
+    name: "Webhooks & REST API",
+    icon: Webhook,
+    description:
+      "Any system with an HTTP endpoint can be called mid-conversation or notified after a call.",
+  },
+  {
+    name: "SIP trunk & number porting",
+    icon: PhoneForwarded,
+    description: "Bring your own carrier over SIP, or port existing numbers — no rip-and-replace.",
+  },
+  {
+    name: "SSO & access controls",
+    icon: KeyRound,
+    description:
+      "Single sign-on and role-based access, so the right people see the right calls.",
+  },
+];
+
+// P04 — Interactive voice-workflow demo (position 4). Synthetic script only —
+// never real customer data; the UI labels it "Labeled demo". A full call that
+// visibly resolves, then reaches the human-handoff moment (the climax).
+export type WorkflowTurn = { speaker: "caller" | "agent" | "system"; text: string };
+
+export const workflowScript: readonly WorkflowTurn[] = [
+  { speaker: "caller", text: "Hi, I need to move my delivery to Thursday." },
+  {
+    speaker: "agent",
+    text: "Done — order #40128 is set for Thursday, 9am to noon. Anything else?",
+  },
+  { speaker: "caller", text: "Yeah — I think I was double-charged last month." },
+  {
+    speaker: "agent",
+    text: "That one needs a billing specialist. Let me bring a human in with your details.",
+  },
+  {
+    speaker: "system",
+    text: "Warm transfer → Billing. Full transcript and detected intent attached.",
+  },
+] as const;
+
+// P02 — Product-tour live view: synthetic seed data (labeled in the UI).
+// The component adds status/startedAt at runtime; swapping in a websocket
+// later replaces only the tick, not this data shape.
+export type ProductTourSeed = Omit<CallRecord, "status" | "startedAt">;
+
+export const productTourLive = {
+  /** Two calls already in progress when the view seeds. */
+  inProgressSeeds: [
+    {
+      id: "CALL-4101",
+      contact: "Jonas Berg",
+      direction: "inbound",
+      durationSec: 47,
+      latencyMs: 119,
+      language: "English",
+    },
+    {
+      id: "CALL-4099",
+      contact: "Amara Diallo",
+      direction: "outbound",
+      durationSec: 128,
+      latencyMs: 126,
+      language: "French",
+    },
+  ] satisfies ProductTourSeed[],
+  /** Names/languages the live tick draws from — synthetic, like everything here. */
+  incomingContacts: [
+    "Noah Kim",
+    "Fatima Al-Sayed",
+    "Lucas Weber",
+    "Mei Chen",
+    "Omar Haddad",
+    "Sara Lindqvist",
+  ],
+  languages: ["English", "Spanish", "German", "Mandarin"],
+};
+
+// P01 — Product Overview (position 1, below Trusted Companies). Positioning
+// prose from the brand playbook: Level-1 line (§21) + the pillar language
+// (Visibility / Accountability). No metrics, no CTA — candor gates apply.
+export type ProductOverviewItem = { term: string; description: string };
+
+export const productOverview = {
+  eyebrow: "ACCOUNTABLE VOICE AI",
+  title: "Voice AI you can watch, score, and prove.",
+  description:
+    "Telebeli runs voice agents on your lines and makes every conversation visible, measured, and auditable — not a black box you're asked to trust.",
+  items: [
+    {
+      term: "Watch",
+      description:
+        "Every call is observable, live and after the fact. Nothing happens on your lines that you can't see.",
+    },
+    {
+      term: "Score",
+      description:
+        "Every call is evaluated automatically, so quality is measured, not assumed — and regressions surface before your customers feel them.",
+    },
+    {
+      term: "Prove",
+      description:
+        "Everything is auditable. You can prove what happened on any call to anyone who needs to know.",
+    },
+  ] satisfies ProductOverviewItem[],
+};
+
+// P03 — Platform Capabilities (position 3). Sourced from poster-1's six
+// capability tiles, rewritten to the enterprise candor voice: no percentages,
+// no multipliers, no "every business". Distinct from heroFeatures (the four-up
+// value-prop strip) — these are operational capabilities.
+export type Capability = { icon: LucideIcon; title: string; description: string };
+
+export const capabilities: Capability[] = [
+  {
+    icon: PhoneIncoming,
+    title: "Never miss a call",
+    description:
+      "Every call is answered on the first ring — day, night, weekend. No queue, no voicemail, no callback list.",
+  },
+  {
+    icon: UserCheck,
+    title: "Qualify and engage leads",
+    description:
+      "The agent asks your qualifying questions, records the answers, and hands your team a structured lead instead of a voicemail.",
+  },
+  {
+    icon: Clock,
+    title: "24/7 availability",
+    description:
+      "Coverage that doesn't depend on shifts or staffing. The agent takes calls through nights and holidays without fatigue.",
+  },
+  {
+    icon: Target,
+    title: "Convert more conversations",
+    description:
+      "Answered instantly and followed up on time — fewer interested callers lost to hold music or missed callbacks.",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Consistent customer experience",
+    description:
+      "Every caller hears the same calm, on-script voice. The thousandth call sounds like the first.",
+  },
+  {
+    icon: BrainCircuit,
+    title: "Smart and adaptive",
+    description:
+      "Understands intent, handles interruptions mid-sentence, and is tuned from real transcripts your team can review.",
+  },
 ];
 
 // Four-up feature strip beneath the hero (landing-page-approved.png; copy
@@ -181,10 +384,15 @@ export const features: Feature[] = [
 
 // The four scars (03-copywriting · 04): name the fear before the feature.
 // Empathetic and specific; never names competitors — the mirror does the work.
+// P05 pairs each scar with Telebeli's honest answer, tagged to the pillar it
+// belongs to (watch / score / handoff / prove). No fabricated outcomes.
 export type ProblemScar = {
   icon: LucideIcon;
   claim: string;
   consequence: string;
+  /** The pillar this answer belongs to — shown as a text label, not colour alone. */
+  answerPillar: "Watch" | "Score" | "Handoff" | "Prove";
+  answer: string;
 };
 
 export const problemScars: ProblemScar[] = [
@@ -193,24 +401,36 @@ export const problemScars: ProblemScar[] = [
     claim: "It breaks off-script.",
     consequence:
       "One unexpected question and the agent loops back to a canned line. You find out when a customer complains.",
+    answerPillar: "Score",
+    answer:
+      "Every call is scored automatically, so a regression surfaces on your dashboard before a customer runs into it — not after they complain.",
   },
   {
     icon: EyeOff,
     claim: "It's a black box.",
     consequence:
       "Once it's live on your lines, you can't see what it's saying. You're asked to trust a system you can't inspect.",
+    answerPillar: "Watch",
+    answer:
+      "Every call is observable live and after the fact, with searchable transcripts on demand. You inspect the system instead of trusting it.",
   },
   {
     icon: PhoneMissed,
     claim: "It strands your hardest callers.",
     consequence:
       "When AI hits its limit, most platforms treat the handoff as an afterthought — so the highest-stakes calls end worst.",
+    answerPillar: "Handoff",
+    answer:
+      "When a call reaches the agent's limit, it warm-transfers to a person with the full transcript and detected intent attached. The caller never repeats themselves.",
   },
   {
     icon: Scale,
     claim: "It forces a bad trade-off.",
     consequence:
       "Build it yourself, outgrow a no-code tool, or sign a six-month managed contract. Enterprise and self-serve shouldn't be a choice.",
+    answerPillar: "Prove",
+    answer:
+      "Deploy self-serve and grow into enterprise on one platform — audit logs and SOC 2 / HIPAA-class controls, without a six-month contract.",
   },
 ];
 
@@ -241,6 +461,48 @@ export const handoffSteps: HandoffStep[] = [
   },
 ];
 
+// P06 — the AI call lifecycle: the four stages every call moves through, on the
+// watch → score → handoff → prove spine. Distinct from `steps` below (which is
+// the get-started onboarding flow). The Handoff stage is tagged so the UI can
+// give it the state-handoff violet alongside its text label.
+export type LifecycleStage = {
+  pillar: "Watch" | "Score" | "Handoff" | "Prove";
+  icon: LucideIcon;
+  title: string;
+  description: string;
+};
+
+export const lifecycleStages: LifecycleStage[] = [
+  {
+    pillar: "Watch",
+    icon: Eye,
+    title: "See every call",
+    description:
+      "The moment a call connects it's observable — live and after it ends, with searchable transcripts and full context. Nothing on your lines is hidden.",
+  },
+  {
+    pillar: "Score",
+    icon: ClipboardCheck,
+    title: "Score every call",
+    description:
+      "Each call is evaluated automatically against your rubric, so quality is measured rather than assumed and regressions surface before customers feel them.",
+  },
+  {
+    pillar: "Handoff",
+    icon: ArrowRightLeft,
+    title: "Hand off when it should",
+    description:
+      "When a call reaches the agent's limit, it warm-transfers to a person with the full transcript and detected intent attached — no one starts from scratch.",
+  },
+  {
+    pillar: "Prove",
+    icon: FileCheck2,
+    title: "Prove what happened",
+    description:
+      "Every call is auditable end to end, so you can show exactly what was said and done to anyone who needs to know — risk, compliance, or a customer.",
+  },
+];
+
 export type Step = {
   number: string;
   title: string;
@@ -268,58 +530,85 @@ export const steps: Step[] = [
   },
 ];
 
-export type Metric = {
-  value: number;
-  decimals?: number;
-  prefix?: string;
-  suffix?: string;
-  label: string;
-};
+// P10 — Customer benefits (position 10). The poster's "why businesses love"
+// set, rewritten to the candor voice: no percentages, no multipliers, no
+// fabricated stats. Qualitative and provable — honesty is the benefit.
+export type CustomerBenefit = { icon: LucideIcon; title: string; description: string };
 
-// [verify] Illustrative pre-GA figures — replace with sourced numbers before GA.
-// Leads with visibility + reliability (never latency/voice fidelity — see non-goals).
-export const metrics: Metric[] = [
-  { value: 100, suffix: "%", label: "Of calls visible live" }, // [verify]
-  { value: 99.9, decimals: 1, suffix: "%", label: "Uptime target" }, // [verify]
-  { value: 20, suffix: "+", label: "Concurrent calls on the free tier" }, // [verify]
-  { value: 1, prefix: "<", suffix: " day", label: "Self-serve to live" }, // [verify]
+export const customerBenefits: CustomerBenefit[] = [
+  {
+    icon: Layers,
+    title: "Scale without a queue",
+    description:
+      "From a single call to many at once — no hold music and no degradation as volume climbs.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Consistent and professional",
+    description:
+      "Every caller hears the same calm, on-brand voice, whether it's the first call of the day or the thousandth.",
+  },
+  {
+    icon: SlidersHorizontal,
+    title: "Customizable to your business",
+    description:
+      "Trained on your services and your way of talking, and tuned from real transcripts your team reviews.",
+  },
+  {
+    icon: BarChart3,
+    title: "Detailed reports",
+    description:
+      "Call summaries, transcripts, scores, and lead data — in real time, exportable, and auditable.",
+  },
+  {
+    icon: Focus,
+    title: "Focus on what matters",
+    description:
+      "Let the agent handle the calls so your team can spend its time closing and growing.",
+  },
 ];
 
-// ─── Security & compliance (07 · 08) ───────────────────────────────────────
-// INTEGRITY: set real, verified status before launch — do NOT claim a
-// certification not held. "aligned" is the conservative truthful default and
-// never renders as a held certification. Flip a level to "certified" only
-// when the certificate exists (master-plan open question #2).
-export type ComplianceEntry = {
-  framework: string;
-  level: "certified" | "in_progress" | "aligned";
-  /** Shown when level === "aligned" — conservative truthful phrasing. */
-  alignedLabel: string;
+// P08 — Compliance & candor panel (spec §10, exact approved copy). Two equal-
+// weight columns, open by default. Attestable-only: no certification is claimed
+// before it is attestable, and no date is fabricated (the spec's "[date]" slot
+// stays honest until a real attestation date exists).
+export type StillEarningItem = { framework: string; status: string; note: string };
+
+export const securityCandor = {
+  proveToday: [
+    "Encryption in transit and at rest",
+    "PII redaction before storage",
+    "Configurable retention per workspace",
+    "Full audit logs on every call and access",
+    "SSO and role-based access control",
+  ],
+  stillEarning: [
+    {
+      framework: "SOC 2 Type II",
+      status: "In progress",
+      note: "Audit underway; we publish the attestation date once it is set.",
+    },
+    {
+      framework: "HIPAA with a BAA",
+      status: "Enterprise pilots",
+      note: "Available for enterprise pilots.",
+    },
+  ] satisfies StillEarningItem[],
+  disclaimer: "We will not claim a certification before it is attestable.",
 };
 
-export const complianceStatus: ComplianceEntry[] = [
-  { framework: "SOC 2 Type II", level: "aligned", alignedLabel: "SOC 2-aligned controls" },
-  { framework: "HIPAA", level: "aligned", alignedLabel: "HIPAA-ready controls" },
-  { framework: "GDPR", level: "aligned", alignedLabel: "GDPR-ready processes" },
-];
+// P09 — Industries (position 9). "Built for" framing, sourced from the posters —
+// never fabricated customers or outcomes. Icons match logos.tsx (the trusted-by
+// row) for consistency. One candor-safe use case each; no names, no metrics.
+export type Industry = { icon: LucideIcon; name: string; useCase: string };
 
-export function complianceLabel(entry: ComplianceEntry): string {
-  if (entry.level === "certified") return entry.framework;
-  if (entry.level === "in_progress") return `${entry.framework} — in progress`;
-  return entry.alignedLabel;
-}
-
-export type SecurityAttribute = {
-  icon: LucideIcon;
-  label: string;
-  detail: string;
-};
-
-export const securityAttributes: SecurityAttribute[] = [
-  { icon: Lock, label: "Encryption", detail: "In transit and at rest, always." },
-  { icon: Globe, label: "Data residency", detail: "Regional storage and retention controls." },
-  { icon: ScrollText, label: "Audit logs", detail: "Every conversation and every access, logged." },
-  { icon: KeyRound, label: "Access controls", detail: "SSO, granular roles, least privilege." },
+export const industries: Industry[] = [
+  { icon: Home, name: "Real Estate", useCase: "Lead qualification and viewing scheduling, around the clock." },
+  { icon: BookOpen, name: "Education", useCase: "Admissions and enrolment questions, answered on the first ring." },
+  { icon: Cross, name: "Healthcare", useCase: "Patient access and appointment booking, with PII redaction." },
+  { icon: ShoppingBag, name: "E-commerce", useCase: "Order status, returns, and support — handled or escalated." },
+  { icon: Plane, name: "Travel & Hospitality", useCase: "Booking, changes, and dispatch, at any hour." },
+  { icon: Landmark, name: "Finance", useCase: "Collections and account servicing, with full audit logs." },
 ];
 
 // ─── Enterprise + self-serve (07 · 09) ─────────────────────────────────────
@@ -337,7 +626,7 @@ export const enterpriseSelfServe = {
     title: "Live in days",
     items: [
       "Deploy self-serve — no six-month engagement",
-      "Transparent per-minute pricing, no sales gate",
+      "No sales gate — start without a sales call",
       "Port a number or bring your SIP trunk",
       "Test in the console before going live",
     ],
@@ -349,62 +638,21 @@ export const enterpriseSelfServe = {
 // it honestly points at the drivable demo dashboard.
 export const selfServeCta = { label: "Explore the dashboard", href: "/dashboard" };
 
-export type PricingTier = {
-  name: string;
-  price: string;
-  cadence: string;
-  description: string;
-  features: string[];
-  cta: string;
-  highlighted?: boolean;
+// P13 — the invitation (spec §12). Calm, one focal ask that reaches a human,
+// a quiet secondary that scrolls to the demo, and a low-pressure capture so no
+// one is a dead end.
+export const finalCta = {
+  title: "See it on your lines. Talk to our team.",
+  description:
+    "Bring a real call flow and we'll show you what watching, scoring, and proving looks like on your numbers. Prefer to explore first? Send yourself the recorded call.",
+  primary: { label: "Talk to our team", href: bookDemoHref },
+  secondary: { label: "Watch a real call", href: "#workflow" },
+  capture: {
+    label: "Send yourself the recorded call",
+    placeholder: "you@company.com",
+    button: "Send it to me",
+  },
 };
-
-export const pricingTiers: PricingTier[] = [
-  {
-    name: "Starter",
-    price: "$0.09",
-    cadence: "/ min",
-    description: "For teams launching their first voice agent.",
-    features: [
-      "Up to 2,500 minutes / mo",
-      "1 concurrent agent",
-      "8 languages",
-      "Standard voices",
-      "Email support",
-    ],
-    cta: "Start free",
-  },
-  {
-    name: "Growth",
-    price: "$0.06",
-    cadence: "/ min",
-    description: "For scaling call volume across the business.",
-    features: [
-      "Up to 250k minutes / mo",
-      "50 concurrent agents",
-      "32 languages",
-      "Premium voices + voice cloning",
-      "CRM & telephony integrations",
-      "Priority support",
-    ],
-    cta: "Start free trial",
-    highlighted: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    cadence: "",
-    description: "For regulated, high-volume deployments.",
-    features: [
-      "Unlimited concurrency",
-      "Dedicated capacity & SLA",
-      "HIPAA / BAA, SSO, audit logs",
-      "On-prem & private VPC",
-      "Solutions engineer",
-    ],
-    cta: "Talk to sales",
-  },
-];
 
 export type Faq = { question: string; answer: string };
 
@@ -422,7 +670,7 @@ export const faqs: Faq[] = [
   {
     question: "Is it secure and compliant?",
     answer:
-      "Yes. Data is encrypted in transit and at rest, PII is redacted before storage, and retention is configurable per workspace. We support SOC 2 Type II, HIPAA with a BAA, SSO, and full audit logging.",
+      "Yes. Data is encrypted in transit and at rest, PII is redacted before storage, retention is configurable per workspace, and every call and access is logged, with SSO and role-based access. SOC 2 Type II is in progress and HIPAA with a BAA is available for enterprise pilots — we won't claim a certification before it's attestable.",
   },
   {
     question: "How fast can we go live?",
@@ -435,13 +683,13 @@ export const faqs: Faq[] = [
       "Bring your own carrier over SIP, or port numbers directly. Native actions cover Salesforce, HubSpot, and Zendesk, and any REST API can be wired as a tool the agent calls mid-conversation.",
   },
   {
-    question: "How does pricing work?",
-    answer:
-      "You pay per minute of connected call time, billed by the second, with volume tiers. There are no per-seat fees and no charge for idle capacity. Enterprise plans move to committed-use pricing with a dedicated SLA.",
-  },
-  {
     question: "How natural does the agent actually sound?",
     answer:
       "Natural enough that callers stay on task: it handles interruptions, backchannels (\"mm-hmm\"), and mid-sentence corrections without the robotic gap. We treat voice quality as table stakes, not the headline.",
+  },
+  {
+    question: "Who's behind Telebeli?",
+    answer:
+      "Telebeli is an initiative of Sagenex Group, built for operations that can't fail quietly. It's engineered on OpenAI and Twilio, with the accountability layer — watch, score, and prove — built in rather than bolted on.",
   },
 ];

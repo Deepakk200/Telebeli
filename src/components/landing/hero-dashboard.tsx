@@ -22,6 +22,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { LogoMark } from "@/components/common/logo";
 
 /* Static, decorative product mockup (landing-page-approved.png). The whole card
    is exposed as one image (role="img"), so the illustrative demo text below
@@ -40,25 +41,6 @@ const navItems = [
   { icon: Settings, label: "Settings" },
 ];
 
-function MiniMark() {
-  return (
-    <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-gradient-brand">
-      <svg viewBox="0 0 24 24" className="size-3.5" aria-hidden fill="none">
-        {[4, 9, 14, 19].map((x, i) => (
-          <rect
-            key={x}
-            x={x}
-            y={[8, 4, 6, 9][i]}
-            width="2"
-            height={[8, 16, 12, 6][i]}
-            rx="1"
-            className="fill-white/95"
-          />
-        ))}
-      </svg>
-    </span>
-  );
-}
 
 /* Hand-authored static Call Analytics chart (landing-page-approved.png). Inline
    SVG only — no charting library reaches the marketing bundle (engineering
@@ -284,7 +266,7 @@ function CallWidget() {
         <ChevronDown className="size-3.5 text-white/70" aria-hidden />
       </div>
       <p className="mt-1.5 font-mono text-sm font-semibold tracking-tight">+1 (555) 123-4567</p>
-      <p className="font-mono text-[11px] text-white/60">04:12</p>
+      <p className="font-mono text-[11px] text-white/70">04:12</p>
       <div aria-hidden className="mt-2.5 flex h-6 items-center justify-between">
         {widgetWave.map((h, i) => (
           <span key={i} className="w-0.5 rounded-full bg-white/70" style={{ height: `${h}px` }} />
@@ -317,12 +299,17 @@ export function HeroDashboard() {
         aria-label="Telebeli product dashboard preview"
         className="w-full overflow-hidden rounded-lg border border-border bg-surface text-[11px] leading-tight text-foreground shadow-floating"
       >
-      <div className="grid grid-cols-[128px_1fr] sm:grid-cols-[150px_1fr]">
+      {/* minmax(0,…) lifts the 1fr track's min-content floor so the mockup can
+          compress to any phone width; the sidebar is desktop furniture and
+          hides below sm — the composed mobile view leads with the KPIs. */}
+      <div className="grid grid-cols-[minmax(0,1fr)] sm:grid-cols-[150px_minmax(0,1fr)]">
         {/* ── Sidebar ─────────────────────────────────────────────── */}
-        <div className="flex min-h-[440px] flex-col gap-3 border-r border-border bg-sunken/50 p-3">
+        <div className="hidden min-h-[440px] flex-col gap-3 border-r border-border bg-sunken/50 p-3 sm:flex">
           <div className="flex items-center gap-2 px-1 py-1">
-            <MiniMark />
-            <span className="text-sm font-semibold tracking-tight">Telebeli</span>
+            <LogoMark className="size-6" />
+            <span className="text-sm font-semibold tracking-tight">
+              Tele<span className="text-gradient-brand">beli</span>
+            </span>
           </div>
 
           <div className="flex flex-col gap-0.5">

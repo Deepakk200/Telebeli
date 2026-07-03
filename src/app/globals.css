@@ -19,7 +19,9 @@
   --sunken: oklch(0.955 0.012 286);
   --ink: oklch(0.23 0.045 274);
   --ink-muted: oklch(0.52 0.028 274);
-  --ink-faint: oklch(0.66 0.02 274);
+  /* Tertiary text still gets read — held at ≥4.5:1 AA (axe gate), not a
+     decorative gray. Verified by scripts/check-contrast.mjs. */
+  --ink-faint: oklch(0.54 0.022 274);
   --hairline: oklch(from var(--ink) l c h / 0.1);
 
   /* One scarce accent (brand-blue): links, primary action, focus, selection. */
@@ -35,7 +37,7 @@
 
   /* Semantic evidence palette — the only saturated colors; color = call state. */
   --state-live: oklch(0.58 0.11 70);
-  --state-resolved: oklch(0.52 0.09 155);
+  --state-resolved: oklch(0.5 0.09 155); /* AA on its 10–15% washes (badges) */
   --state-handoff: oklch(0.5 0.1 300);
   --state-flag: oklch(0.52 0.1 40);
 
@@ -74,7 +76,8 @@
   --muted: var(--sunken);
   --muted-foreground: var(--ink-muted);
 
-  --accent: oklch(0.55 0.2 266);
+  /* 0.52 L keeps accent text AA on its own 8% wash (eyebrow pill, active nav). */
+  --accent: oklch(0.52 0.2 266);
   --accent-foreground: oklch(0.99 0.005 286);
 
   --destructive: var(--state-flag);
@@ -222,9 +225,11 @@
   --radius-2xl: var(--r-lg);
 
   /* Hand-tuned scale (visual-identity-v2 §1). Display tiers are fluid
-     (56→40→32-class) so headlines never overflow the measure on phones. */
-  --text-display: clamp(2rem, 4vw + 1.1rem, 3.5rem); /* 56 desktop → ~32 phone */
-  --text-display--line-height: 1.05;
+     (46→32-class) so headlines never overflow the measure on phones. The
+     display cap is measured off landing-page-approved.png at 1440 — three
+     calm lines in the hero column, never four. */
+  --text-display: clamp(2rem, 2vw + 1.05rem, 2.875rem); /* 46 desktop → 32 phone */
+  --text-display--line-height: 1.1;
   --text-display--letter-spacing: -0.02em;
   --text-h1: clamp(1.75rem, 2.5vw + 1rem, 2.5rem); /* 40 → ~30 */
   --text-h1--line-height: 1.1;
@@ -247,8 +252,13 @@
   --text-evidence: 0.8125rem; /* 13 — mono records/data */
   --text-evidence--line-height: 1.5;
 
-  /* Consistent section rhythm. */
-  --spacing-section: 7rem;
+  /* Consistent section rhythm (spec §0: 128/96/80 + 160 major transitions).
+     Every section carries py-[--spacing-section], so the *visible* gap between
+     adjacent sections is 2× this value: 128px at desktop compressing to 80px
+     on phones. --spacing-section-major is the extra whitespace inserted before
+     a major narrative beat (the commercial block), taking that gap to ~160px. */
+  --spacing-section: clamp(2.5rem, 1.75rem + 2.6vw, 4rem);
+  --spacing-section-major: clamp(1.5rem, 1rem + 1.4vw, 2rem);
 
   /* Motion tokens — lib/motion.ts is canonical; CSS mirrors it so both layers
      share one timing language. --dur-entrance is the single sanctioned
@@ -292,6 +302,26 @@
 @utility shadow-floating {
   --tw-shadow: var(--shadow-floating);
   box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+/* Whisper-quiet page ambience (E03): two brand-hued radials at ≤5% opacity on
+   the paper background — reads as warmth on large screens, never as a banner.
+   Applied once, on the marketing layout wrapper; the dashboard keeps its own
+   operations background. Pure CSS, no image request, no banding (oklch stops). */
+@utility bg-page-ambient {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(60rem 40rem at 85% -8%, oklch(from var(--gradient-to) l c h / 0.05), transparent 62%),
+    radial-gradient(52rem 36rem at -12% 22%, oklch(from var(--gradient-from) l c h / 0.045), transparent 62%);
+  background-repeat: no-repeat;
+}
+
+/* Glass (E03) — reserved for genuinely floating elements (hero call widget,
+   mobile nav sheet). Translucent card + blur; pair with border-hairline. Used
+   sparingly for GPU cost. Never on static content, never as a glow substitute. */
+@utility glass {
+  background-color: oklch(from var(--card) l c h / 0.72);
+  backdrop-filter: blur(16px);
 }
 
 @layer base {

@@ -1,39 +1,70 @@
-import { Stagger, StaggerItem } from "@/components/motion";
+import { Reveal } from "@/components/motion";
 import { SectionHeading } from "./section-heading";
 import { Waveform } from "@/components/common/waveform";
-import { steps } from "@/constants/landing";
+import { lifecycleStages } from "@/constants/landing";
+import { cn } from "@/lib/utils";
 
+/**
+ * P06 — the AI call lifecycle (watch → score → handoff → prove). A real ordered
+ * list rendered as a horizontal timeline that collapses to a vertical stepper on
+ * mobile; the Waveform is the section's connective motif, held static (no idle
+ * loop). RSC; a single enter-once Reveal wraps the group. The Handoff stage
+ * carries the state-handoff violet alongside its "Handoff" text label.
+ */
 export function HowItWorks() {
   return (
     <section
-      id="how-it-works"
-      className="relative overflow-hidden border-y border-border/60 bg-muted/20"
+      id="lifecycle"
+      className="relative scroll-mt-24 overflow-hidden border-y border-border/60 bg-muted/20"
     >
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-24 opacity-40">
-        <Waveform bars={90} barClassName="bg-brand/25" />
+        <Waveform bars={90} barClassName="bg-brand/25" animated={false} />
       </div>
 
       <div className="container-page relative py-[var(--spacing-section)]">
         <SectionHeading
-          eyebrow="How it works"
-          title="From idea to live agent in a day"
-          description="No ML team, no telephony wrangling. Describe the job and TeleBeli handles the voice stack end to end."
+          eyebrow="THE CALL LIFECYCLE"
+          title="How every call is handled, end to end"
+          description="Watch, score, hand off, and prove — the four stages every call moves through on Telebeli, so you can trust the process, not just the promise."
         />
 
-        <Stagger className="mt-14 grid gap-8 md:grid-cols-3">
-          {steps.map((step) => (
-            <StaggerItem key={step.number}>
-              <div className="relative">
-                <span className="font-mono text-sm font-medium text-brand">{step.number}</span>
-                <div className="mt-3 h-px w-full bg-gradient-to-r from-brand/40 to-transparent" />
-                <h3 className="mt-4 text-h3 font-semibold tracking-tight">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  {step.description}
-                </p>
-              </div>
-            </StaggerItem>
-          ))}
-        </Stagger>
+        <Reveal className="mt-14">
+          <ol className="relative grid gap-10 md:grid-cols-4">
+            {/* Connective thread across the nodes (desktop only). */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-x-5 top-5 hidden h-px bg-border md:block"
+            />
+            {lifecycleStages.map((stage, index) => {
+              const handoff = stage.pillar === "Handoff";
+              return (
+                <li key={stage.pillar} className="relative flex flex-col">
+                  <span
+                    className={cn(
+                      "relative z-10 flex size-10 items-center justify-center rounded-full border bg-card",
+                      handoff ? "border-state-handoff/40 text-state-handoff" : "border-border text-accent",
+                    )}
+                  >
+                    <stage.icon className="size-5" aria-hidden />
+                  </span>
+                  <p
+                    className={cn(
+                      "mt-4 text-label uppercase",
+                      handoff ? "text-state-handoff" : "text-accent",
+                    )}
+                  >
+                    <span className="font-mono">{String(index + 1).padStart(2, "0")}</span> ·{" "}
+                    {stage.pillar}
+                  </p>
+                  <h3 className="mt-1 text-h3 text-foreground">{stage.title}</h3>
+                  <p className="mt-2 text-small leading-relaxed text-ink-muted">
+                    {stage.description}
+                  </p>
+                </li>
+              );
+            })}
+          </ol>
+        </Reveal>
       </div>
     </section>
   );

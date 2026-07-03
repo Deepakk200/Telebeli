@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/common/logo";
 import { SidebarNav } from "./sidebar-nav";
 import { Button } from "@/components/ui/button";
+import { bookDemoHref } from "@/config/site";
 
 export function Sidebar() {
   return (
@@ -20,7 +21,7 @@ export function Sidebar() {
             <div className="h-full w-[74%] rounded-full bg-brand" />
           </div>
           <Button asChild size="sm" className="mt-3 w-full">
-            <Link href="/#pricing">Upgrade plan</Link>
+            <Link href={bookDemoHref}>Talk to our team</Link>
           </Button>
         </div>
       </div>

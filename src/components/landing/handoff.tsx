@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import { SectionHeading } from "./section-heading";
 import { handoffSteps } from "@/constants/landing";
-import { transition } from "@/lib/motion";
+import { transition, viewportOnce } from "@/lib/motion";
 import { surface } from "@/lib/surface";
 import { cn } from "@/lib/utils";
 
@@ -44,7 +44,7 @@ export function Handoff() {
         <motion.div
           initial={reduce ? false : "hidden"}
           whileInView={reduce ? undefined : "visible"}
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={viewportOnce}
           variants={flowContainer}
           role="list"
           className="mt-14 flex flex-col items-stretch sm:flex-row sm:items-center"

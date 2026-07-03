@@ -45,6 +45,12 @@ milestones rebuild them.
 - Radius from `--r-*` only; full pill reserved for the Status dot.
 - Depth: hairlines first; e1 only when interactive, e2 popover, e3 modal.
   No glow, anywhere, ever.
+- Page ambience: `bg-page-ambient` (marketing layout only) — two brand-hued
+  radials ≤5% opacity on paper. One application point; never per-section.
+- Glass: `glass` + `border-hairline` (or `surface({ tone: "glass" })`) —
+  floating elements only (hero call widget, mobile nav sheet). Cap at ~2
+  elements per view; backdrop-blur is a GPU cost, and text on glass must
+  still pass AA.
 - Motion through `lib/motion.ts` tokens (`enter/reconcile/press/exit/hover-reveal`).
 - Durations in ms and `calc()` expressions are fine; `[NNpx]` arbitraries and
   `#hex` are lint errors — reach for the scale or add a token instead.

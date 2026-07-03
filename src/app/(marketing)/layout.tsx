@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/landing/site-footer";
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className="flex min-h-dvh flex-col">
+      <div className="flex min-h-dvh flex-col bg-page-ambient">
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

@@ -4,50 +4,48 @@ import { SectionHeading } from "./section-heading";
 import { surface } from "@/lib/surface";
 import { cn } from "@/lib/utils";
 
-// [verify] all figures — illustrative pre-GA proof points.
+/**
+ * P10 — Reliability by design (part of the benefits beat). Candor fix: the
+ * fabricated pre-GA figures ("60-min", "1,000s") are gone; each card is now a
+ * qualitative, provable statement. "call #5,000" stays as qualitative
+ * failure-mode framing only, never paired with an invented uptime/volume number.
+ */
 const proofs = [
   {
     icon: Activity,
-    stat: "60-min",
-    title: "Long calls hold",
-    body: "Hour-long conversations stay coherent to the last turn — no silent failures, no mid-call drops.",
+    title: "Long calls stay coherent",
+    body: "A long conversation holds to the last turn — no quiet degradation, no mid-call drops, no failing in silence.",
   },
   {
     icon: Layers,
-    stat: "1,000s",
     title: "Concurrency headroom",
-    body: "Thousands of simultaneous calls at peak, with no queue and no degradation as volume climbs.",
+    body: "Simultaneous calls are handled without a queue, so a busy hour doesn't turn into missed or dropped calls.",
   },
   {
     icon: ShieldCheck,
-    stat: "Every call",
-    title: "Watched, not hoped",
-    body: "Each call is scored automatically, so regressions surface on your dashboard before a customer feels them.",
+    title: "Every call is scored",
+    body: "Each call is evaluated automatically, so a regression surfaces on your dashboard before a customer feels it.",
   },
 ];
 
 export function Reliability() {
   return (
-    <section id="reliability" className="container-page py-[var(--spacing-section)] scroll-mt-24">
+    <section id="reliability" className="container-page scroll-mt-24 py-[var(--spacing-section)]">
       <SectionHeading
-        eyebrow="Reliability at scale"
+        eyebrow="RELIABILITY BY DESIGN"
         title="It doesn't break on call #5,000"
-        description="The failure mode that kills enterprise voice pilots isn't a bad demo — it's the quiet degradation at volume. TeleBeli is built so the ten-thousandth call runs like the first."
+        description="The failure mode that kills enterprise voice pilots isn't a bad demo — it's the quiet degradation at volume. Telebeli is built so the five-thousandth call runs like the first."
       />
 
-      <Stagger className="mt-14 grid gap-4 md:grid-cols-3">
+      <Stagger role="list" className="mt-14 grid gap-4 md:grid-cols-3">
         {proofs.map((proof) => (
-          <StaggerItem key={proof.title}>
+          <StaggerItem role="listitem" key={proof.title}>
             <div className={cn(surface({ elevation: "subtle" }), "h-full p-6")}>
-              <div className="flex items-center justify-between">
-                <div className="flex size-10 items-center justify-center rounded-lg bg-brand/10 text-brand">
-                  <proof.icon className="size-5" />
-                </div>
-                {/* [verify] */}
-                <span className="font-mono text-sm font-medium text-brand">{proof.stat}</span>
+              <div className="flex size-10 items-center justify-center rounded-lg bg-brand/10 text-brand">
+                <proof.icon className="size-5" aria-hidden />
               </div>
-              <h3 className="mt-4 text-base font-semibold">{proof.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{proof.body}</p>
+              <h3 className="mt-4 text-h3 text-foreground">{proof.title}</h3>
+              <p className="mt-2 text-body leading-relaxed text-ink-muted">{proof.body}</p>
             </div>
           </StaggerItem>
         ))}

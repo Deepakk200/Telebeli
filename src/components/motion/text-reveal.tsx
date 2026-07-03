@@ -2,6 +2,7 @@
 
 import { Fragment } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { viewportOnce } from "@/lib/motion";
 
 type Tag = "h1" | "h2" | "h3" | "p" | "span";
 type Props = { children: string; as?: Tag; delay?: number; className?: string };
@@ -30,7 +31,7 @@ export function TextReveal({ children, as: Tag = "span", delay = 0, className }:
         variants={container}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, margin: "0px 0px -15% 0px" }}
+        viewport={viewportOnce}
         transition={{ delayChildren: delay }}
         style={{ display: "inline" }}
       >

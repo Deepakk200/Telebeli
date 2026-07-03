@@ -1,29 +1,40 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight, ChevronDown, Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { bookDemoHref, mainNav, siteConfig } from "@/config/site";
+import { SolutionsMobile, SolutionsPanel } from "./solutions-menu";
+import { Logo } from "@/components/common/logo";
+import { bookDemoHref, mainNav } from "@/config/site";
 
 /**
  * Approved sticky navigation (landing-page-approved.png): official logo lockup,
- * six-item primary menu (carets on Solutions/Resources), gradient "Book a Demo"
- * CTA. Client only for the scroll compaction + mobile sheet toggle.
- *
- * NOTE: /logo.png is the stacked, white-background official lockup; the approved
- * nav uses a horizontal transparent mark. Rendered here scoped to the light
- * marketing header — swap in a transparent horizontal asset when available.
+ * six-item primary menu, gradient "Book a Demo" CTA. Client for scroll
+ * compaction + mobile sheet toggle. P18 adds the Solutions mega menu — an inline
+ * Radix NavigationMenu on desktop and a Sheet accordion on mobile; every other
+ * nav item and behaviour (skip link, one CTA, active states) is unchanged.
  */
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  // Route links get the active state; hash links all share pathname "/".
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : !href.includes("#") && pathname === href;
 
@@ -54,44 +65,47 @@ export function SiteHeader() {
       </a>
 
       <div className="container-page flex h-20 items-center justify-between gap-4">
-        <Link
-          href="/"
-          aria-label={`${siteConfig.name} home`}
-          className="inline-flex items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
-          <Image
-            src="/logo.png"
-            alt={`${siteConfig.name} — ${siteConfig.tagline}`}
-            width={180}
-            height={52}
-            priority
-            className="h-11 w-auto object-contain"
-          />
-        </Link>
+        <Logo size="md" showTagline />
 
         <nav aria-label="Primary" className="hidden items-center gap-0.5 lg:flex">
-          {mainNav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={isActive(item.href) ? "page" : undefined}
-              className={cn(
-                "inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                isActive(item.href) ? "text-accent" : "text-ink-muted hover:text-foreground",
-              )}
-            >
-              {item.title}
-              <NavCaret show={"hasMenu" in item && item.hasMenu} />
-            </Link>
-          ))}
+          {mainNav.map((item) =>
+            item.title === "Solutions" ? (
+              <NavigationMenu
+                key={item.href}
+                viewport={false}
+                aria-label="Solutions"
+                className="max-w-none flex-none"
+              >
+                <NavigationMenuList className="gap-0">
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="h-auto gap-1 rounded-md bg-transparent px-3 py-2 text-sm font-medium text-ink-muted hover:bg-transparent hover:text-foreground focus:bg-transparent focus:text-foreground data-[state=open]:bg-transparent data-[state=open]:text-foreground data-[state=open]:hover:bg-transparent data-[state=open]:focus:bg-transparent">
+                      {item.title}
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent className="left-1/2 w-[min(46rem,calc(100vw-3rem))] -translate-x-1/2 rounded-lg border border-border bg-card p-0 shadow-floating md:w-[min(46rem,calc(100vw-3rem))]">
+                      <SolutionsPanel />
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  isActive(item.href) ? "text-accent" : "text-ink-muted hover:text-foreground",
+                )}
+              >
+                {item.title}
+                <NavCaret show={"hasMenu" in item && item.hasMenu} />
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button
-            asChild
-            size="lg"
-            className="hidden bg-gradient-brand text-white shadow-elevated hover:opacity-95 sm:inline-flex"
-          >
+          <Button asChild size="lg" variant="gradient" className="hidden sm:inline-flex">
             <Link href={bookDemoHref}>
               Book a Demo
               <ArrowRight className="size-4" aria-hidden />
@@ -104,25 +118,38 @@ export function SiteHeader() {
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-80">
+            <SheetContent side="right" className="w-80 overflow-y-auto">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
               <nav aria-label="Mobile" className="mt-10 flex flex-col gap-1 px-4">
-                {mainNav.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    aria-current={isActive(item.href) ? "page" : undefined}
-                    className={cn(
-                      "flex items-center justify-between rounded-md px-3 py-3 text-base transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                      isActive(item.href) ? "text-accent" : "text-foreground",
-                    )}
-                  >
-                    {item.title}
-                    <NavCaret show={"hasMenu" in item && item.hasMenu} />
-                  </Link>
-                ))}
-                <Button asChild size="lg" className="mt-6 bg-gradient-brand text-white">
+                {mainNav.map((item) =>
+                  item.title === "Solutions" ? (
+                    <Accordion key={item.href} type="single" collapsible>
+                      <AccordionItem value="solutions" className="border-none">
+                        <AccordionTrigger className="rounded-md px-3 py-3 text-base font-normal text-foreground hover:bg-muted hover:no-underline">
+                          {item.title}
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-0">
+                          <SolutionsMobile onNavigate={() => setOpen(false)} />
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  ) : (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      aria-current={isActive(item.href) ? "page" : undefined}
+                      className={cn(
+                        "flex items-center justify-between rounded-md px-3 py-3 text-base transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                        isActive(item.href) ? "text-accent" : "text-foreground",
+                      )}
+                    >
+                      {item.title}
+                      <NavCaret show={"hasMenu" in item && item.hasMenu} />
+                    </Link>
+                  ),
+                )}
+                <Button asChild size="lg" variant="gradient" className="mt-6">
                   <Link href={bookDemoHref} onClick={() => setOpen(false)}>
                     Book a Demo
                     <ArrowRight className="size-4" aria-hidden />

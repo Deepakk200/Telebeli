@@ -22,8 +22,11 @@ export const tokens = {
 export const STAGGER_STEP = 0.04;
 export const STAGGER_CAP = 5;
 
-/** Scroll-entrance trigger (§4.4): fires once when the top passes 85% of viewport. */
-export const viewportOnce = { once: true, margin: "0px 0px -15% 0px" } as const;
+/** Scroll-entrance trigger (§4.4): fires once when the top passes 85% of
+    viewport. The huge TOP margin makes anything the reader has already
+    scrolled past count as in-view, so content can never be stranded invisible
+    when the observer attaches after hydration (fast scroll on a slow device). */
+export const viewportOnce = { once: true, margin: "10000% 0px -15% 0px" } as const;
 
 /**
  * @deprecated Legacy shape kept for existing section consumers — values now

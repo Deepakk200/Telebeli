@@ -1,59 +1,72 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { FadeIn } from "@/components/motion";
+import { Badge } from "@/components/ui/badge";
 import { SectionHeading } from "./section-heading";
-import {
-  complianceLabel,
-  complianceStatus,
-  securityAttributes,
-} from "@/constants/landing";
+import { SecurityPacketDialog } from "./security-packet-dialog";
+import { securityCandor } from "@/constants/landing";
 import { surface } from "@/lib/surface";
 import { cn } from "@/lib/utils";
 
 /**
- * The Safety reassurance beat (07 · 08): solid and still — one quiet FadeIn,
- * no amber, no animation. Certification language comes exclusively from
- * `complianceStatus`; nothing here may imply a certification not held.
+ * P08 — Compliance & candor (spec §10). Two equal-weight columns, open by
+ * default: what we can prove today / what we're still earning. No certification
+ * is claimed before it is attestable; both columns share the same surface() and
+ * heading level so "still earning" is never de-emphasized. The request action is
+ * a client Dialog island; the trust center links to /security. RSC otherwise.
  */
 export function SecuritySection() {
   return (
-    <section className="container-page py-[var(--spacing-section)]">
+    <section id="security" className="container-page scroll-mt-24 py-[var(--spacing-section)]">
       <SectionHeading
-        eyebrow="Security & compliance"
-        title="Built for regulated, high-volume operations."
-        description="SOC 2 and HIPAA-class controls, encryption in transit and at rest, data residency, and audit logs — the requirements your security team will ask about, answered before they do."
+        eyebrow="SECURITY & COMPLIANCE"
+        title="Built for compliance. Honest about what we can't prove yet."
+        description="What your security team will ask about — answered plainly, with the certifications we're still earning stated as exactly that."
       />
 
-      <FadeIn>
-        <ul className="mt-14 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {securityAttributes.map((attribute) => (
-            <li key={attribute.label} className={cn(surface(), "p-5")}>
-              <div className="flex size-10 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                <attribute.icon className="size-5" />
-              </div>
-              <p className="mt-3 text-sm font-semibold">{attribute.label}</p>
-              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                {attribute.detail}
-              </p>
-            </li>
-          ))}
-        </ul>
+      <FadeIn className="mx-auto mt-14 max-w-4xl">
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className={cn(surface(), "p-6")}>
+            <h3 className="text-h3 text-foreground">What we can prove today</h3>
+            <ul className="mt-4 space-y-2.5">
+              {securityCandor.proveToday.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-small text-ink-muted">
+                  <Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2.5">
-          {complianceStatus.map((entry) => (
-            <span
-              key={entry.framework}
-              className="rounded-full border border-border bg-muted/60 px-3 py-1 text-xs font-medium"
-            >
-              {complianceLabel(entry)}
-            </span>
-          ))}
+          <div className={cn(surface(), "p-6")}>
+            <h3 className="text-h3 text-foreground">What we&apos;re still earning</h3>
+            <ul className="mt-4 space-y-4">
+              {securityCandor.stillEarning.map((item) => (
+                <li key={item.framework}>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-small font-semibold text-foreground">
+                      {item.framework}
+                    </span>
+                    <Badge variant="neutral">{item.status}</Badge>
+                  </div>
+                  <p className="mt-1 text-small text-ink-muted">{item.note}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 border-t border-border pt-4 text-xs text-ink-faint">
+              {securityCandor.disclaimer}
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3">
+          <SecurityPacketDialog />
           <Link
             href="/security"
-            className="ml-auto inline-flex min-h-11 items-center gap-1.5 rounded-md text-sm font-medium text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-md text-small font-medium text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            Read the full security overview
-            <ArrowRight className="size-4" />
+            Visit the trust center
+            <ArrowRight className="size-4" aria-hidden />
           </Link>
         </div>
       </FadeIn>
