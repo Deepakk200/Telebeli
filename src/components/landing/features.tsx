@@ -1,43 +1,30 @@
-import { Stagger, StaggerItem } from "@/components/motion";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
-import { SectionHeading } from "./section-heading";
-import { features } from "@/constants/landing";
-import { cn } from "@/lib/utils";
-import { surface } from "@/lib/surface";
+import { heroFeatures } from "@/constants/landing";
 
+/**
+ * Four-up feature strip (landing-page-approved.png). One rounded container split
+ * into four equal cells by 1px dividers — a `gap-px` grid over a border-colored
+ * background, so the dividers adapt automatically as the grid reflows 4 → 2 → 1.
+ * Static RSC; lavender icon tiles.
+ */
 export function Features() {
   return (
-    <section id="platform" className="mx-auto max-w-6xl px-6 py-[var(--spacing-section)]">
-      <SectionHeading
-        eyebrow="The platform"
-        title="Everything a call needs, handled"
-        description="One platform for inbound and outbound voice — engineered for latency, reliability, and the messy reality of real conversations."
-      />
-
-      <Stagger className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {features.map((feature) => (
-          <StaggerItem key={feature.title}>
-            {/* hover:border-border mutes surface()'s border accent — the glow is the accent. */}
-            <div
-              className={cn(
-                surface({ interactive: true }),
-                "group relative h-full p-6 hover:border-border",
-              )}
-            >
-              <GlowingEffect spread={40} proximity={64} inactiveZone={0.01} borderWidth={2} />
-              <div className="relative">
-                <div className="flex size-10 items-center justify-center rounded-lg bg-brand/10 text-brand transition-colors group-hover:bg-brand/15">
-                  <feature.icon className="size-5" />
-                </div>
-                <h3 className="mt-4 text-base font-semibold">{feature.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {feature.description}
-                </p>
-              </div>
+    <section
+      aria-label="What Telebeli handles"
+      className="container-page pb-[var(--spacing-section)]"
+    >
+      <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-border bg-border shadow-subtle sm:grid-cols-2 lg:grid-cols-4">
+        {heroFeatures.map((feature) => (
+          <li key={feature.title} className="flex flex-col gap-3 bg-surface p-6">
+            <span className="flex size-11 items-center justify-center rounded-lg bg-accent-wash text-accent">
+              <feature.icon className="size-5" aria-hidden />
+            </span>
+            <div>
+              <h3 className="text-base font-semibold text-foreground">{feature.title}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{feature.description}</p>
             </div>
-          </StaggerItem>
+          </li>
         ))}
-      </Stagger>
+      </ul>
     </section>
   );
 }

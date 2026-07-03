@@ -1,70 +1,86 @@
-import { ArrowRightLeft, FileText, Sparkles, UserRound } from "lucide-react";
+"use client";
+
+import { Fragment } from "react";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import { SectionHeading } from "./section-heading";
+import { handoffSteps } from "@/constants/landing";
+import { transition } from "@/lib/motion";
 import { surface } from "@/lib/surface";
 import { cn } from "@/lib/utils";
 
-const transcript = [
-  { speaker: "caller", text: "…honestly this is the third time I've called about the same charge." },
-  {
-    speaker: "agent",
-    text: "I hear you — this needs someone who can pull up billing. I'm bringing in a specialist now and staying on until they're with you.",
-  },
-];
+// The flow draws left→right to enact the transfer — motion that explains
+// (08: the one sanctioned motion here; Stagger/FadeIn-class, not a Reveal).
+const flowContainer: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.18 } },
+};
+const flowNode: Variants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: { opacity: 1, y: 0, transition: transition.base },
+};
+const flowConnector: Variants = {
+  hidden: { scale: 0, opacity: 0 },
+  visible: { scale: 1, opacity: 1, transition: transition.slow },
+};
 
-const attached = [
-  { icon: FileText, label: "Full transcript", value: "every turn, verbatim" },
-  { icon: Sparkles, label: "Detected intent", value: "billing dispute · repeat contact" },
-  { icon: UserRound, label: "Caller context", value: "order #40128 · verified" },
-];
-
+/**
+ * The Safety beat (07 · 06): handoff as a headline capability. Extends the
+ * console's warm-transfer climax — the human node (with full context) is the
+ * emphasized destination, via border weight, never amber.
+ */
 export function Handoff() {
+  const reduce = useReducedMotion();
+  const isLast = (index: number) => index === handoffSteps.length - 1;
+
   return (
     <section className="border-y border-border/60 bg-muted/20">
-      <div className="mx-auto max-w-6xl px-6 py-[var(--spacing-section)]">
+      <div className="container-page py-[var(--spacing-section)]">
         <SectionHeading
-          eyebrow="Every call ends well"
-          title="Even the calls AI shouldn't finish"
-          description="The moment that earns enterprise trust isn't full automation — it's a clean handoff. When intent gets sensitive, the agent brings in a human and hands over everything, so no one starts from scratch."
+          eyebrow="Graceful handoff"
+          title="The calls AI shouldn't finish, it hands off — cleanly."
+          description="When a call needs a person, TeleBeli transfers it with the full transcript and detected intent already attached. Your team picks up in context, not from scratch. No caller repeats themselves. No one is stranded."
         />
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:items-stretch">
-          <div className={cn(surface({ elevation: "elevated" }), "p-6")}>
-            <div className="space-y-3 text-sm">
-              {transcript.map((turn, i) => (
-                <p
-                  key={i}
+        <motion.div
+          initial={reduce ? false : "hidden"}
+          whileInView={reduce ? undefined : "visible"}
+          viewport={{ once: true, margin: "-80px" }}
+          variants={flowContainer}
+          role="list"
+          className="mt-14 flex flex-col items-stretch sm:flex-row sm:items-center"
+        >
+          {handoffSteps.map((step, index) => (
+            <Fragment key={step.label}>
+              {index > 0 && (
+                <motion.div
+                  aria-hidden
+                  variants={flowConnector}
+                  className="mx-auto h-8 w-px origin-top bg-border sm:mx-0 sm:h-px sm:w-auto sm:min-w-6 sm:flex-1 sm:origin-left"
+                />
+              )}
+              <motion.div
+                role="listitem"
+                variants={flowNode}
+                className={cn(
+                  surface({ elevation: isLast(index) ? "elevated" : "subtle" }),
+                  "flex-shrink-0 p-5 sm:max-w-56",
+                  isLast(index) && "border-foreground/30",
+                )}
+              >
+                <div
                   className={cn(
-                    "w-fit rounded-2xl px-3.5 py-2",
-                    turn.speaker === "caller"
-                      ? "rounded-tl-sm bg-muted text-foreground/90"
-                      : "ml-auto rounded-tr-sm bg-brand text-primary-foreground",
+                    "flex size-10 items-center justify-center rounded-lg",
+                    isLast(index) ? "bg-brand/10 text-brand" : "bg-muted text-muted-foreground",
                   )}
                 >
-                  {turn.text}
-                </p>
-              ))}
-              <div className="!mt-5 flex items-center justify-center gap-2 rounded-lg border border-brand-accent/40 bg-brand-accent/10 px-4 py-2.5 text-xs font-medium text-brand-accent">
-                <ArrowRightLeft className="size-3.5" />
-                Warm transfer to a billing specialist
-              </div>
-            </div>
-          </div>
-
-          <div className={cn(surface({ elevation: "subtle" }), "flex flex-col justify-center gap-4 p-6")}>
-            <p className="text-sm font-medium">Handed to the human, automatically:</p>
-            {attached.map((item) => (
-              <div key={item.label} className="flex items-start gap-3">
-                <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
-                  <item.icon className="size-4" />
+                  <step.icon className="size-5" />
                 </div>
-                <div>
-                  <p className="text-sm font-medium">{item.label}</p>
-                  <p className="text-sm text-muted-foreground">{item.value}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+                <p className="mt-3 text-sm font-semibold">{step.label}</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{step.detail}</p>
+              </motion.div>
+            </Fragment>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

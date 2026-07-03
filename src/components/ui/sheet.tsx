@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { XIcon } from "lucide-react"
+import { IconX as XIcon } from "@/components/ui/icon"
 import { Dialog as SheetPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
@@ -60,7 +60,8 @@ function SheetContent({
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          "fixed z-50 flex flex-col gap-4 bg-background shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:animate-in data-[state=open]:duration-500",
+          // enter 240ms / exit 140ms (motion tokens), e3 elevation.
+          "fixed z-50 flex flex-col gap-4 bg-card shadow-floating transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-[140ms] data-[state=open]:animate-in data-[state=open]:duration-[240ms]",
           side === "right" &&
             "inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
           side === "left" &&

@@ -3,7 +3,7 @@ import { metrics } from "@/constants/landing";
 
 export function Metrics() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-[var(--spacing-section)]">
+    <section className="container-page py-[var(--spacing-section)]">
       <Stagger className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
         {metrics.map((m) => (
           <StaggerItem key={m.label} className="text-center">

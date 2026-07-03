@@ -70,7 +70,7 @@ const pillars = [
 
 export default function SecurityPage() {
   return (
-    <div className="mx-auto max-w-5xl px-6 py-20 md:py-28">
+    <div className="mx-auto max-w-5xl px-[var(--gutter)] py-20 md:py-28">
       <div className="max-w-2xl">
         <p className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-brand">
           <ShieldCheck className="size-4" />

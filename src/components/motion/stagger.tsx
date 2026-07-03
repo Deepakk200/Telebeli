@@ -1,33 +1,38 @@
 "use client";
 
-import { motion, useReducedMotion, type HTMLMotionProps } from "motion/react";
-import { staggerContainer, fadeUp } from "@/lib/motion";
+import { m, useReducedMotion, type HTMLMotionProps } from "motion/react";
+import { staggerContainer, fadeUp, STAGGER_STEP, viewportOnce } from "@/lib/motion";
 
 type StaggerProps = HTMLMotionProps<"div"> & {
   stagger?: number;
   delayChildren?: number;
 };
 
-/** Reveals children in sequence on scroll into view (once). */
-export function Stagger({ stagger = 0.08, delayChildren = 0, children, ...props }: StaggerProps) {
+/** Reveals children in sequence (40ms step) once, at the 85% viewport line. */
+export function Stagger({
+  stagger = STAGGER_STEP,
+  delayChildren = 0,
+  children,
+  ...props
+}: StaggerProps) {
   const reduce = useReducedMotion();
   return (
-    <motion.div
+    <m.div
       initial={reduce ? false : "hidden"}
       whileInView={reduce ? undefined : "visible"}
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={viewportOnce}
       variants={staggerContainer(stagger, delayChildren)}
       {...props}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
 export function StaggerItem({ children, ...props }: HTMLMotionProps<"div">) {
   return (
-    <motion.div variants={fadeUp} {...props}>
+    <m.div variants={fadeUp} {...props}>
       {children}
-    </motion.div>
+    </m.div>
   );
 }

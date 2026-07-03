@@ -1,15 +1,8 @@
 import type { Organization, SoftwareApplication } from "schema-dts";
 import { Hero } from "@/components/landing/hero";
-import { Logos } from "@/components/landing/logos";
-import { Reliability } from "@/components/landing/reliability";
-import { Handoff } from "@/components/landing/handoff";
 import { Features } from "@/components/landing/features";
-import { ProductTour } from "@/components/landing/product-tour";
-import { HowItWorks } from "@/components/landing/how-it-works";
-import { Metrics } from "@/components/landing/metrics";
-import { Pricing } from "@/components/landing/pricing";
-import { Faq } from "@/components/landing/faq";
-import { Cta } from "@/components/landing/cta";
+import { Logos } from "@/components/landing/logos";
+import { ChatFAB } from "@/components/common/chat-fab";
 import { JsonLd } from "@/lib/json-ld";
 import { siteConfig } from "@/config/site";
 
@@ -32,28 +25,21 @@ const application: SoftwareApplication = {
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   description: siteConfig.description,
-  offers: {
-    "@type": "Offer",
-    price: "0.06",
-    priceCurrency: "USD",
-    description: "Per connected minute, billed by the second.",
-  },
 };
 
+/**
+ * Marketing page shell (RSC). The approved landing sections
+ * (docs/design-assets/landing-page-approved.png) are composed here by Milestone 2
+ * in approved order: hero → hero feature cards → trusted-by. Empty until those
+ * prompts land; the JSON-LD below is the SEO foundation.
+ */
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <Logos />
-      <Reliability />
-      <Handoff />
       <Features />
-      <ProductTour />
-      <HowItWorks />
-      <Metrics />
-      <Pricing />
-      <Faq />
-      <Cta />
+      <Logos />
+      <ChatFAB />
       <JsonLd data={organization} />
       <JsonLd data={application} />
     </>

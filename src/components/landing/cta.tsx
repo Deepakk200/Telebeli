@@ -6,7 +6,7 @@ import { FadeIn } from "@/components/motion";
 
 export function Cta() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-[var(--spacing-section)]">
+    <section className="container-page py-[var(--spacing-section)]">
       <FadeIn>
         <div className="relative overflow-hidden rounded-3xl border border-border bg-card px-6 py-16 text-center shadow-elevated">
           <div aria-hidden className="pointer-events-none absolute inset-0 bg-mesh opacity-80" />

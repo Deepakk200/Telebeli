@@ -1,112 +1,140 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Dark is the first-class experience for TeleBeli. */
+/* Light-first ink-on-paper; .dark is "operations mode" (visual-identity-v2 §4). */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------------------
-   Design tokens. Semantic only — components never reference magic hex/spacing.
-   Palette: violet primary + teal brand-accent. OKLCH throughout.
+   Design tokens. Primitives (paper/ink/accent/states) carry the approved
+   identity; the semantic shadcn layer resolves from them via var() — safe
+   because .dark lands on <html>, the same element as :root, so the cascade
+   re-resolves every chain per theme. OKLCH throughout.
 --------------------------------------------------------------------------- */
 :root {
-  --radius: 0.7rem;
+  /* Foundation — cool lavender-white paper, near-navy ink. The approved landing
+     image is authoritative for the marketing (Light) palette and supersedes the
+     warm editorial neutrals per the implementation authority rules. */
+  --paper: oklch(0.975 0.009 286);
+  --surface: oklch(0.995 0.004 286);
+  --sunken: oklch(0.955 0.012 286);
+  --ink: oklch(0.23 0.045 274);
+  --ink-muted: oklch(0.52 0.028 274);
+  --ink-faint: oklch(0.66 0.02 274);
+  --hairline: oklch(from var(--ink) l c h / 0.1);
 
-  --background: oklch(0.99 0.003 286);
-  --foreground: oklch(0.19 0.02 286);
+  /* One scarce accent (brand-blue): links, primary action, focus, selection. */
+  --accent-ink: oklch(0.47 0.19 268);
+  --accent-wash: oklch(from var(--accent) l c h / 0.08);
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.19 0.02 286);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.19 0.02 286);
+  /* Brand gradient — blue→violet, the approved headline accent + primary CTA.
+     Endpoints kept ≤0.6 L so white text on the gradient stays AA (verified by
+     scripts/check-contrast.mjs). */
+  --gradient-from: oklch(0.55 0.2 262);
+  --gradient-to: oklch(0.53 0.24 300);
+  --gradient-brand: linear-gradient(100deg, var(--gradient-from), var(--gradient-to));
 
-  --primary: oklch(0.54 0.223 286);
-  --primary-foreground: oklch(0.985 0.01 286);
+  /* Semantic evidence palette — the only saturated colors; color = call state. */
+  --state-live: oklch(0.58 0.11 70);
+  --state-resolved: oklch(0.52 0.09 155);
+  --state-handoff: oklch(0.5 0.1 300);
+  --state-flag: oklch(0.52 0.1 40);
 
-  --secondary: oklch(0.966 0.004 286);
-  --secondary-foreground: oklch(0.26 0.02 286);
+  /* Hairlines are the primary structural device — all 1px. */
+  --border-subtle: oklch(from var(--ink) l c h / 0.08);
+  --border-default: oklch(from var(--ink) l c h / 0.12);
+  --border-strong: oklch(from var(--ink) l c h / 0.2);
 
-  --muted: oklch(0.966 0.004 286);
-  --muted-foreground: oklch(0.53 0.016 286);
+  /* Radius — tight scale; pill (999px) reserved for status dots/live only. */
+  --r-0: 0px;
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --radius: var(--r-md);
 
-  --accent: oklch(0.95 0.008 286);
-  --accent-foreground: oklch(0.26 0.02 286);
+  /* Page shell — one content width + fluid gutter every section aligns to.
+     80rem (1280px) matches the approved landing composition width. */
+  --container: 80rem;
+  --gutter: clamp(1rem, 5vw, 2rem);
 
-  --destructive: oklch(0.58 0.223 27);
-  --destructive-foreground: oklch(0.985 0.01 286);
+  /* Semantic layer (shadcn names) — components consume these, values above. */
+  --background: var(--paper);
+  --foreground: var(--ink);
 
-  --border: oklch(0.916 0.006 286);
-  --input: oklch(0.916 0.006 286);
-  --ring: oklch(0.54 0.223 286);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
 
-  /* Signature brand tokens — the voice/waveform motif keys off these. */
-  --brand: oklch(0.54 0.223 286);
-  --brand-2: oklch(0.62 0.19 300);
-  --brand-accent: oklch(0.68 0.13 196);
-  --live: oklch(0.78 0.16 72);
+  --primary: var(--accent);
+  --primary-foreground: oklch(0.985 0.004 85);
 
-  --chart-1: oklch(0.54 0.223 286);
-  --chart-2: oklch(0.66 0.15 220);
-  --chart-3: oklch(0.7 0.13 196);
-  --chart-4: oklch(0.62 0.2 320);
-  --chart-5: oklch(0.72 0.17 150);
+  --secondary: var(--sunken);
+  --secondary-foreground: var(--ink);
 
-  --sidebar: oklch(0.985 0.003 286);
-  --sidebar-foreground: oklch(0.19 0.02 286);
-  --sidebar-primary: oklch(0.54 0.223 286);
-  --sidebar-primary-foreground: oklch(0.985 0.01 286);
-  --sidebar-accent: oklch(0.95 0.008 286);
-  --sidebar-accent-foreground: oklch(0.26 0.02 286);
-  --sidebar-border: oklch(0.916 0.006 286);
-  --sidebar-ring: oklch(0.54 0.223 286);
+  --muted: var(--sunken);
+  --muted-foreground: var(--ink-muted);
+
+  --accent: oklch(0.55 0.2 266);
+  --accent-foreground: oklch(0.99 0.005 286);
+
+  --destructive: var(--state-flag);
+  --destructive-foreground: oklch(0.985 0.004 85);
+
+  /* Positive outcomes (resolved calls, good deltas) — green kept semantic so
+     status color never comes from a raw palette name. */
+  --success: var(--state-resolved);
+
+  --border: var(--border-default);
+  --input: var(--border-default);
+  --ring: var(--accent);
+
+  /* Legacy brand aliases — landing/dashboard sections still reference these;
+     they re-skin automatically and get rebuilt in later milestones. */
+  --brand: var(--accent);
+  --brand-2: var(--state-handoff);
+  --brand-accent: var(--accent);
+  --live: var(--state-live);
+
+  --chart-1: var(--accent);
+  --chart-2: var(--state-resolved);
+  --chart-3: var(--state-live);
+  --chart-4: var(--state-handoff);
+  --chart-5: var(--state-flag);
+
+  --sidebar: var(--sunken);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--accent);
+  --sidebar-primary-foreground: oklch(0.985 0.004 85);
+  --sidebar-accent: var(--accent-wash);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--hairline);
+  --sidebar-ring: var(--accent);
 }
 
+/* Operations mode — a true second theme (deep warm slate), not an inversion.
+   Only primitives flip; the semantic chains above re-resolve. No glow. */
 .dark {
-  --background: oklch(0.155 0.011 286);
-  --foreground: oklch(0.97 0.006 286);
+  --paper: oklch(0.17 0.008 260);
+  --surface: oklch(0.21 0.008 260);
+  --sunken: oklch(0.14 0.008 260);
+  --ink: oklch(0.94 0.005 85);
+  --ink-muted: oklch(0.7 0.008 85);
+  --ink-faint: oklch(0.58 0.008 85);
 
-  --card: oklch(0.195 0.014 286);
-  --card-foreground: oklch(0.97 0.006 286);
-  --popover: oklch(0.195 0.014 286);
-  --popover-foreground: oklch(0.97 0.006 286);
+  --accent: oklch(0.62 0.14 250);
+  --accent-ink: oklch(0.7 0.14 250);
 
-  --primary: oklch(0.67 0.2 286);
-  --primary-foreground: oklch(0.16 0.02 286);
+  /* States lift ~+0.1 L for the dark surface. */
+  --state-live: oklch(0.68 0.11 70);
+  --state-resolved: oklch(0.62 0.09 155);
+  --state-handoff: oklch(0.6 0.1 300);
+  --state-flag: oklch(0.62 0.1 40);
 
-  --secondary: oklch(0.245 0.014 286);
-  --secondary-foreground: oklch(0.97 0.006 286);
-
-  --muted: oklch(0.245 0.014 286);
-  --muted-foreground: oklch(0.7 0.015 286);
-
-  --accent: oklch(0.275 0.017 286);
-  --accent-foreground: oklch(0.97 0.006 286);
-
-  --destructive: oklch(0.63 0.21 27);
-  --destructive-foreground: oklch(0.97 0.006 286);
-
-  --border: oklch(1 0 0 / 9%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.67 0.2 286);
-
-  --brand: oklch(0.67 0.2 286);
-  --brand-2: oklch(0.72 0.18 300);
-  --brand-accent: oklch(0.79 0.13 196);
-  --live: oklch(0.82 0.16 72);
-
-  --chart-1: oklch(0.67 0.2 286);
-  --chart-2: oklch(0.7 0.14 220);
-  --chart-3: oklch(0.79 0.13 196);
-  --chart-4: oklch(0.72 0.19 320);
-  --chart-5: oklch(0.78 0.16 150);
-
-  --sidebar: oklch(0.175 0.013 286);
-  --sidebar-foreground: oklch(0.97 0.006 286);
-  --sidebar-primary: oklch(0.67 0.2 286);
-  --sidebar-primary-foreground: oklch(0.16 0.02 286);
-  --sidebar-accent: oklch(0.275 0.017 286);
-  --sidebar-accent-foreground: oklch(0.97 0.006 286);
-  --sidebar-border: oklch(1 0 0 / 9%);
-  --sidebar-ring: oklch(0.67 0.2 286);
+  /* On-accent text flips to slate so buttons stay ≥4.5:1 on the lifted accent. */
+  --primary-foreground: oklch(0.17 0.008 260);
+  --accent-foreground: oklch(0.17 0.008 260);
+  --destructive-foreground: oklch(0.17 0.008 260);
+  --sidebar-primary-foreground: oklch(0.17 0.008 260);
 }
 
 /* ---------------------------------------------------------------------------
@@ -130,9 +158,31 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* Brand gradient endpoints as utilities (from-gradient-from / to-gradient-to). */
+  --color-gradient-from: var(--gradient-from);
+  --color-gradient-to: var(--gradient-to);
+
+  /* Identity primitives as utilities (bg-paper, text-ink-muted, border-hairline…). */
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-hairline: var(--hairline);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-wash: var(--accent-wash);
+  --color-state-live: var(--state-live);
+  --color-state-resolved: var(--state-resolved);
+  --color-state-handoff: var(--state-handoff);
+  --color-state-flag: var(--state-flag);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
 
   --color-brand: var(--brand);
   --color-brand-2: var(--brand-2);
@@ -154,42 +204,94 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* Marketing display = rounded geometric (approved image, supersedes serif on
+     the marketing surface); sans = UI/body; mono = evidence; serif retained for
+     any editorial use. */
+  --font-display: var(--font-display-face), Poppins, ui-rounded, "Segoe UI", system-ui, sans-serif;
+  --font-sans: var(--font-sans-face), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif-face), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-mono-face), ui-monospace, Consolas, monospace;
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
+  /* Tight radius scale (r-sm 4 / r-md 8 / r-lg 12). Existing rounded-lg/xl
+     usage collapses onto the 8px card tier; 12px is the modal ceiling —
+     no 16–24px rounding anywhere. */
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-md);
+  --radius-xl: var(--r-md);
+  --radius-2xl: var(--r-lg);
 
-  /* Modular type scale (1.25). Fluid on the largest steps so phones don't get
-     oversized headings; clamps to the original size at desktop widths (identical). */
-  --text-display: clamp(2.75rem, 6vw + 1rem, 4.5rem);
+  /* Hand-tuned scale (visual-identity-v2 §1). Display tiers are fluid
+     (56→40→32-class) so headlines never overflow the measure on phones. */
+  --text-display: clamp(2rem, 4vw + 1.1rem, 3.5rem); /* 56 desktop → ~32 phone */
   --text-display--line-height: 1.05;
-  --text-display--letter-spacing: -0.035em;
-  --text-h1: clamp(1.875rem, 4vw + 1rem, 3rem);
-  --text-h1--line-height: 1.06;
-  --text-h1--letter-spacing: -0.03em;
-  --text-h2: 2.25rem;
-  --text-h2--line-height: 1.12;
-  --text-h2--letter-spacing: -0.022em;
-  --text-h3: 1.5rem;
+  --text-display--letter-spacing: -0.02em;
+  --text-h1: clamp(1.75rem, 2.5vw + 1rem, 2.5rem); /* 40 → ~30 */
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.015em;
+  --text-h2: clamp(1.5rem, 1.2vw + 1.1rem, 1.875rem); /* 30 → ~24 */
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.01em;
+  --text-h3: 1.375rem; /* 22 */
   --text-h3--line-height: 1.25;
-  --text-h3--letter-spacing: -0.015em;
-  --text-lead: 1.25rem;
-  --text-lead--line-height: 1.6;
-
-  /* Soft, layered elevation — premium reads low-contrast, not hard drop-shadows. */
-  --shadow-subtle: 0 1px 2px -1px oklch(0.2 0.02 286 / 0.08), 0 1px 3px oklch(0.2 0.02 286 / 0.06);
-  --shadow-elevated: 0 2px 4px -2px oklch(0.2 0.02 286 / 0.1), 0 8px 24px -8px oklch(0.2 0.02 286 / 0.14);
-  --shadow-floating: 0 4px 8px -4px oklch(0.2 0.02 286 / 0.12), 0 16px 48px -12px oklch(0.2 0.02 286 / 0.22);
+  --text-h3--letter-spacing: -0.005em;
+  --text-lead: 1.25rem; /* 20 */
+  --text-lead--line-height: 1.55;
+  --text-body: 1rem; /* 16 */
+  --text-body--line-height: 1.6;
+  --text-small: 0.875rem; /* body-sm 14 */
+  --text-small--line-height: 1.55;
+  --text-label: 0.75rem; /* 12 — eyebrows/meta; uppercase bound below */
+  --text-label--line-height: 1.35;
+  --text-label--letter-spacing: 0.06em;
+  --text-evidence: 0.8125rem; /* 13 — mono records/data */
+  --text-evidence--line-height: 1.5;
 
   /* Consistent section rhythm. */
   --spacing-section: 7rem;
 
-  /* Motion easing token, shared with the JS motion system. */
+  /* Motion tokens — lib/motion.ts is canonical; CSS mirrors it so both layers
+     share one timing language. --dur-entrance is the single sanctioned
+     exception, used only by the above-the-fold CSS entrance. */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 400ms;
+  --dur-entrance: 500ms;
+}
+
+/* Elevation: paper and ink — warm-ink-tinted, short, soft, no glow.
+   e1 raised card / e2 popover / e3 modal. These live OUTSIDE @theme on
+   purpose: Tailwind inlines theme shadows into each utility, which would
+   freeze the light values; the @utility definitions below resolve through
+   var() so operations mode can redefine elevation (surface-lightness step +
+   hairline, with real drops only from e2 up). */
+:root {
+  --shadow-subtle: 0 1px 2px oklch(from var(--ink) l c h / 0.06), 0 1px 1px oklch(from var(--ink) l c h / 0.04);
+  --shadow-elevated: 0 4px 12px oklch(from var(--ink) l c h / 0.08), 0 2px 4px oklch(from var(--ink) l c h / 0.05);
+  --shadow-floating: 0 16px 40px oklch(from var(--ink) l c h / 0.14), 0 4px 8px oklch(from var(--ink) l c h / 0.06);
+}
+.dark {
+  --shadow-subtle: 0 0 0 1px var(--hairline);
+  --shadow-elevated: 0 0 0 1px var(--hairline), 0 4px 12px oklch(0 0 0 / 0.3);
+  --shadow-floating: 0 0 0 1px var(--hairline), 0 16px 40px oklch(0 0 0 / 0.45);
+}
+
+/* Mirrors Tailwind's generated shadow utilities (same --tw-* chain, so they
+   compose with ring-* / inset-* and support variants like hover:) but keeps
+   the value variable-backed for the dark-mode override above. */
+@utility shadow-subtle {
+  --tw-shadow: var(--shadow-subtle);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+@utility shadow-elevated {
+  --tw-shadow: var(--shadow-elevated);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+@utility shadow-floating {
+  --tw-shadow: var(--shadow-floating);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
 }
 
 @layer base {
@@ -210,6 +312,7 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-weight: 420; /* scale's body weight (sans 420/560/640) */
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -237,7 +340,51 @@
   }
 }
 
+/* Tri-voice binding: the scale's family/weight ride the text-* utilities so
+   sections need no per-component wiring. Components layer on purpose —
+   explicit font-* utilities still win. */
+@layer components {
+  /* Marketing display tiers ride the rounded geometric face (approved image).
+     The dashboard uses PageHeader/sans for headings (design-system §7), so this
+     supersession lands on the marketing surface. */
+  .text-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+  .text-h1,
+  .text-h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+  .text-h3,
+  .text-label {
+    font-weight: 560;
+  }
+  .text-label {
+    text-transform: uppercase;
+  }
+  .text-evidence {
+    font-family: var(--font-mono);
+    font-weight: 440;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+}
+
 @layer utilities {
+  /* Body measure cap (66–72ch) for long-form copy. */
+  .measure-body {
+    max-width: 70ch;
+  }
+
+  /* Page shell: one container + gutter, so every marketing section sits on
+     the same grid. Replaces the repeated `mx-auto max-w-6xl px-6` pattern. */
+  .container-page {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
   /* Reused signature motif surfaces. */
   .bg-mesh {
     background-image:
@@ -245,16 +392,16 @@
       radial-gradient(50% 50% at 85% 12%, oklch(from var(--brand-accent) l c h / 0.12), transparent 55%),
       radial-gradient(55% 60% at 60% 100%, oklch(from var(--brand-2) l c h / 0.1), transparent 60%);
   }
+  /* Blue→violet brand gradient. text- clips it to glyphs (headline accent line);
+     bg- paints it as a fill (primary CTA). Both read from the one gradient token. */
   .text-gradient-brand {
-    background-image: linear-gradient(
-      100deg,
-      var(--color-foreground) 20%,
-      var(--brand) 55%,
-      var(--brand-accent) 90%
-    );
+    background-image: var(--gradient-brand);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+  .bg-gradient-brand {
+    background-image: var(--gradient-brand);
   }
 }
 
@@ -271,7 +418,7 @@
   }
 }
 .animate-enter {
-  animation: enter-up 0.5s var(--ease-out-expo) both;
+  animation: enter-up var(--dur-entrance) var(--ease-out-expo) both;
 }
 
 /* Signature voice/waveform motif animation. */
@@ -311,106 +458,6 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* ---------------------------------------------------------------------------
-   First-load preloader: centered brand splash + count-up + curtain wipe.
---------------------------------------------------------------------------- */
-html.is-loading {
-  overflow: hidden;
-}
-
-.preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  background: var(--background);
-  clip-path: inset(0 0 0 0);
-  transition: clip-path 0.7s var(--ease-out-expo);
-}
-.preloader[data-reveal="true"] {
-  clip-path: inset(0 0 100% 0); /* curtain wipe upward */
-}
-.preloader__mesh {
-  position: absolute;
-  inset: 0;
-  opacity: 0.5;
-}
-.preloader__inner {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  gap: 1.25rem;
-}
-.preloader__mark {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 1.75rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-.preloader__dot {
-  width: 0.6rem;
-  height: 0.6rem;
-  border-radius: 999px;
-  background: var(--live);
-  box-shadow: 0 0 0 0 color-mix(in oklch, var(--live) 60%, transparent);
-  animation: pl-pulse 2s var(--ease-out-expo) infinite;
-}
-.preloader__wave {
-  width: 220px;
-  height: 56px;
-}
-.preloader__count {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--muted-foreground);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.15em;
-}
-
-@keyframes pl-pulse {
-  0% {
-    box-shadow: 0 0 0 0 color-mix(in oklch, var(--live) 55%, transparent);
-  }
-  100% {
-    box-shadow: 0 0 0 14px transparent;
-  }
-}
-
-/* Route-transition top progress bar (client navigations only). */
-.route-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 90;
-  height: 2px;
-  width: 100%;
-  transform-origin: 0 50%;
-  background: linear-gradient(90deg, var(--brand), var(--brand-accent));
-  box-shadow: 0 0 8px color-mix(in oklch, var(--brand-accent) 60%, transparent);
-  transition:
-    transform 0.3s var(--ease-out-expo),
-    opacity 0.3s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .preloader {
-    transition: opacity 0.25s ease;
-    clip-path: none;
-  }
-  .preloader[data-reveal="true"] {
-    opacity: 0;
-  }
-  .preloader__dot {
-    animation: none;
-  }
-  .route-progress {
-    transition: opacity 0.2s ease;
   }
 }
 

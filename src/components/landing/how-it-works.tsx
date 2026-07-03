@@ -13,7 +13,7 @@ export function HowItWorks() {
         <Waveform bars={90} barClassName="bg-brand/25" />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6 py-[var(--spacing-section)]">
+      <div className="container-page relative py-[var(--spacing-section)]">
         <SectionHeading
           eyebrow="How it works"
           title="From idea to live agent in a day"

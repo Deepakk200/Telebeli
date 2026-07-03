@@ -4,31 +4,41 @@ import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
+/* Evidence-palette skins. Color never stands alone — Badge always renders its
+   text label (a handoff badge says "Handoff"). */
+const neutralSkin = "border-border bg-muted text-muted-foreground"
+const flagSkin = "border-state-flag/25 bg-state-flag/10 text-state-flag"
+
 const badgeVariants = cva(
-  "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border border-transparent px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3",
+  // Static semantic label: 20px tall, r-sm — pill is reserved for the Status dot.
+  "inline-flex h-5 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-sm border px-2 text-xs font-medium whitespace-nowrap [&>svg]:pointer-events-none [&>svg]:size-3",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
-        secondary:
-          "bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-        destructive:
-          "bg-destructive text-white focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40 [a&]:hover:bg-destructive/90",
-        outline:
-          "border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-        ghost: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 [a&]:hover:underline",
+        live: "border-state-live/25 bg-state-live/10 text-state-live",
+        resolved: "border-state-resolved/25 bg-state-resolved/10 text-state-resolved",
+        handoff: "border-state-handoff/25 bg-state-handoff/10 text-state-handoff",
+        flag: flagSkin,
+        neutral: neutralSkin,
+        /** @deprecated alias of `neutral` */
+        default: neutralSkin,
+        /** @deprecated alias of `neutral` */
+        secondary: neutralSkin,
+        /** @deprecated alias of `flag` */
+        destructive: flagSkin,
+        /** @deprecated alias of `neutral` */
+        outline: "border-border bg-transparent text-foreground",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "neutral",
     },
   }
 )
 
 function Badge({
   className,
-  variant = "default",
+  variant = "neutral",
   asChild = false,
   ...props
 }: React.ComponentProps<"span"> &

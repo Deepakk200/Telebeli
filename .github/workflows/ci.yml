@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint (incl. token & boundary rules)
+        run: npm run lint
+
+      - name: Unit (vitest)
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E + axe (Playwright)
+        run: npm run e2e
+
+      - name: Bundle budget
+        run: node scripts/check-bundle.mjs
+
+      - name: Web Vitals gate (Lighthouse)
+        run: npx --yes @lhci/cli@0.14.x autorun

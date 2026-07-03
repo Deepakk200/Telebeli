@@ -1,93 +1,92 @@
 import Link from "next/link";
-import { ArrowRight, Play } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { LiveConsole } from "./live-console";
+import { ArrowRight, Play, ShieldCheck, Sparkles } from "lucide-react";
 
-/**
- * Above-the-fold hero. Leads on the memory-test claim ("voice AI you can see
- * working") + reliability — never latency or voice fidelity (see non-goals).
- * Entrance uses a pure-CSS animation so the LCP headline paints without waiting
- * for hydration.
- */
+import { Button } from "@/components/ui/button";
+import { HeroDashboard } from "./hero-dashboard";
+import { hero, heroTrustBadges, type HeroTrustBadge } from "@/constants/landing";
+
+/* Official OpenAI / Twilio marks (brand colors, not design tokens). OpenAI
+   inherits ink via currentColor; Twilio keeps its brand red. */
+function BrandMark({ mark }: { mark: HeroTrustBadge["mark"] }) {
+  if (mark === "openai") {
+    return (
+      <svg viewBox="0 0 24 24" className="size-6 text-foreground" fill="currentColor" aria-hidden>
+        <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7462-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.6813zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" />
+      </svg>
+    );
+  }
+  if (mark === "twilio") {
+    return (
+      <svg viewBox="0 0 32 32" className="size-6" fill="#F22F46" aria-hidden>
+        <path d="M16 0C7.16 0 0 7.16 0 16s7.16 16 16 16 16-7.16 16-16S24.84 0 16 0zm0 27.2c-6.185 0-11.2-5.015-11.2-11.2S9.815 4.8 16 4.8 27.2 9.815 27.2 16 22.185 27.2 16 27.2zm6.4-14.4a3.2 3.2 0 1 1-6.4 0 3.2 3.2 0 0 1 6.4 0zm0 6.4a3.2 3.2 0 1 1-6.4 0 3.2 3.2 0 0 1 6.4 0zm-9.6 0a3.2 3.2 0 1 1-6.4 0 3.2 3.2 0 0 1 6.4 0zm0-6.4a3.2 3.2 0 1 1-6.4 0 3.2 3.2 0 0 1 6.4 0z" />
+      </svg>
+    );
+  }
+  return <ShieldCheck className="size-6 text-ink-muted" aria-hidden />;
+}
+
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      {/* Signature mesh + grid backdrop */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-mesh" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.35] [mask-image:radial-gradient(60%_50%_at_50%_0%,black,transparent)]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, color-mix(in oklch, var(--border) 60%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklch, var(--border) 60%, transparent) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-        }}
-      />
+    <section id="hero" aria-labelledby="hero-heading" className="relative overflow-hidden">
+      <div className="container-page grid gap-10 pb-16 pt-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-14 lg:pb-24 lg:pt-16">
+        {/* LEFT — content (DOM-first, before the mockup regardless of visual order).
+            Paints statically: the headline is the LCP, so no opacity entrance gates it. */}
+        <div className="flex flex-col items-start">
+          <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-wash px-3.5 py-1.5 text-label font-semibold uppercase tracking-[0.08em] text-accent">
+            <Sparkles className="size-3.5" aria-hidden />
+            {hero.eyebrow}
+          </span>
 
-      <div className="relative mx-auto max-w-6xl px-6 pt-24 pb-20 md:pt-32 md:pb-28">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="animate-enter">
-            <Link
-              href="#live"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-brand-accent" />
-                <span className="relative inline-flex size-2 rounded-full bg-brand-accent" />
-              </span>
-              Watch a call resolve, live
-            </Link>
-          </div>
-
-          <h1
-            className="animate-enter mt-6 text-balance text-h1 font-semibold tracking-tight md:text-display"
-            style={{ animationDelay: "60ms" }}
-          >
-            Voice AI you can <span className="text-gradient-brand">watch working</span>
+          <h1 id="hero-heading" className="mt-6 text-balance text-display">
+            {hero.headline.line1}
+            <br />
+            <span className="text-gradient-brand">{hero.headline.line2}</span>
           </h1>
 
-          <p
-            className="animate-enter mx-auto mt-6 max-w-2xl text-pretty text-lead text-muted-foreground"
-            style={{ animationDelay: "120ms" }}
-          >
-            TeleBeli runs enterprise voice agents on your phone lines and shows you every call as it
-            happens — resolving on their own, escalating to a human when they should, and never
-            failing in silence.
-          </p>
+          <p className="mt-6 max-w-xl text-pretty text-lead text-ink-muted">{hero.subhead}</p>
 
-          <div
-            className="animate-enter mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
-            style={{ animationDelay: "180ms" }}
-          >
-            <Button asChild size="lg" className="w-full sm:w-auto">
-              <Link href="/dashboard">
-                Start free
-                <ArrowRight className="size-4" />
+          {/* CTAs — one primary (gradient) + outline secondary with a play badge. */}
+          <div className="mt-8 flex w-full flex-col gap-3 min-[480px]:w-auto min-[480px]:flex-row min-[480px]:items-center">
+            <Button
+              asChild
+              size="lg"
+              className="w-full bg-gradient-brand text-white shadow-elevated hover:opacity-95 min-[480px]:w-auto"
+            >
+              <Link href={hero.primaryCta.href}>
+                {hero.primaryCta.label}
+                <ArrowRight className="size-4" aria-hidden />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
-              <Link href="#live">
-                <Play className="size-4" />
-                See it live
+            <Button asChild size="lg" variant="secondary" className="w-full min-[480px]:w-auto">
+              <Link href={hero.secondaryCta.href}>
+                <span className="flex size-6 items-center justify-center rounded-full bg-gradient-brand text-white">
+                  <Play className="size-3 fill-current" aria-hidden />
+                </span>
+                {hero.secondaryCta.label}
               </Link>
             </Button>
           </div>
 
-          {/* [verify] SOC 2 Type II status before publishing as fact. */}
-          <p
-            className="animate-enter mt-5 text-xs text-muted-foreground"
-            style={{ animationDelay: "240ms" }}
-          >
-            No credit card · Self-serve in a day · SOC 2 Type II
-          </p>
+          {/* Trust row — recognized infrastructure + a security signal. */}
+          <ul className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+            {heroTrustBadges.map((badge, i) => (
+              <li key={badge.name} className="flex items-center gap-6">
+                {i > 0 ? <span aria-hidden className="hidden h-9 w-px bg-border sm:block" /> : null}
+                <span className="flex items-center gap-2.5">
+                  <BrandMark mark={badge.mark} />
+                  <span className="flex flex-col leading-tight">
+                    <span className="text-xs text-ink-faint">{badge.lead}</span>
+                    <span className="text-sm font-semibold text-foreground">{badge.name}</span>
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <div
-          id="live"
-          className="animate-enter mx-auto mt-16 max-w-4xl scroll-mt-24"
-          style={{ animationDelay: "300ms" }}
-        >
-          <LiveConsole />
+        {/* RIGHT — product dashboard mockup (P007 shell; P008–P013 fill it). */}
+        <div className="w-full lg:justify-self-end">
+          <HeroDashboard />
         </div>
       </div>
     </section>

@@ -1,45 +1,45 @@
+import {
+  CallRecordSchema,
+  KpiSchema,
+  LatencyPointSchema,
+  VolumePointSchema,
+  type CallRecord,
+  type CallStatus,
+  type Kpi,
+  type LatencyPoint,
+  type VolumePoint,
+} from "@/lib/schemas";
+
 /**
- * Dashboard data layer. In production these hit the voice-agent backend;
- * here they return typed, deterministic sample data behind a small delay so
- * loading states are real. Swap the bodies for fetch() calls — the shapes hold.
+ * Dashboard data layer — the swappable interface. Mock bodies return typed,
+ * deterministic sample data behind a small delay so loading states are real,
+ * and every response is validated against the shared Zod schemas (the same
+ * ones the lib/api client scaffold uses). M12 swaps these bodies for api.*
+ * calls; the shapes cannot drift because both sides parse the same schemas.
  */
 
-export type CallDirection = "inbound" | "outbound";
-export type CallStatus = "resolved" | "transferred" | "missed";
-
-export type CallRecord = {
-  id: string;
-  contact: string;
-  direction: CallDirection;
-  status: CallStatus;
-  durationSec: number;
-  latencyMs: number;
-  language: string;
-  startedAt: string; // ISO
-};
-
-export type Kpi = {
-  label: string;
-  value: number;
-  decimals?: number;
-  prefix?: string;
-  suffix?: string;
-  delta: number; // percentage change vs previous period
-};
-
-export type VolumePoint = { date: string; inbound: number; outbound: number };
-export type LatencyPoint = { time: string; p50: number; p95: number };
+export type {
+  CallDirection,
+  CallStatus,
+  CallRecord,
+  Kpi,
+  VolumePoint,
+  LatencyPoint,
+} from "@/lib/schemas";
 
 const delay = <T>(value: T, ms = 350) =>
   new Promise<T>((resolve) => setTimeout(() => resolve(value), ms));
 
 export function getKpis(): Promise<Kpi[]> {
-  return delay([
-    { label: "Calls today", value: 8421, delta: 12.4 },
-    { label: "Resolution rate", value: 87.2, decimals: 1, suffix: "%", delta: 3.1 },
-    { label: "Median latency", value: 128, suffix: "ms", delta: -8.0 },
-    { label: "Avg handle time", value: 2.4, decimals: 1, suffix: "m", delta: -5.2 },
-  ]);
+  return delay(
+    KpiSchema.array().parse([
+      // 4996 = the volume chart's final-day inbound+outbound, so the KPI and chart agree on-screen.
+      { label: "Calls today", value: 4996, delta: 12.4 },
+      { label: "Resolution rate", value: 87.2, decimals: 1, suffix: "%", delta: 3.1 },
+      { label: "Median latency", value: 128, suffix: "ms", delta: -8.0 },
+      { label: "Avg handle time", value: 2.4, decimals: 1, suffix: "m", delta: -5.2 },
+    ]),
+  );
 }
 
 export function getCallVolume(): Promise<VolumePoint[]> {
@@ -54,7 +54,7 @@ export function getCallVolume(): Promise<VolumePoint[]> {
       outbound: Math.round(base * 0.55 + Math.cos(i / 3) * 200),
     };
   });
-  return delay(data);
+  return delay(VolumePointSchema.array().parse(data));
 }
 
 export function getLatencySeries(): Promise<LatencyPoint[]> {
@@ -64,7 +64,7 @@ export function getLatencySeries(): Promise<LatencyPoint[]> {
     p50: Math.round(120 + Math.sin(i / 2) * 18 + 8),
     p95: Math.round(240 + Math.sin(i / 2.4) * 40 + 30),
   }));
-  return delay(data);
+  return delay(LatencyPointSchema.array().parse(data));
 }
 
 const contacts = [
@@ -73,7 +73,13 @@ const contacts = [
   "Elena Rossi", "Jamal Carter",
 ];
 const languages = ["English", "Spanish", "Mandarin", "Hindi", "Arabic", "German"];
-const statuses: CallStatus[] = ["resolved", "resolved", "resolved", "transferred", "missed"];
+// 13/15 resolved ≈ 86.7%, matching the 87.2% resolution-rate KPI (was 3/5 = 60%);
+// transferred/missed interleaved so a table page never shows a solid resolved block.
+const statuses: CallStatus[] = [
+  "resolved", "resolved", "resolved", "resolved", "transferred",
+  "resolved", "resolved", "resolved", "resolved", "resolved",
+  "missed", "resolved", "resolved", "resolved", "resolved",
+];
 
 export function getRecentCalls(): Promise<CallRecord[]> {
   const data: CallRecord[] = Array.from({ length: 24 }, (_, i) => {
@@ -84,11 +90,11 @@ export function getRecentCalls(): Promise<CallRecord[]> {
       contact: contacts[i % contacts.length]!,
       direction: i % 3 === 0 ? "outbound" : "inbound",
       status: statuses[i % statuses.length]!,
-      durationSec: 45 + ((i * 37) % 420),
+      durationSec: 45 + ((i * 37) % 200), // mean ≈ 137s ≈ the 2.4m avg-handle-time KPI (was ≈ 4.2m)
       latencyMs: 108 + ((i * 13) % 90),
       language: languages[i % languages.length]!,
       startedAt: d.toISOString(),
     };
   });
-  return delay(data);
+  return delay(CallRecordSchema.array().parse(data));
 }

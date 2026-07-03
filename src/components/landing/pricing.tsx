@@ -9,7 +9,7 @@ import { pricingTiers } from "@/constants/landing";
 
 export function Pricing() {
   return (
-    <section id="pricing" className="mx-auto max-w-6xl px-6 py-[var(--spacing-section)]">
+    <section id="pricing" className="container-page py-[var(--spacing-section)]">
       <SectionHeading
         eyebrow="Pricing"
         title="Pay for talk time, nothing else"

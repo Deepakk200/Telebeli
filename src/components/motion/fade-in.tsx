@@ -1,25 +1,28 @@
 "use client";
 
-import { motion, useReducedMotion, type HTMLMotionProps } from "motion/react";
-import { transition } from "@/lib/motion";
+import { m, useReducedMotion, type HTMLMotionProps } from "motion/react";
+import { tokens, viewportOnce } from "@/lib/motion";
 
 type FadeInProps = HTMLMotionProps<"div"> & {
   delay?: number;
   y?: number;
 };
 
-/** Fade + rise into view once. Honors prefers-reduced-motion. */
+/**
+ * @deprecated Use `Reveal` — identical `enter` behavior. Kept only because
+ * its remaining consumers are section components deferred to later milestones.
+ */
 export function FadeIn({ delay = 0, y = 16, children, ...props }: FadeInProps) {
   const reduce = useReducedMotion();
   return (
-    <motion.div
+    <m.div
       initial={reduce ? false : { opacity: 0, y }}
       whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ ...transition.slow, delay }}
+      viewport={viewportOnce}
+      transition={{ ...tokens.enter, delay }}
       {...props}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

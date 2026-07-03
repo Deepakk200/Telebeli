@@ -1,21 +1,17 @@
 "use client";
 
 import { ArrowUp } from "lucide-react";
-import { motion, useMotionValueEvent, useTransform } from "motion/react";
+import { motion, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import { useState } from "react";
-import { useScrollProgress } from "@/providers/scroll-progress";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/lib/utils";
 
 const RADIUS = 15;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-/**
- * Back-to-top button whose ring reflects page progress. Reads the SHARED
- * scroll value from ScrollProgressProvider (no own useScroll/useSpring).
- */
+/** Back-to-top button whose ring reflects page progress. */
 export function BackToTop() {
-  const progress = useScrollProgress();
+  const { scrollYProgress: progress } = useScroll();
   const reduced = usePrefersReducedMotion();
   const [visible, setVisible] = useState(false);
 

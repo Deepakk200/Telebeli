@@ -6,8 +6,127 @@ import {
   ShieldCheck,
   Workflow,
   BarChart3,
+  LayoutDashboard,
+  MessagesSquare,
+  Rocket,
+  TrendingUp,
   Gauge,
+  Repeat2,
+  EyeOff,
+  PhoneMissed,
+  Scale,
+  Bot,
+  CircleAlert,
+  UserRound,
+  Lock,
+  Globe,
+  ScrollText,
+  KeyRound,
 } from "lucide-react";
+
+import type { CallRecord, Kpi } from "@/services/dashboard";
+import { bookDemoHref } from "@/config/site";
+
+export type HeroProofMetric = {
+  /** Verified, sourced display value (e.g. "99.98%"). null = not yet defensible → omitted from the strip. */
+  value: string | null;
+  label: string;
+};
+
+// Approved landing copy (landing-page-approved.png). The eyebrow renders
+// uppercase via the pill styling; line2 carries the blue→violet gradient accent.
+export const hero = {
+  eyebrow: "AI Voice Agents for Modern Businesses",
+  headline: {
+    line1: "Your AI Calling Agent,",
+    line2: "Fully Set Up For Your Business",
+  },
+  subhead:
+    "Telebeli builds and configures your complete voice AI calling system using Twilio and OpenAI — from infrastructure to personalized dashboards.",
+  primaryCta: { label: "Book a Demo", href: bookDemoHref },
+  secondaryCta: { label: "See How It Works", href: "/#how-it-works" },
+};
+
+// Trust row under the hero CTAs (approved image): recognized infrastructure and
+// a security signal. `mark` selects the inline SVG drawn in the hero badge row.
+export type HeroTrustBadge = { mark: "openai" | "twilio" | "shield"; lead: string; name: string };
+export const heroTrustBadges: HeroTrustBadge[] = [
+  { mark: "openai", lead: "Powered by", name: "OpenAI" },
+  { mark: "twilio", lead: "Built on", name: "Twilio" },
+  { mark: "shield", lead: "Enterprise", name: "Grade Security" },
+];
+
+// Four-up feature strip beneath the hero (landing-page-approved.png; copy
+// confirmed by telebeli-poster-*). Exactly four, in this order — do not add/remove.
+export const heroFeatures: { icon: LucideIcon; title: string; description: string }[] = [
+  {
+    icon: Rocket,
+    title: "Done-for-you Setup",
+    description: "We handle everything from infrastructure to deployment.",
+  },
+  {
+    icon: MessagesSquare,
+    title: "AI-Powered Conversations",
+    description: "Natural, human-like interactions using OpenAI.",
+  },
+  {
+    icon: LayoutDashboard,
+    title: "Custom Dashboards",
+    description: "Personalized dashboards built around your business.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Real Results",
+    description: "More leads, more bookings, more revenue.",
+  },
+];
+
+// Synthetic data for the hero's product glimpse. Mirrors the dashboard's own
+// sample values (services/dashboard.ts) so the promise and the product agree
+// on-screen; visibly labeled "Synthetic data" in the UI.
+export const heroPreviewKpis: Kpi[] = [
+  { label: "Calls today", value: 4996, delta: 12.4 },
+  { label: "Resolution rate", value: 87.2, decimals: 1, suffix: "%", delta: 3.1 },
+];
+
+export const heroPreviewLiveCall = {
+  contact: "Priya N.",
+  line: "Inbound · Support line",
+  elapsed: "1:42",
+};
+
+export const heroPreviewCalls: CallRecord[] = [
+  {
+    id: "CALL-3182",
+    contact: "Ava Thompson",
+    direction: "inbound",
+    status: "resolved",
+    durationSec: 154,
+    latencyMs: 121,
+    language: "English",
+    startedAt: "2026-07-02T08:12:00Z",
+  },
+  {
+    id: "CALL-3181",
+    contact: "Diego Marin",
+    direction: "outbound",
+    status: "resolved",
+    durationSec: 98,
+    latencyMs: 117,
+    language: "Spanish",
+    startedAt: "2026-07-02T08:05:00Z",
+  },
+  {
+    id: "CALL-3179",
+    contact: "Elena Rossi",
+    direction: "inbound",
+    status: "transferred",
+    durationSec: 233,
+    latencyMs: 132,
+    language: "English",
+    startedAt: "2026-07-02T07:58:00Z",
+  },
+];
 
 export type Feature = {
   icon: LucideIcon;
@@ -60,6 +179,68 @@ export const features: Feature[] = [
   },
 ];
 
+// The four scars (03-copywriting · 04): name the fear before the feature.
+// Empathetic and specific; never names competitors — the mirror does the work.
+export type ProblemScar = {
+  icon: LucideIcon;
+  claim: string;
+  consequence: string;
+};
+
+export const problemScars: ProblemScar[] = [
+  {
+    icon: Repeat2,
+    claim: "It breaks off-script.",
+    consequence:
+      "One unexpected question and the agent loops back to a canned line. You find out when a customer complains.",
+  },
+  {
+    icon: EyeOff,
+    claim: "It's a black box.",
+    consequence:
+      "Once it's live on your lines, you can't see what it's saying. You're asked to trust a system you can't inspect.",
+  },
+  {
+    icon: PhoneMissed,
+    claim: "It strands your hardest callers.",
+    consequence:
+      "When AI hits its limit, most platforms treat the handoff as an afterthought — so the highest-stakes calls end worst.",
+  },
+  {
+    icon: Scale,
+    claim: "It forces a bad trade-off.",
+    consequence:
+      "Build it yourself, outgrow a no-code tool, or sign a six-month managed contract. Enterprise and self-serve shouldn't be a choice.",
+  },
+];
+
+// The three-node handoff flow (07 · 06): AI handling → reaches its limit →
+// human with full context. The last node is the point.
+export type HandoffStep = {
+  icon: LucideIcon;
+  label: string;
+  detail: string;
+};
+
+export const handoffSteps: HandoffStep[] = [
+  {
+    icon: Bot,
+    label: "AI handling",
+    detail: "Routine calls resolved end to end — bookings, changes, questions.",
+  },
+  {
+    icon: CircleAlert,
+    label: "Reaches its limit",
+    detail: "A sensitive intent, an escalation rule, or a caller who needs a person.",
+  },
+  {
+    icon: UserRound,
+    label: "Human, full context attached",
+    detail:
+      "Full transcript and detected intent handed over — the caller never repeats themselves.",
+  },
+];
+
 export type Step = {
   number: string;
   title: string;
@@ -103,6 +284,70 @@ export const metrics: Metric[] = [
   { value: 20, suffix: "+", label: "Concurrent calls on the free tier" }, // [verify]
   { value: 1, prefix: "<", suffix: " day", label: "Self-serve to live" }, // [verify]
 ];
+
+// ─── Security & compliance (07 · 08) ───────────────────────────────────────
+// INTEGRITY: set real, verified status before launch — do NOT claim a
+// certification not held. "aligned" is the conservative truthful default and
+// never renders as a held certification. Flip a level to "certified" only
+// when the certificate exists (master-plan open question #2).
+export type ComplianceEntry = {
+  framework: string;
+  level: "certified" | "in_progress" | "aligned";
+  /** Shown when level === "aligned" — conservative truthful phrasing. */
+  alignedLabel: string;
+};
+
+export const complianceStatus: ComplianceEntry[] = [
+  { framework: "SOC 2 Type II", level: "aligned", alignedLabel: "SOC 2-aligned controls" },
+  { framework: "HIPAA", level: "aligned", alignedLabel: "HIPAA-ready controls" },
+  { framework: "GDPR", level: "aligned", alignedLabel: "GDPR-ready processes" },
+];
+
+export function complianceLabel(entry: ComplianceEntry): string {
+  if (entry.level === "certified") return entry.framework;
+  if (entry.level === "in_progress") return `${entry.framework} — in progress`;
+  return entry.alignedLabel;
+}
+
+export type SecurityAttribute = {
+  icon: LucideIcon;
+  label: string;
+  detail: string;
+};
+
+export const securityAttributes: SecurityAttribute[] = [
+  { icon: Lock, label: "Encryption", detail: "In transit and at rest, always." },
+  { icon: Globe, label: "Data residency", detail: "Regional storage and retention controls." },
+  { icon: ScrollText, label: "Audit logs", detail: "Every conversation and every access, logged." },
+  { icon: KeyRound, label: "Access controls", detail: "SSO, granular roles, least privilege." },
+];
+
+// ─── Enterprise + self-serve (07 · 09) ─────────────────────────────────────
+export const enterpriseSelfServe = {
+  enterprise: {
+    title: "Enterprise-grade",
+    items: [
+      "SOC 2 / HIPAA-class controls and audit logs",
+      "Scales to thousands of concurrent calls",
+      "SLA, SSO, and dedicated capacity options",
+      "A solutions engineer when you need one",
+    ],
+  },
+  selfServe: {
+    title: "Live in days",
+    items: [
+      "Deploy self-serve — no six-month engagement",
+      "Transparent per-minute pricing, no sales gate",
+      "Port a number or bring your SIP trunk",
+      "Test in the console before going live",
+    ],
+  },
+};
+
+// Self-serve CTA destination. Set the real signup/waitlist URL when it exists
+// (master-plan open question #3) — do NOT fabricate a signup flow. Until then
+// it honestly points at the drivable demo dashboard.
+export const selfServeCta = { label: "Explore the dashboard", href: "/dashboard" };
 
 export type PricingTier = {
   name: string;

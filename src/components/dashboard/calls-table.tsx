@@ -12,13 +12,25 @@ import { formatDuration } from "@/lib/format";
 import { getRecentCalls, type CallRecord } from "@/services/dashboard";
 import { surface } from "@/lib/surface";
 
-const statusStyles: Record<CallRecord["status"], string> = {
-  resolved: "bg-emerald-500/12 text-emerald-600 dark:text-emerald-400",
-  transferred: "bg-brand/12 text-brand",
+/**
+ * The marketing live view widens status with "resolving" (an in-progress call);
+ * dashboard CallRecords are a structural subset, so both surfaces share these
+ * columns — one source of truth.
+ */
+export type LiveCallRecord = Omit<CallRecord, "status"> & {
+  status: CallRecord["status"] | "resolving";
+};
+
+// Semantic tokens only. Amber --live is reserved for in-progress calls;
+// text falls back to foreground where the tint color can't hold AA in light.
+export const statusStyles: Record<LiveCallRecord["status"], string> = {
+  resolving: "bg-live/15 text-foreground",
+  resolved: "bg-success/12 text-success",
+  transferred: "bg-brand-accent/15 text-foreground dark:text-brand-accent",
   missed: "bg-destructive/12 text-destructive",
 };
 
-export const callColumns: ColumnDef<CallRecord>[] = [
+export const callColumns: ColumnDef<LiveCallRecord>[] = [
   {
     accessorKey: "contact",
     header: "Contact",
@@ -40,14 +52,20 @@ export const callColumns: ColumnDef<CallRecord>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ getValue }) => {
-      const status = getValue<CallRecord["status"]>();
+      const status = getValue<LiveCallRecord["status"]>();
       return (
         <span
           className={cn(
-            "inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize",
+            "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium capitalize transition-colors duration-[var(--dur-base)]",
             statusStyles[status],
           )}
         >
+          {status === "resolving" ? (
+            <span aria-hidden className="relative flex size-1.5">
+              <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-live" />
+              <span className="relative inline-flex size-1.5 rounded-full bg-live" />
+            </span>
+          ) : null}
           {status}
         </span>
       );

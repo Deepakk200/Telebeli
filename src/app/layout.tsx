@@ -1,13 +1,59 @@
 import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Preloader } from "@/components/common/preloader";
-import { RouteProgress } from "@/components/common/route-progress";
 import { Providers } from "@/providers";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
+
+/* Tri-voice type system, self-hosted latin variable fonts (visual-identity-v2 §1).
+   TODO(type): named-direction stand-ins until licensed faces are procured —
+   Source Serif 4 ≈ Signifier/Tiempos class, Instrument Sans ≈ Söhne/Diatype
+   class, JetBrains Mono ≈ Berkeley Mono class. Swap the files, keep the wiring. */
+const serif = localFont({
+  src: "../fonts/source-serif-4-latin.woff2",
+  variable: "--font-serif-face",
+  weight: "200 900",
+  display: "swap",
+  preload: false, // superseded as the hero LCP face by the geometric display font
+  fallback: ["Georgia", "Times New Roman", "serif"],
+  adjustFontFallback: "Times New Roman",
+});
+const sans = localFont({
+  src: "../fonts/instrument-sans-latin.woff2",
+  variable: "--font-sans-face",
+  weight: "400 700",
+  display: "swap",
+  preload: true, // body voice
+  fallback: ["system-ui", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
+  adjustFontFallback: "Arial",
+});
+const mono = localFont({
+  src: "../fonts/jetbrains-mono-latin.woff2",
+  variable: "--font-mono-face",
+  weight: "100 800",
+  display: "swap",
+  preload: false, // evidence voice — below the fold, never render-critical
+  fallback: ["ui-monospace", "Consolas", "monospace"],
+  adjustFontFallback: false,
+});
+/* Marketing display voice — rounded geometric (Poppins), self-hosted, latin
+   subset. The approved landing image (docs/design-assets/landing-page-approved.png)
+   is the authority for marketing type and makes this the heading face, superseding
+   the editorial serif on the marketing surface per the implementation authority
+   rules (approved image > older type docs). It is the hero-headline LCP face, so
+   it — not the serif — is preloaded. */
+const display = localFont({
+  src: [
+    { path: "../fonts/poppins-latin-600.woff2", weight: "600", style: "normal" },
+    { path: "../fonts/poppins-latin-700.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-display-face",
+  display: "swap",
+  preload: true, // marketing hero headline (LCP) is set in this face
+  fallback: ["ui-rounded", "Segoe UI", "system-ui", "Arial", "sans-serif"],
+  adjustFontFallback: "Arial",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -46,11 +92,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${GeistSans.variable} ${GeistMono.variable} h-full antialiased`}
+      className={`${display.variable} ${serif.variable} ${sans.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
-        <Preloader />
-        <RouteProgress />
         <Providers>{children}</Providers>
         {process.env.VERCEL ? (
           <>
