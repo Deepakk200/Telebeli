@@ -38,7 +38,7 @@ export function Handoff() {
         <SectionHeading
           eyebrow="Graceful handoff"
           title="The calls AI shouldn't finish, it hands off — cleanly."
-          description="When a call needs a person, TeleBeli transfers it with the full transcript and detected intent already attached. Your team picks up in context, not from scratch. No caller repeats themselves. No one is stranded."
+          description="When a call needs a person, Telebeli transfers it with the full transcript and detected intent already attached. Your team picks up in context, not from scratch. No caller repeats themselves. No one is stranded."
         />
 
         <motion.div

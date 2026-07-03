@@ -480,6 +480,29 @@
   animation: pulse-ring 2.6s var(--ease-out-expo) infinite;
 }
 
+/* Trust marquee (P14): calm left→right drift. The track holds two identical
+   halves; translating from -50% to 0 lands on an identical frame every cycle,
+   so the loop has no visible seam or reset. Pace is tunable via
+   --marquee-duration. Motion is disabled under reduced motion (the animated
+   track is display:none there; a static lockup renders instead). */
+@keyframes marquee {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+.marquee-track {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+  will-change: transform;
+}
+/* Symmetric edge fade so wordmarks ease in and out and the loop seam is hidden. */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

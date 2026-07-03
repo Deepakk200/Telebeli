@@ -1,17 +1,19 @@
+import type { ReactNode } from "react";
 import type { Organization, SoftwareApplication } from "schema-dts";
 import { Hero } from "@/components/landing/hero";
 import { Features } from "@/components/landing/features";
-import { Logos } from "@/components/landing/logos";
-import { ProductOverview } from "@/components/landing/product-overview";
-import { PlatformCapabilities } from "@/components/landing/platform-capabilities";
-import { LiveConsole } from "@/components/landing/live-console";
 import { Problem } from "@/components/landing/problem";
+import { LiveConsole } from "@/components/landing/live-console";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { Integrations } from "@/components/landing/integrations";
-import { SecuritySection } from "@/components/landing/security-section";
-import { Industries } from "@/components/landing/industries";
-import { Reliability } from "@/components/landing/reliability";
+import { ProductOverview } from "@/components/landing/product-overview";
+import { PlatformCapabilities } from "@/components/landing/platform-capabilities";
+import { Handoff } from "@/components/landing/handoff";
 import { Metrics } from "@/components/landing/metrics";
+import { Reliability } from "@/components/landing/reliability";
+import { Industries } from "@/components/landing/industries";
+import { Logos } from "@/components/landing/logos";
+import { SecuritySection } from "@/components/landing/security-section";
 import { Faq } from "@/components/landing/faq";
 import { Cta } from "@/components/landing/cta";
 import { SectionHeading } from "@/components/landing/section-heading";
@@ -41,31 +43,39 @@ const application: SoftwareApplication = {
 };
 
 /**
- * Marketing page (RSC). Composes the Milestone 1–3 sections in the canonical
- * narrative order — the section headings, read top to bottom, tell the Telebeli
- * story (calm, rising conviction). Exactly one <h1> (the hero); every section
- * contributes an ordered <h2> via SectionHeading. The footer lives in the
- * marketing layout (not here); the JSON-LD below is the SEO foundation.
+ * Marketing page (RSC). Sections are composed in the narrative-spine order
+ * (telebeli-website-story.md / standing working agreement): the headings, read
+ * top to bottom, tell the whole story. Exactly one <h1> (the hero); every
+ * section contributes an ordered <h2>. The footer lives in the marketing layout.
  *
- * Rhythm (E04): every section carries py-[--spacing-section]; register
- * alternates airy (hero, overview, industries) ↔ dense (console, metrics,
- * FAQ) so the page breathes. The closing CTA — the one major narrative beat —
- * gets extra pure whitespace via SectionBreak (no decorative dividers;
- * whitespace separates, per spec §0).
+ * Rhythm & cadence (E04 + P04): every section owns its own
+ * py-[--spacing-section] — Band never adds vertical gap, it only tints. Adjacent
+ * narrative beats separate by *tone* (ambient ↔ muted), never by dividers, so
+ * the page reads as one continuous story. One SectionBreak marks the single
+ * major transition into the closing CTA.
+ *
+ * Pending spine slots (their own prompts; data already staged in
+ * constants/landing.ts): "AI vs Human" (P05 — humanVsAgent) sits after the live
+ * call; "Call scoring" (P11) sits after operational visibility. HowItWorks is
+ * rebuilt around `systemFlow` in P06.
  */
-function SectionBreak() {
-  return <div aria-hidden className="h-[var(--spacing-section-major)]" />;
+function Band({ tone = "base", children }: { tone?: "base" | "muted"; children: ReactNode }) {
+  return <div className={tone === "muted" ? "bg-muted/30" : undefined}>{children}</div>;
 }
 
 export default function HomePage() {
   return (
     <>
+      {/* Beat 0 — Hero + approved value strip (hero region). */}
       <Hero />
       <Features />
-      <Logos />
-      <ProductOverview />
-      <PlatformCapabilities />
-      {/* Workflow beat — RSC section wrapper; only the console island is client JS. */}
+
+      {/* Beat 1 — the wound. */}
+      <Band tone="muted">
+        <Problem />
+      </Band>
+
+      {/* Beat 2 — proof: watch a real call resolve, then hand off. */}
       <section id="workflow" className="container-page scroll-mt-24 py-[var(--spacing-section)]">
         <SectionHeading
           eyebrow="SEE IT WORK"
@@ -76,17 +86,49 @@ export default function HomePage() {
           <LiveConsole />
         </div>
       </section>
-      <Problem />
-      <HowItWorks />
-      <Integrations />
-      <SecuritySection />
-      <Industries />
-      {/* Customer-benefits beat: benefits, then reliability-by-design. */}
+
+      {/* Beat 3 — AI vs Human (why this over hiring). PENDING P05; humanVsAgent
+          data is ready in constants/landing.ts. */}
+
+      {/* Beat 4 — how it works: the connected system. P06 rebuilds this around
+          `systemFlow`; HowItWorks + Integrations carry it until then. */}
+      <Band tone="muted">
+        <HowItWorks />
+        <Integrations />
+      </Band>
+
+      {/* Beat 5 — operational visibility (the live product). */}
+      <ProductOverview />
+      <PlatformCapabilities />
+
+      {/* Beat 6 — call scoring (accountability). PENDING P11. */}
+
+      {/* Beat 7 — human handoff. Handoff self-tints (bg-muted/20), so it is its
+          own tonal beat between two base regions — no Band wrapper. */}
+      <Handoff />
+
+      {/* Beat 8 — business outcomes + reliability. */}
       <Metrics />
       <Reliability />
-      <Faq />
-      <SectionBreak />
+
+      {/* Beat 9 — trust & legitimacy: Sagenex / industries. */}
+      <Band tone="muted">
+        <Industries />
+        <Logos />
+      </Band>
+
+      {/* Beat 10 — security & candor. */}
+      <SecuritySection />
+
+      {/* Beat 11 — FAQ. */}
+      <Band tone="muted">
+        <Faq />
+      </Band>
+
+      {/* Beat 12 — the invitation (single major transition into the ask). */}
+      <div aria-hidden className="h-[var(--spacing-section-major)]" />
       <Cta />
+
       <ChatFAB />
       <JsonLd data={organization} />
       <JsonLd data={application} />

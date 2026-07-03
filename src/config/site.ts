@@ -32,6 +32,7 @@ export const mainNav = [
   { title: "Platform", href: "/#capabilities" },
   { title: "Solutions", href: "/#solutions", hasMenu: true },
   { title: "How It Works", href: "/#lifecycle" },
+  { title: "Industries", href: "/#industries" },
   { title: "Resources", href: "/#faq", hasMenu: true },
 ] as const;
 

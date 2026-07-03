@@ -526,7 +526,7 @@ export const steps: Step[] = [
     number: "03",
     title: "Go live in a day",
     description:
-      "Port a number or connect your SIP trunk. TeleBeli scales from one call to fifty thousand concurrent, automatically.",
+      "Port a number or connect your SIP trunk. Telebeli scales from one call to fifty thousand concurrent, automatically.",
   },
 ];
 
@@ -611,6 +611,94 @@ export const industries: Industry[] = [
   { icon: Landmark, name: "Finance", useCase: "Collections and account servicing, with full audit logs." },
 ];
 
+// P05 — AI vs Human (spine beat "why this over hiring"). Echoes whyvshuman.png
+// in outcome language: coverage, cost to scale, consistency, ramp time — and
+// stays candid (humans keep the judgement calls; Telebeli hands those back with
+// context). Each cell ≤ ~60 chars so the comparison holds at every width.
+export type HumanVsAgentRow = { dimension: string; human: string; telebeli: string };
+
+export const humanVsAgent = {
+  eyebrow: "AI vs Human",
+  title: "Cover every call without hiring for every one.",
+  description:
+    "Telebeli handles the volume and the repetition, so your team spends its hours on the calls that actually need a person.",
+  columns: { human: "A hired team", telebeli: "Telebeli" },
+  rows: [
+    {
+      dimension: "Availability",
+      human: "Business hours, limited by shifts and sick days",
+      telebeli: "Every hour, every day — nights, weekends, holidays",
+    },
+    {
+      dimension: "Calls at once",
+      human: "One per person; the rest wait or drop",
+      telebeli: "Thousands at the same time, no queue",
+    },
+    {
+      dimension: "Time to ramp",
+      human: "Weeks of hiring and training per agent",
+      telebeli: "Live in a day, no onboarding class",
+    },
+    {
+      dimension: "Consistency",
+      human: "Varies by person, mood, and day",
+      telebeli: "The same calm, on-script call every time",
+    },
+    {
+      dimension: "Cost to scale",
+      human: "Every added call is another salary",
+      telebeli: "Add capacity without adding headcount",
+    },
+    {
+      dimension: "The hard calls",
+      human: "Judgement and empathy — the human's strength",
+      telebeli: "Handed to your team with full context attached",
+    },
+  ] satisfies HumanVsAgentRow[],
+  footnote:
+    "Telebeli doesn't replace your team. It makes the busy hours survivable and hands the calls that need a person straight back, with context.",
+};
+
+// P06 — How Telebeli works (spine beat "the connected system"). Echoes
+// system-design.png but described in outcomes, not plumbing: a call is answered,
+// understood, acted on, and recorded as one flow the owner never has to manage.
+export type SystemNode = { icon: LucideIcon; title: string; description: string };
+
+export const systemFlow = {
+  eyebrow: "How Telebeli works",
+  title: "One connected system, from the first ring to resolution.",
+  description:
+    "Your number, carrier-grade telephony, and voice models work as one — so every call is answered, understood, acted on, and recorded automatically.",
+  nodes: [
+    {
+      icon: PhoneIncoming,
+      title: "Your customer calls",
+      description: "Inbound or outbound on your own number — nothing changes for the caller.",
+    },
+    {
+      icon: PhoneForwarded,
+      title: "The call connects instantly",
+      description: "Carrier-grade telephony from Twilio picks up on the first ring, every time.",
+    },
+    {
+      icon: BrainCircuit,
+      title: "Telebeli understands and speaks",
+      description: "Voice models answer naturally in the caller's language, without the robotic gap.",
+    },
+    {
+      icon: Workflow,
+      title: "It acts in your tools",
+      description: "Books, updates, and looks up in your CRM and systems mid-conversation.",
+    },
+    {
+      icon: BarChart3,
+      title: "Every call is recorded and scored",
+      description: "Captured, transcribed, and scored automatically — visible on your dashboard.",
+    },
+  ] satisfies SystemNode[],
+  footnote: "Built on Twilio and OpenAI — the same infrastructure enterprises already trust.",
+};
+
 // ─── Enterprise + self-serve (07 · 09) ─────────────────────────────────────
 export const enterpriseSelfServe = {
   enterprise: {
@@ -654,42 +742,63 @@ export const finalCta = {
   },
 };
 
+// P14 — Trust marquee. Two real entities only, framed honestly (brand playbook
+// candor): Sagenex is Telebeli's parent (backing, never a customer); Ecoleaf is
+// a customer. Rendered as text wordmarks — no logo asset is fabricated. `href`
+// is optional; omitted until official destination URLs exist (no dead links).
+export type TrustEntity = {
+  name: string;
+  kind: "backing" | "customer";
+  /** Short, honest relationship tag shown beside the wordmark. */
+  label: string;
+  href?: string;
+};
+
+export const trust = {
+  eyebrow: "Backed by Sagenex Group",
+  title: "Institutional backing, and an operator already putting it to work.",
+  entities: [
+    { name: "Sagenex", kind: "backing", label: "Backing" },
+    { name: "Ecoleaf", kind: "customer", label: "Customer" },
+  ] satisfies TrustEntity[],
+};
+
 export type Faq = { question: string; answer: string };
 
 export const faqs: Faq[] = [
   {
-    question: "What happens when a call is too complex for AI?",
+    question: "Will it capture leads after hours?",
     answer:
-      "You define the escalation rules. When the agent hits them — an angry caller, a request outside scope, a compliance trigger — it warm-transfers to a live rep and passes the full transcript and detected intent so the human starts informed.",
+      "Yes. Every call is answered on the first ring — nights, weekends, and holidays — and the agent asks your qualifying questions and records the answers, so an after-hours caller becomes a structured lead in your CRM instead of a missed call.",
   },
   {
-    question: "How do you stay reliable at high call volume?",
+    question: "What happens to my hard calls?",
     answer:
-      "Reliability is the product. Calls are load-tested for long-duration stability and high concurrency, every call is scored automatically, and failures surface on your dashboard in real time — so quiet degradation gets caught before customers feel it, not after.",
+      "You define the escalation rules. When the agent hits them — an upset caller, a request outside scope, a compliance trigger — it warm-transfers to a person and hands over the full transcript and detected intent, so your team starts informed and the caller never repeats themselves.",
   },
   {
-    question: "Is it secure and compliant?",
+    question: "How do I know the calls are any good — and stay good?",
     answer:
-      "Yes. Data is encrypted in transit and at rest, PII is redacted before storage, retention is configurable per workspace, and every call and access is logged, with SSO and role-based access. SOC 2 Type II is in progress and HIPAA with a BAA is available for enterprise pilots — we won't claim a certification before it's attestable.",
+      "Every call is scored automatically against your rubric, and the results surface on your dashboard in real time. If quality slips, you see it before your customers do — not weeks later in a complaint.",
   },
   {
     question: "How fast can we go live?",
     answer:
-      "Most teams ship a production agent within a day. Describe the task, connect your knowledge base and tools, test in the console, then port a number or connect your SIP trunk.",
+      "Most teams are live within a day. Describe the job in plain language, connect your knowledge base and tools, test it in the console, then port a number or connect your SIP trunk.",
   },
   {
-    question: "Which telephony and CRM systems does it integrate with?",
+    question: "Will it work with the tools we already use?",
     answer:
-      "Bring your own carrier over SIP, or port numbers directly. Native actions cover Salesforce, HubSpot, and Zendesk, and any REST API can be wired as a tool the agent calls mid-conversation.",
+      "Yes. Bring your own carrier over SIP or port numbers directly, with native actions for Salesforce, HubSpot, and Zendesk — and any other system reachable over a REST API can be wired in as a tool the agent uses mid-call.",
   },
   {
-    question: "How natural does the agent actually sound?",
+    question: "Can I put this in front of our compliance team?",
     answer:
-      "Natural enough that callers stay on task: it handles interruptions, backchannels (\"mm-hmm\"), and mid-sentence corrections without the robotic gap. We treat voice quality as table stakes, not the headline.",
+      "Data is encrypted in transit and at rest, PII is redacted before storage, retention is configurable per workspace, and every call and access is logged, with SSO and role-based access. SOC 2 Type II is in progress and HIPAA with a BAA is available for enterprise pilots — we won't claim a certification before it's attestable.",
   },
   {
     question: "Who's behind Telebeli?",
     answer:
-      "Telebeli is an initiative of Sagenex Group, built for operations that can't fail quietly. It's engineered on OpenAI and Twilio, with the accountability layer — watch, score, and prove — built in rather than bolted on.",
+      "Telebeli is an initiative of Sagenex Group, built for operations that can't fail quietly. It runs on OpenAI and Twilio, with the accountability layer — watch, score, and prove — built in rather than bolted on.",
   },
 ];
