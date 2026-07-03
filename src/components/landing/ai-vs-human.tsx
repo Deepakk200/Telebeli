@@ -51,11 +51,11 @@ export function AiVsHuman() {
         description="Telebeli is built to talk, listen, capture details, and pass the right work to your team - so your website story moves from promise to operation."
       />
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(20rem,0.82fr)_minmax(0,1fr)] lg:items-stretch">
+      <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(20rem,0.82fr)_minmax(0,1fr)] lg:items-start">
         <Reveal
           className={cn(
             surface({ elevation: "elevated" }),
-            "relative isolate min-h-[28rem] overflow-hidden p-5 sm:min-h-[31rem] sm:p-6",
+            "relative isolate overflow-hidden p-4 sm:p-6 lg:min-h-[31rem]",
           )}
         >
           <div
@@ -94,11 +94,11 @@ export function AiVsHuman() {
               height={900}
               sizes="(min-width: 1024px) 360px, 78vw"
               priority={false}
-              className="h-auto w-[min(82%,20rem)] object-contain drop-shadow-[0_24px_42px_rgba(68,56,190,0.22)]"
+              className="h-auto w-[min(76%,18rem)] object-contain drop-shadow-[0_24px_42px_rgba(68,56,190,0.22)] sm:w-[min(82%,20rem)]"
             />
           </div>
 
-          <div className="relative z-10 mt-5 grid gap-2 text-xs leading-relaxed text-foreground">
+          <div className="relative z-10 mt-4 grid gap-2 text-xs leading-relaxed text-foreground">
             {speechBubbles.map((bubble, index) => (
               <Reveal
                 key={bubble}
@@ -114,7 +114,7 @@ export function AiVsHuman() {
           </div>
         </Reveal>
 
-        <div className={cn(surface(), "flex flex-col p-5 sm:p-6 lg:p-7")}>
+        <div className={cn(surface(), "flex flex-col p-4 sm:p-6 lg:p-7")}>
           <p className="text-label uppercase text-accent">What I do on every call</p>
           <h3 className="mt-3 max-w-2xl text-2xl font-semibold tracking-normal text-foreground sm:text-3xl">
             A functional assistant, not a static chatbot.
@@ -124,23 +124,27 @@ export function AiVsHuman() {
             useful actions, and clean handoff. Each call becomes something your business can act on.
           </p>
 
-          <div className="mt-7 grid gap-3 sm:grid-cols-2">
+          <div className="mt-6 grid grid-cols-2 gap-2 sm:gap-3">
             {robotCapabilities.map((item, index) => (
               <Reveal
                 key={item.title}
                 delay={Math.min(index, STAGGER_CAP) * STAGGER_STEP}
-                className="rounded-lg border border-border bg-card/70 p-4 transition-colors duration-[var(--dur-fast)] hover:bg-accent-wash/40 motion-reduce:transition-none"
+                className="rounded-lg border border-border bg-card/70 p-3 transition-colors duration-[var(--dur-fast)] hover:bg-accent-wash/40 sm:p-4 motion-reduce:transition-none"
               >
-                <span className="flex size-10 items-center justify-center rounded-lg bg-accent-wash text-accent">
-                  <item.icon className="size-5" aria-hidden />
+                <span className="flex size-8 items-center justify-center rounded-lg bg-accent-wash text-accent sm:size-10">
+                  <item.icon className="size-4 sm:size-5" aria-hidden />
                 </span>
-                <h4 className="mt-4 text-base font-semibold text-foreground">{item.title}</h4>
-                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{item.description}</p>
+                <h4 className="mt-3 text-sm font-semibold leading-snug text-foreground sm:mt-4 sm:text-base">
+                  {item.title}
+                </h4>
+                <p className="mt-1.5 text-xs leading-relaxed text-ink-muted sm:mt-2 sm:text-sm">
+                  {item.description}
+                </p>
               </Reveal>
             ))}
           </div>
 
-          <div className="mt-6 rounded-lg border border-accent/20 bg-accent-wash/60 p-4">
+          <div className="mt-5 rounded-lg border border-accent/20 bg-accent-wash/60 p-3 sm:mt-6 sm:p-4">
             <div className="flex items-start gap-3">
               <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface text-accent">
                 <Languages className="size-4" aria-hidden />
