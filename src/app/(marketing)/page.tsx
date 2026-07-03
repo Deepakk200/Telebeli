@@ -4,6 +4,7 @@ import { Hero } from "@/components/landing/hero";
 import { Features } from "@/components/landing/features";
 import { Problem } from "@/components/landing/problem";
 import { LiveConsole } from "@/components/landing/live-console";
+import { AiVsHuman } from "@/components/landing/ai-vs-human";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { Integrations } from "@/components/landing/integrations";
 import { ProductOverview } from "@/components/landing/product-overview";
@@ -86,6 +87,8 @@ export default function HomePage() {
           <LiveConsole />
         </div>
       </section>
+
+      <AiVsHuman />
 
       {/* Beat 3 — AI vs Human (why this over hiring). PENDING P05; humanVsAgent
           data is ready in constants/landing.ts. */}

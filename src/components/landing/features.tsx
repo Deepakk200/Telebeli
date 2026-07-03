@@ -4,6 +4,8 @@ import { surface } from "@/lib/surface";
 import { cn } from "@/lib/utils";
 import { heroFeatures } from "@/constants/landing";
 
+const featureStats = ["01", "24/7", "Live", "ROI"];
+
 /**
  * Four-up feature strip (landing-page-approved.png). One elevated rounded card
  * lifted into the hero region, split into four equal cells by 1px dividers — a
@@ -21,23 +23,23 @@ export function Features() {
         role="list"
         className={cn(
           surface({ elevation: "elevated" }),
-          "grid grid-cols-1 gap-px overflow-hidden bg-border sm:grid-cols-2 lg:grid-cols-4",
+          "grid grid-cols-2 gap-px overflow-hidden bg-border md:grid-cols-4",
         )}
       >
-        {heroFeatures.map((feature) => (
+        {heroFeatures.map((feature, index) => (
           <StaggerItem
             role="listitem"
             key={feature.title}
             variants={fade}
-            className="flex h-full flex-col gap-4 bg-surface p-7 transition-colors duration-[var(--dur-fast)] hover:bg-accent-wash/30 motion-reduce:transition-none"
+            className="flex min-h-36 flex-col items-center justify-center bg-surface px-4 py-6 text-center transition-colors duration-[var(--dur-fast)] hover:bg-accent-wash/30 sm:min-h-40 sm:px-6 motion-reduce:transition-none"
           >
-            <span className="flex size-12 items-center justify-center rounded-lg bg-accent-wash text-accent">
-              <feature.icon className="size-5" aria-hidden />
+            <span className="font-mono text-2xl font-bold leading-none tracking-normal text-accent sm:text-3xl">
+              {featureStats[index]}
             </span>
-            <div>
-              <h3 className="text-base font-semibold text-foreground">{feature.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{feature.description}</p>
-            </div>
+            <h3 className="mt-3 text-sm font-semibold text-foreground sm:text-base">{feature.title}</h3>
+            <p className="mt-1.5 max-w-48 text-xs leading-relaxed text-ink-muted sm:text-sm">
+              {feature.description}
+            </p>
           </StaggerItem>
         ))}
       </Stagger>

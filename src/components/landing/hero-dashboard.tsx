@@ -58,17 +58,17 @@ function MockupChart() {
   const line =
     "M35,65 C58,65 58,76 81,76 C104,76 104,51 127,51 C150,51 149,32 172,32 C195,32 195,24 218,24 C241,24 241,70 264,70 C287,70 287,43 310,43";
   return (
-    <div className="flex flex-col rounded-md border border-border bg-surface p-3">
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-foreground">Call Analytics</span>
-        <span className="inline-flex items-center gap-1 rounded-md border border-border px-1.5 py-0.5 text-[9px] text-ink-muted">
+    <div className="flex flex-col rounded-md border border-border bg-surface p-[clamp(0.25rem,0.9vw,0.75rem)]">
+      <div className="flex min-w-0 items-center justify-between gap-1 [&>span:first-child]:truncate [&>span:first-child]:text-[1em]">
+        <span className="font-semibold text-foreground">Call Analytics</span>
+        <span className="inline-flex items-center gap-1 rounded-md border border-border px-[clamp(0.125rem,0.5vw,0.375rem)] py-0.5 text-[0.8em] text-ink-muted">
           This Week
-          <ChevronDown className="size-2.5" aria-hidden />
+          <ChevronDown className="size-[1em]" aria-hidden />
         </span>
       </div>
       <svg
         viewBox="0 0 320 145"
-        className="mt-2 w-full"
+        className="mt-[clamp(0.25rem,0.8vw,0.5rem)] w-full"
         role="img"
         aria-label="Illustrative weekly call analytics"
       >
@@ -126,24 +126,24 @@ const agents = [
 
 function TopAgents() {
   return (
-    <div className="flex flex-col gap-2 rounded-md border border-border bg-surface p-3">
-      <span className="text-xs font-semibold text-foreground">Top Performing Agents</span>
-      <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-[clamp(0.25rem,0.7vw,0.5rem)] rounded-md border border-border bg-surface p-[clamp(0.25rem,0.9vw,0.75rem)]">
+      <span className="font-semibold text-foreground">Top Performing Agents</span>
+      <div className="flex flex-col gap-[clamp(0.2rem,0.7vw,0.625rem)]">
         {agents.map((a) => (
           <div key={a.name} className="flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-accent-wash text-[8px] font-semibold text-accent">
+            <div className="flex items-center gap-[clamp(0.2rem,0.65vw,0.5rem)]">
+              <span className="flex size-[clamp(0.75rem,1.7vw,1.5rem)] shrink-0 items-center justify-center rounded-full bg-accent-wash text-[0.72em] font-semibold text-accent">
                 {a.initials}
               </span>
               <div className="min-w-0 flex-1 leading-tight">
                 <p className="truncate font-medium text-foreground">{a.name}</p>
-                <p className="text-[9px] text-ink-faint">{a.calls}</p>
+                <p className="text-[0.82em] text-ink-faint">{a.calls}</p>
               </div>
-              <span className="font-mono text-[10px] font-semibold tabular-nums text-foreground">
+              <span className="font-mono text-[0.9em] font-semibold tabular-nums text-foreground">
                 {a.pct}%
               </span>
             </div>
-            <div className="h-1.5 overflow-hidden rounded-full bg-sunken">
+            <div className="h-[clamp(0.125rem,0.42vw,0.375rem)] overflow-hidden rounded-full bg-sunken">
               <div className="h-full rounded-full bg-gradient-brand" style={{ width: `${a.pct}%` }} />
             </div>
           </div>
@@ -161,23 +161,23 @@ const waveform = [
 
 function CallSummary() {
   return (
-    <div className="flex flex-col gap-2 rounded-md border border-border bg-surface p-3">
-      <span className="text-xs font-semibold text-foreground">Call Summary</span>
-      <div className="flex items-center gap-2">
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-brand text-white">
-          <Play className="size-3.5 fill-current" aria-hidden />
+    <div className="flex flex-col gap-[clamp(0.25rem,0.7vw,0.5rem)] rounded-md border border-border bg-surface p-[clamp(0.25rem,0.9vw,0.75rem)]">
+      <span className="font-semibold text-foreground">Call Summary</span>
+      <div className="flex items-center gap-[clamp(0.2rem,0.65vw,0.5rem)]">
+        <span className="flex size-[clamp(1rem,2.3vw,2rem)] shrink-0 items-center justify-center rounded-full bg-gradient-brand text-white">
+          <Play className="size-[45%] fill-current" aria-hidden />
         </span>
-        <div aria-hidden className="flex h-8 flex-1 items-center justify-between">
+        <div aria-hidden className="flex h-[clamp(1rem,2.3vw,2rem)] flex-1 items-center justify-between">
           {waveform.map((h, i) => (
             <span
               key={i}
-              className="w-0.5 shrink-0 rounded-full bg-accent/50"
+              className="w-px shrink-0 rounded-full bg-accent/50"
               style={{ height: `${h}px` }}
             />
           ))}
         </div>
       </div>
-      <div className="flex justify-between font-mono text-[9px] tabular-nums text-ink-faint">
+      <div className="flex justify-between font-mono text-[0.82em] tabular-nums text-ink-faint">
         <span>02:45</span>
         <span>04:22</span>
       </div>
@@ -197,29 +197,29 @@ const recentCalls = [
 
 function RecentCalls() {
   return (
-    <div className="flex flex-col rounded-md border border-border bg-surface p-3">
-      <span className="text-xs font-semibold text-foreground">Recent Calls</span>
-      <ul className="mt-2 flex flex-col gap-2">
+    <div className="flex flex-col rounded-md border border-border bg-surface p-[clamp(0.25rem,0.9vw,0.75rem)]">
+      <span className="font-semibold text-foreground">Recent Calls</span>
+      <ul className="mt-[clamp(0.2rem,0.7vw,0.5rem)] flex flex-col gap-[clamp(0.18rem,0.55vw,0.5rem)]">
         {recentCalls.map((c) => (
-          <li key={c.number} className="flex items-center gap-2">
+          <li key={c.number} className="flex items-center gap-[clamp(0.18rem,0.55vw,0.5rem)]">
             <span
-              className={`flex size-6 shrink-0 items-center justify-center rounded-full ${
+              className={`flex size-[clamp(0.7rem,1.7vw,1.5rem)] shrink-0 items-center justify-center rounded-full ${
                 c.ok ? "bg-success/15 text-success" : "bg-destructive/15 text-destructive"
               }`}
             >
-              <Phone className="size-3" aria-hidden />
+              <Phone className="size-[50%]" aria-hidden />
             </span>
             <div className="min-w-0 flex-1 leading-tight">
-              <p className="truncate font-mono text-[10px] font-medium text-foreground">
+              <p className="truncate font-mono text-[0.9em] font-medium text-foreground">
                 {c.number}
               </p>
-              <p className="text-[9px] text-ink-faint">
+              <p className="truncate text-[0.82em] text-ink-faint">
                 {c.time} · {c.dur}
               </p>
             </div>
             <Badge
               variant={c.ok ? "resolved" : "flag"}
-              className="h-auto shrink-0 px-1.5 py-0.5 text-[9px]"
+              className="h-auto shrink-0 px-[clamp(0.1rem,0.45vw,0.375rem)] py-0.5 text-[0.78em]"
             >
               {c.status}
             </Badge>
@@ -259,32 +259,32 @@ function CallWidget() {
       style={{
         backgroundImage: "linear-gradient(140deg, oklch(0.42 0.17 268), oklch(0.4 0.2 302))",
       }}
-      className="mx-auto mt-3 w-[210px] rounded-xl p-3 text-white shadow-floating ring-1 ring-white/10 sm:absolute sm:bottom-4 sm:right-4 sm:mt-0 sm:w-52"
+      className="absolute bottom-[clamp(-5.25rem,-2.7vw,-0.95rem)] right-[clamp(-1.75rem,-3.2vw,-0.55rem)] w-[clamp(6.35rem,18%,10.25rem)] rounded-xl p-[clamp(0.28rem,0.72vw,0.6rem)] text-[clamp(0.26rem,0.52vw,0.5rem)] text-white shadow-floating ring-1 ring-white/10"
     >
       <div className="flex items-center justify-between">
         <span className="text-[11px] font-medium">AI Agent Calling…</span>
-        <ChevronDown className="size-3.5 text-white/70" aria-hidden />
+        <ChevronDown className="size-[1.2em] text-white/70" aria-hidden />
       </div>
-      <p className="mt-1.5 font-mono text-sm font-semibold tracking-tight">+1 (555) 123-4567</p>
-      <p className="font-mono text-[11px] text-white/70">04:12</p>
-      <div aria-hidden className="mt-2.5 flex h-6 items-center justify-between">
+      <p className="mt-[0.3em] truncate whitespace-nowrap font-mono text-[1.02em] font-semibold tracking-normal">+1 (555) 123-4567</p>
+      <p className="font-mono text-[0.92em] text-white/70">04:12</p>
+      <div aria-hidden className="mt-[0.6em] flex h-[1.7em] items-center justify-between">
         {widgetWave.map((h, i) => (
-          <span key={i} className="w-0.5 rounded-full bg-white/70" style={{ height: `${h}px` }} />
+          <span key={i} className="w-px rounded-full bg-white/70" style={{ height: `${h}px` }} />
         ))}
       </div>
-      <div className="mt-3 flex items-center justify-around">
+      <div className="mt-[0.65em] flex items-center justify-around">
         {widgetControls.map((c) => (
           <div key={c.label} className="flex flex-col items-center gap-1">
-            <span className="flex size-8 items-center justify-center rounded-full bg-white/15">
-              <c.icon className="size-3.5" aria-hidden />
+            <span className="flex size-[2.35em] items-center justify-center rounded-full bg-white/15">
+              <c.icon className="size-[1em]" aria-hidden />
             </span>
-            <span className="text-[8px] text-white/70">{c.label}</span>
+            <span className="text-[0.72em] text-white/70">{c.label}</span>
           </div>
         ))}
       </div>
-      <div className="mt-3 flex justify-center">
-        <span className="flex size-10 items-center justify-center rounded-full bg-red-500 shadow-md">
-          <Phone className="size-4 rotate-[135deg]" aria-hidden />
+      <div className="mt-[0.65em] flex justify-center">
+        <span className="flex size-[2.7em] items-center justify-center rounded-full bg-red-500 shadow-md">
+          <Phone className="size-[1.1em] rotate-[135deg]" aria-hidden />
         </span>
       </div>
     </div>
@@ -293,21 +293,21 @@ function CallWidget() {
 
 export function HeroDashboard() {
   return (
-    <div className="relative">
+    <div className="relative mx-auto w-full max-w-[860px] lg:mx-0">
       <div
         role="img"
         aria-label="Telebeli product dashboard preview"
-        className="w-full overflow-hidden rounded-lg border border-border bg-surface text-[11px] leading-tight text-foreground shadow-floating"
+        className="w-full overflow-hidden rounded-lg border border-border bg-surface text-[clamp(0.32rem,0.64vw,0.625rem)] leading-tight text-foreground shadow-floating"
       >
       {/* minmax(0,…) lifts the 1fr track's min-content floor so the mockup can
           compress to any phone width; the sidebar is desktop furniture and
           hides below sm — the composed mobile view leads with the KPIs. */}
-      <div className="grid grid-cols-[minmax(0,1fr)] sm:grid-cols-[150px_minmax(0,1fr)]">
+      <div className="grid grid-cols-[18.5%_minmax(0,1fr)]">
         {/* ── Sidebar ─────────────────────────────────────────────── */}
-        <div className="hidden min-h-[440px] flex-col gap-3 border-r border-border bg-sunken/50 p-3 sm:flex">
-          <div className="flex items-center gap-2 px-1 py-1">
-            <LogoMark className="size-6" />
-            <span className="text-sm font-semibold tracking-tight">
+        <div className="flex min-h-[clamp(16rem,41vw,27rem)] flex-col gap-[clamp(0.25rem,0.8vw,0.75rem)] border-r border-border bg-sunken/50 p-[clamp(0.25rem,0.85vw,0.75rem)]">
+          <div className="flex items-center gap-[clamp(0.15rem,0.55vw,0.5rem)] px-1 py-1">
+            <LogoMark className="size-[clamp(0.85rem,1.9vw,1.5rem)]" />
+            <span className="truncate text-[1.15em] font-semibold tracking-tight">
               Tele<span className="text-gradient-brand">beli</span>
             </span>
           </div>
@@ -318,21 +318,21 @@ export function HeroDashboard() {
                 key={item.label}
                 className={
                   item.active
-                    ? "flex items-center gap-2 rounded-md bg-accent-wash px-2 py-1.5 font-medium text-accent"
-                    : "flex items-center gap-2 rounded-md px-2 py-1.5 text-ink-muted"
+                    ? "flex items-center gap-[clamp(0.15rem,0.55vw,0.5rem)] rounded-md bg-accent-wash px-[clamp(0.15rem,0.6vw,0.5rem)] py-[clamp(0.15rem,0.45vw,0.375rem)] font-medium text-accent"
+                    : "flex items-center gap-[clamp(0.15rem,0.55vw,0.5rem)] rounded-md px-[clamp(0.15rem,0.6vw,0.5rem)] py-[clamp(0.15rem,0.45vw,0.375rem)] text-ink-muted"
                 }
               >
-                <item.icon className="size-3.5 shrink-0" aria-hidden />
+                <item.icon className="size-[1.15em] shrink-0" aria-hidden />
                 <span className="truncate">{item.label}</span>
               </span>
             ))}
           </div>
 
           {/* Pro Plan card, pinned to the bottom. */}
-          <div className="mt-auto rounded-md border border-border bg-surface p-2.5">
+          <div className="mt-auto rounded-md border border-border bg-surface p-[clamp(0.2rem,0.75vw,0.625rem)]">
             <div className="flex items-center justify-between">
               <span className="font-semibold text-foreground">Pro Plan</span>
-              <span className="rounded-full bg-success/15 px-1.5 py-0.5 text-[9px] font-semibold text-success">
+              <span className="rounded-full bg-success/15 px-[clamp(0.1rem,0.45vw,0.375rem)] py-0.5 text-[0.78em] font-semibold text-success">
                 Active
               </span>
             </div>
@@ -342,75 +342,75 @@ export function HeroDashboard() {
         </div>
 
         {/* ── Main area — named slots filled by P008–P013 ─────────── */}
-        <div className="flex flex-col gap-3 p-3.5">
+        <div className="flex flex-col gap-[clamp(0.25rem,0.8vw,0.75rem)] p-[clamp(0.35rem,1vw,0.875rem)]">
           {/* P008 — greeting header */}
           <div className="flex flex-col gap-2">
-            <div className="flex items-start justify-between gap-2">
+            <div className="flex items-start justify-between gap-[clamp(0.2rem,0.7vw,0.5rem)]">
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-foreground">
+                <p className="truncate text-[1.15em] font-semibold text-foreground">
                   Good Morning, Arjun <span aria-hidden>👋</span>
                 </p>
                 <p className="truncate text-ink-faint">
                   Here&apos;s what&apos;s happening with your AI agents today.
                 </p>
               </div>
-              <div className="flex shrink-0 items-center gap-2">
-                <Gift className="size-4 text-ink-muted" aria-hidden />
+              <div className="flex shrink-0 items-center gap-[clamp(0.18rem,0.6vw,0.5rem)]">
+                <Gift className="size-[1.2em] text-ink-muted" aria-hidden />
                 <span className="relative">
-                  <Bell className="size-4 text-ink-muted" aria-hidden />
+                  <Bell className="size-[1.2em] text-ink-muted" aria-hidden />
                   <span
                     aria-hidden
                     className="absolute -right-0.5 -top-0.5 size-1.5 rounded-full bg-destructive ring-2 ring-surface"
                   />
                 </span>
-                <span className="flex items-center gap-1.5 rounded-full border border-border bg-surface py-0.5 pl-0.5 pr-1.5">
-                  <span className="flex size-5 items-center justify-center rounded-full bg-gradient-brand text-[8px] font-semibold text-white">
+                <span className="flex items-center gap-[clamp(0.1rem,0.45vw,0.375rem)] rounded-full border border-border bg-surface py-0.5 pl-0.5 pr-[clamp(0.1rem,0.45vw,0.375rem)]">
+                  <span className="flex size-[clamp(0.75rem,1.45vw,1.25rem)] items-center justify-center rounded-full bg-gradient-brand text-[0.7em] font-semibold text-white">
                     AS
                   </span>
-                  <span className="hidden flex-col leading-none sm:flex">
-                    <span className="text-[10px] font-semibold text-foreground">Arjun Sharma</span>
-                    <span className="text-[9px] text-ink-faint">Admin</span>
+                  <span className="flex flex-col leading-none">
+                    <span className="truncate text-[0.9em] font-semibold text-foreground">Arjun Sharma</span>
+                    <span className="text-[0.8em] text-ink-faint">Admin</span>
                   </span>
-                  <ChevronDown className="size-3 text-ink-faint" aria-hidden />
+                  <ChevronDown className="size-[1em] text-ink-faint" aria-hidden />
                 </span>
               </div>
             </div>
-            <span className="inline-flex items-center gap-1 self-end rounded-md border border-border bg-surface px-2 py-1 text-[10px] font-medium text-ink-muted">
+            <span className="inline-flex items-center gap-1 self-end rounded-md border border-border bg-surface px-[clamp(0.2rem,0.65vw,0.5rem)] py-[clamp(0.1rem,0.4vw,0.25rem)] text-[0.9em] font-medium text-ink-muted">
               May 20 - May 26, 2024
-              <ChevronDown className="size-3" aria-hidden />
+              <ChevronDown className="size-[1em]" aria-hidden />
             </span>
           </div>
           {/* P009 — KPI row (reflows 4 → 2 → 1) */}
-          <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2 sm:grid-cols-4">
+          <div className="grid grid-cols-4 gap-[clamp(0.2rem,0.7vw,0.5rem)]">
             {kpis.map((kpi) => (
-              <div key={kpi.label} className="rounded-md border border-border bg-surface p-2.5">
-                <div className="flex items-start gap-2">
+              <div key={kpi.label} className="rounded-md border border-border bg-surface p-[clamp(0.2rem,0.75vw,0.625rem)]">
+                <div className="flex items-start gap-[clamp(0.15rem,0.55vw,0.5rem)]">
                   <span
-                    className={`flex size-7 shrink-0 items-center justify-center rounded-md text-white ${kpi.tile}`}
+                    className={`flex size-[clamp(0.85rem,2vw,1.75rem)] shrink-0 items-center justify-center rounded-md text-white ${kpi.tile}`}
                   >
-                    <kpi.icon className="size-3.5" aria-hidden />
+                    <kpi.icon className="size-[50%]" aria-hidden />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-[9px] leading-tight text-ink-faint">{kpi.label}</p>
-                    <p className="font-mono text-sm font-bold tabular-nums text-foreground">
+                    <p className="truncate text-[0.78em] leading-tight text-ink-faint">{kpi.label}</p>
+                    <p className="font-mono text-[1.15em] font-bold tabular-nums text-foreground">
                       {kpi.value}
                     </p>
                   </div>
                 </div>
-                <p className="mt-1 inline-flex items-center gap-0.5 text-[10px] font-semibold text-success">
-                  <ArrowUp className="size-2.5" aria-hidden />
+                <p className="mt-[clamp(0.1rem,0.35vw,0.25rem)] inline-flex items-center gap-0.5 text-[0.82em] font-semibold text-success">
+                  <ArrowUp className="size-[1em]" aria-hidden />
                   {kpi.delta}
                 </p>
               </div>
             ))}
           </div>
           {/* P010–P011 — call analytics chart + recent calls */}
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1.6fr_1fr]">
+          <div className="grid grid-cols-[1.6fr_1fr] gap-[clamp(0.2rem,0.7vw,0.5rem)]">
             <MockupChart />
             <RecentCalls />
           </div>
           {/* P012 — top agents + call summary */}
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <div className="grid grid-cols-2 gap-[clamp(0.2rem,0.7vw,0.5rem)]">
             <TopAgents />
             <CallSummary />
           </div>

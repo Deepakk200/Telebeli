@@ -760,6 +760,8 @@ export const trust = {
   entities: [
     { name: "Sagenex", kind: "backing", label: "Backing" },
     { name: "Ecoleaf", kind: "customer", label: "Customer" },
+    { name: "JobsForce", kind: "customer", label: "Customer" },
+    {name: "Mayura Globals", kind: "customer", label: "Customer" },
   ] satisfies TrustEntity[],
 };
 

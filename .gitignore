@@ -53,3 +53,5 @@ playwright-report/
 *storybook.log
 storybook-static
 .lighthouseci/
+
+ .codex
