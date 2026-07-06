@@ -6,7 +6,6 @@ import { Problem } from "@/components/landing/problem";
 import { LiveConsole } from "@/components/landing/live-console";
 import { AiVsHuman } from "@/components/landing/ai-vs-human";
 import { HowItWorks } from "@/components/landing/how-it-works";
-import { Integrations } from "@/components/landing/integrations";
 import { ProductOverview } from "@/components/landing/product-overview";
 import { PlatformCapabilities } from "@/components/landing/platform-capabilities";
 import { Handoff } from "@/components/landing/handoff";
@@ -95,11 +94,9 @@ export default function HomePage() {
       {/* Beat 3 — AI vs Human (why this over hiring). PENDING P05; humanVsAgent
           data is ready in constants/landing.ts. */}
 
-      {/* Beat 4 — how it works: the connected system. P06 rebuilds this around
-          `systemFlow`; HowItWorks + Integrations carry it until then. */}
+      {/* Beat 4 — how it works: the connected system. */}
       <Band tone="muted">
         <HowItWorks />
-        <Integrations />
       </Band>
 
       {/* Beat 5 — operational visibility (the live product). */}

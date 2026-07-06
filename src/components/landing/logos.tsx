@@ -43,12 +43,11 @@ export function Logos() {
       aria-label="Institutional backing and customers"
       className="container-page py-[var(--spacing-section)]"
     >
-      <SectionHeading eyebrow={trust.eyebrow} title={trust.title} />
 
       {/* Animated marquee — decorative; replaced by the static lockup below under reduced motion. */}
       <div
         aria-hidden
-        className="group marquee-mask relative mt-12 overflow-hidden motion-reduce:hidden"
+        className="group marquee-mask relative  overflow-hidden motion-reduce:hidden"
       >
         <div
           className="marquee-track flex w-max items-center gap-x-16 group-hover:[animation-play-state:paused] group-focus-within:[animation-play-state:paused]"

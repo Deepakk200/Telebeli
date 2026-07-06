@@ -33,7 +33,7 @@ export function Topbar() {
         </SheetTrigger>
         <SheetContent side="left" className="w-64 p-0">
           <SheetTitle className="sr-only">Navigation</SheetTitle>
-          <div className="flex h-16 items-center border-b border-border px-6">
+          <div className="flex h-20 items-center border-b border-border px-6">
             <Logo href="/dashboard" />
           </div>
           <div className="p-4">
