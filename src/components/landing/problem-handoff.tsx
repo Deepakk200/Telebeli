@@ -11,7 +11,7 @@ const CONTEXT_CHIPS = ["Full Transcript", "Detected Intent", "Call Summary"] as 
 
 export function ProblemHandoff() {
   return (
-    <div className="mt-3 rounded-widget bg-white p-3.5 shadow-sm ring-1 ring-pc-hairline">
+    <div className="mt-2.5 rounded-widget bg-white p-3 shadow-sm ring-1 ring-pc-hairline">
       <p className="text-[0.75rem] font-semibold tracking-[0.01em] text-ink-600">Warm Handoff</p>
 
       <div className="mt-3.5 flex items-center justify-between gap-1.5">

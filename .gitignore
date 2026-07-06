@@ -40,10 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Claude local
+# local tool state
 .claude/
+.codex
 
-# Playwright MCP browser-test artifacts
+# browser-test artifacts
 .playwright-mcp/
 
 # Playwright test artifacts
@@ -53,5 +54,3 @@ playwright-report/
 *storybook.log
 storybook-static
 .lighthouseci/
-
- .codex

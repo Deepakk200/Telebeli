@@ -30,7 +30,9 @@ function FloatBadge({ icon: Icon, className }: { icon: LucideIcon; className?: s
    floating badges: ⚠ by the caller bubble, ↻ by the agent bubble. */
 export function FailScript() {
   return (
-    <div className="mt-3">
+    // grow + justify-center: the chat block (whose curved arrow must stay glued to
+    // both bubbles, so it can't be stretched apart) centres in the panel's leftover height.
+    <div className="mt-3 flex grow flex-col justify-center">
       {/* caller — narrow rose bubble with an avatar attached top-left; the ⚠
           alert stands to its right (not overlapping the corner). */}
       <div className="flex items-start gap-2.5">
@@ -92,12 +94,14 @@ export function FailScript() {
 /* 02 — black box: a sealed dark panel, nothing to inspect. */
 export function FailBlackBox() {
   return (
-    <div className="relative mt-3">
+    // grow lets the box fill the panel's leftover height; the inner box flex-grows
+    // from a min-h-24 floor so the centred art bottom-aligns with the other cards.
+    <div className="relative mt-4 flex grow flex-col">
       <FloatBadge icon={AlertTriangle} className="bottom-0 right-0 translate-x-[38%] translate-y-[38%]" />
       <div
         role="img"
         aria-label="A sealed black box — nothing to inspect"
-        className="relative flex h-28 items-center justify-center overflow-hidden rounded-widget bg-blackbox ring-1 ring-black/40"
+        className="relative flex min-h-24 grow items-center justify-center overflow-hidden rounded-widget bg-blackbox ring-1 ring-black/40"
       >
         {/* faint concentric + cross guides */}
         <svg
@@ -151,7 +155,7 @@ export function FailBlackBox() {
 /* 03 — strands hardest callers: AI hits its limit, handoff fumbled. */
 export function FailHandoff() {
   return (
-    <div className="mt-3">
+    <div className="mt-3 flex grow flex-col justify-center">
       <div className="flex items-end justify-center gap-3 sm:gap-5">
         <div className="flex flex-col items-center gap-1.5">
           <span className="text-[0.625rem] font-semibold uppercase tracking-wide text-problem-strong">
@@ -165,17 +169,17 @@ export function FailHandoff() {
 
         {/* dashed red curved arrow — points right into the poor-handoff face,
             sized to the icons so it centres on them */}
-        <svg viewBox="0 0 60 56" className="h-14 w-14 shrink-0 self-end sm:w-16" aria-hidden>
+        <svg viewBox="0 0 60 56" className="h-14 w-14 shrink-0 self-end overflow-visible sm:w-16" aria-hidden>
           <defs>
-            <marker id="handoffArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+            <marker id="handoffArrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto">
               <path d="M0 0 10 5 0 10 3 5Z" className="fill-problem" />
             </marker>
           </defs>
           <path
-            d="M6 32C20 16 42 16 52 30"
+            d="M2 30 C 16 38 40 37 57 31"
             className="fill-none stroke-problem"
-            strokeWidth="1.8"
-            strokeDasharray="4 3"
+            strokeWidth="2"
+            strokeDasharray="6 4"
             strokeLinecap="round"
             markerEnd="url(#handoffArrow)"
           />
@@ -211,7 +215,7 @@ const REJECTED = [
 
 export function FailTradeoff() {
   return (
-    <div className="relative mt-3">
+    <div className="relative mt-3 flex grow flex-col justify-center">
       <FloatBadge icon={AlertTriangle} className="bottom-0 right-0 translate-x-1/2 translate-y-1/2" />
       <ul className="space-y-2">
         {REJECTED.map((opt) => (

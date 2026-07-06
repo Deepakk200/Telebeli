@@ -1,5 +1,4 @@
 import type { CSSProperties } from "react";
-import { SectionHeading } from "./section-heading";
 import { trust } from "@/constants/landing";
 
 /**

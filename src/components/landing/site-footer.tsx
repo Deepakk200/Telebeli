@@ -61,12 +61,12 @@ export function SiteFooter() {
               <p className="mt-4 max-w-sm text-base leading-relaxed text-black/60">
                 Enterprise voice AI you can watch, score, and prove.
               </p>
-              <p className="mt-5 text-base text-black/50">{siteConfig.email}</p>
+              <p className="mt-5 text-base text-black/60">{siteConfig.email}</p>
             </div>
 
             {columns.map((col) => (
               <nav key={col.title} aria-label={col.title}>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/35">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/60">
                   {col.title}
                 </p>
                 <ul className="mt-5 space-y-3">
@@ -85,7 +85,7 @@ export function SiteFooter() {
             ))}
           </div>
 
-          <div className="flex flex-col gap-4 pt-8 text-sm font-medium text-black/50 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 pt-8 text-sm font-medium text-black/60 sm:flex-row sm:items-center sm:justify-between">
             <p>
               {siteConfig.name} © {year} — An initiative of {siteConfig.parent}
             </p>

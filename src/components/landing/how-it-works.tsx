@@ -2,14 +2,13 @@ import { Reveal } from "@/components/motion";
 import { SectionHeading } from "./section-heading";
 import { Waveform } from "@/components/common/waveform";
 import { lifecycleStages } from "@/constants/landing";
-import { cn } from "@/lib/utils";
 
 /**
  * P06 — the AI call lifecycle (watch → score → handoff → prove). A real ordered
  * list rendered as a horizontal timeline that collapses to a vertical stepper on
  * mobile; the Waveform is the section's connective motif, held static (no idle
- * loop). RSC; a single enter-once Reveal wraps the group. The Handoff stage
- * carries the state-handoff violet alongside its "Handoff" text label.
+ * loop). RSC; a single enter-once Reveal wraps the group. All four stages
+ * share the same blue accent token.
  */
 export function HowItWorks() {
   return (
@@ -36,23 +35,12 @@ export function HowItWorks() {
               className="pointer-events-none absolute inset-x-5 top-5 hidden h-px bg-border md:block"
             />
             {lifecycleStages.map((stage, index) => {
-              const handoff = stage.pillar === "Handoff";
               return (
                 <li key={stage.pillar} className="relative flex flex-col">
-                  <span
-                    className={cn(
-                      "relative z-10 flex size-10 items-center justify-center rounded-full border bg-card",
-                      handoff ? "border-state-handoff/40 text-state-handoff" : "border-border text-accent",
-                    )}
-                  >
+                  <span className="relative z-10 flex size-10 items-center justify-center rounded-full border border-border bg-card text-accent">
                     <stage.icon className="size-5" aria-hidden />
                   </span>
-                  <p
-                    className={cn(
-                      "mt-4 text-label uppercase",
-                      handoff ? "text-state-handoff" : "text-accent",
-                    )}
-                  >
+                  <p className="mt-4 text-label uppercase text-accent">
                     <span className="font-mono">{String(index + 1).padStart(2, "0")}</span> ·{" "}
                     {stage.pillar}
                   </p>

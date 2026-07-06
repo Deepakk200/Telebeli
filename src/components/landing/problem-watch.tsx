@@ -16,18 +16,18 @@ const TURNS = [
 
 export function ProblemWatch() {
   return (
-    <div className="mt-3 rounded-widget bg-white p-3.5 shadow-sm ring-1 ring-pc-hairline">
+    <div className="mt-2.5 rounded-widget bg-white p-3 shadow-sm ring-1 ring-pc-hairline">
       {/* Search — decorative demo UI, deliberately not a real control. It leads
           the widget (no header label, per the reference). */}
       <div
         aria-hidden
-        className="flex items-center gap-2 rounded-lg bg-surface-2 px-3 py-2.5 text-ink-400 ring-1 ring-pc-hairline"
+        className="flex items-center gap-2 rounded-lg bg-surface-2 px-3 py-2 text-ink-400 ring-1 ring-pc-hairline"
       >
         <Search className="size-4 shrink-0" />
         <span className="text-small">Search transcripts…</span>
       </div>
 
-      <div className="mt-3 flex items-center gap-2">
+      <div className="mt-2.5 flex items-center gap-2">
         <span
           aria-hidden
           className="flex size-6 shrink-0 items-center justify-center rounded-full bg-lavender-tint text-solution"
@@ -38,7 +38,7 @@ export function ProblemWatch() {
         <span className="shrink-0 text-[0.6875rem] font-medium tabular-nums text-ink-400">00:01:24</span>
       </div>
 
-      <ul className="mt-3 space-y-2.5">
+      <ul className="mt-2.5 space-y-2">
         {TURNS.map((turn) => (
           <li key={turn.t} className="flex items-start justify-between gap-3">
             <p className="min-w-0 text-small leading-snug">

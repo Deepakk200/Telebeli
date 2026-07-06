@@ -43,24 +43,28 @@ export function ProblemCard({ scar, index }: Props) {
 
   return (
     <div className="group/card relative flex h-full flex-col overflow-hidden rounded-card border border-pc-hairline bg-white shadow-card transition-shadow duration-[var(--dur-base)] hover:shadow-[0_1px_2px_rgba(16,24,40,.04),0_18px_44px_-14px_rgba(16,24,40,.16)] sm:grid sm:grid-cols-2">
-      {/* Problem half — rose gradient wash, content vertically centred. */}
-      <div className="flex min-w-0 flex-col justify-center bg-problem-panel p-5 sm:pr-6">
-        <p className="flex items-center gap-2.5 text-label uppercase tracking-[0.08em] text-problem">
-          <span
-            aria-hidden
-            className="flex size-6 shrink-0 items-center justify-center rounded-full border-[1.5px] border-problem font-mono text-[0.68rem] font-semibold text-problem-strong"
-          >
-            {marker}
-          </span>
-          The problem
-        </p>
-        <h3 className="mt-2 text-balance text-[1.25rem] font-bold leading-[1.15] tracking-[-0.01em] text-ink-900 sm:text-[1.375rem]">
-          {scar.claim}
-        </h3>
-        <p className="mt-2 text-pretty text-small leading-snug text-ink-600">
-          {scar.consequence}
-          {scar.sting ? <span className="text-problem-strong"> {scar.sting}</span> : null}
-        </p>
+      {/* Problem half — rose wash; content top-aligned so the schematic follows
+          the body copy with a modest gap; spare height falls away at the bottom.
+          Header stays first, so every card's eyebrow + heading line up on one row. */}
+      <div className="flex min-w-0 flex-col justify-start bg-problem-panel p-5 sm:pr-6">
+        <div>
+          <p className="flex items-center gap-2.5 text-label uppercase tracking-[0.08em] text-problem">
+            <span
+              aria-hidden
+              className="flex size-6 shrink-0 items-center justify-center rounded-full border-[1.5px] border-problem font-mono text-[0.68rem] font-semibold text-problem-strong"
+            >
+              {marker}
+            </span>
+            The problem
+          </p>
+          <h3 className="mt-2 text-balance text-[1.25rem] font-bold leading-[1.15] tracking-[-0.01em] text-ink-900 sm:text-[1.375rem]">
+            {scar.claim}
+          </h3>
+          <p className="mt-2 text-pretty text-small leading-snug text-ink-600">
+            {scar.consequence}
+            {scar.sting ? <span className="text-problem-strong"> {scar.sting}</span> : null}
+          </p>
+        </div>
         <Failure />
       </div>
 
@@ -70,23 +74,26 @@ export function ProblemCard({ scar, index }: Props) {
         className="pointer-events-none absolute inset-y-6 left-1/2 hidden w-px -translate-x-1/2 bg-pc-hairline sm:block"
       />
 
-      {/* Answer half — cool surface, content vertically centred; hosts the seam
-          arrow (centred on the divider regardless of content height). */}
-      <div className="relative flex min-w-0 flex-col justify-center border-t border-pc-hairline bg-surface-2 p-5 sm:border-t-0 sm:pl-6">
+      {/* Answer half — cool surface; content top-aligned so the visual follows
+          the body copy with a modest gap; spare height falls away at the bottom.
+          Hosts the seam arrow (centred on the divider, any content). */}
+      <div className="relative flex min-w-0 flex-col justify-start border-t border-pc-hairline bg-surface-2 p-5 sm:border-t-0 sm:pl-6">
         <span
           aria-hidden
           className="absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-1/2 sm:left-0 sm:top-1/2"
         >
-          <span className="flex size-11 items-center justify-center rounded-full bg-grad-arrow text-white glow-arrow transition-[transform,box-shadow] duration-[var(--dur-base)] group-hover/card:scale-105 group-hover/card:glow-arrow-strong">
+          <span className="flex size-10 items-center justify-center rounded-full bg-grad-arrow text-white glow-arrow transition-[transform,box-shadow] duration-[var(--dur-base)] group-hover/card:scale-105 group-hover/card:glow-arrow-strong">
             <ArrowRight className="hidden size-[18px] sm:block" strokeWidth={2.25} aria-hidden />
             <ArrowDown className="size-[18px] sm:hidden" strokeWidth={2.25} aria-hidden />
           </span>
         </span>
 
-        <p className="text-label uppercase text-solution-strong">
-          Telebeli · {scar.answerPillar}
-        </p>
-        <p className="mt-2.5 text-pretty text-small leading-snug text-ink-600">{scar.answer}</p>
+        <div>
+          <p className="text-label uppercase text-solution-strong">
+            Telebeli · {scar.answerPillar}
+          </p>
+          <p className="mt-2.5 text-pretty text-small leading-snug text-ink-600">{scar.answer}</p>
+        </div>
         <Visual />
       </div>
     </div>

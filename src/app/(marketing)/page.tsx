@@ -10,7 +10,6 @@ import { ProductOverview } from "@/components/landing/product-overview";
 import { PlatformCapabilities } from "@/components/landing/platform-capabilities";
 import { Handoff } from "@/components/landing/handoff";
 import { Metrics } from "@/components/landing/metrics";
-import { Reliability } from "@/components/landing/reliability";
 import { Industries } from "@/components/landing/industries";
 import { Logos } from "@/components/landing/logos";
 import { SecuritySection } from "@/components/landing/security-section";
@@ -109,9 +108,8 @@ export default function HomePage() {
           own tonal beat between two base regions — no Band wrapper. */}
       <Handoff />
 
-      {/* Beat 8 — business outcomes + reliability. */}
+      {/* Beat 8 — business outcomes. */}
       <Metrics />
-      <Reliability />
 
       {/* Beat 9 — legitimacy: built-for industries. (Trust marquee moved to
           the hero region, Beat 0.) */}

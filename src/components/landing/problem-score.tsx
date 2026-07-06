@@ -26,12 +26,13 @@ const AREA = `M${LINE.split(" ").join(" L")} L209,84 L6,84 Z`;
 
 export function ProblemScore() {
   return (
-    <div className="mt-3 rounded-widget bg-white p-3.5 shadow-sm ring-1 ring-pc-hairline">
+    <div className="mt-2.5 flex grow flex-col rounded-widget bg-white p-3 shadow-sm ring-1 ring-pc-hairline">
       <p className="text-[0.75rem] font-semibold tracking-[0.01em] text-ink-600">Call Score</p>
 
-      {/* Ring + area trend, side by side. */}
-      <div className="mt-2 flex items-center gap-3">
-        <div className="relative size-16 shrink-0">
+      {/* Ring + area trend, side by side. flex-1 lets this row absorb the card's
+          extra height and keeps the chart vertically centred (label top, footer bottom). */}
+      <div className="mt-2 flex flex-1 items-center gap-3">
+        <div className="relative size-14 shrink-0">
           <svg viewBox="0 0 40 40" className="size-full -rotate-90" aria-hidden>
             <circle cx="20" cy="20" r="16" pathLength={100} className="fill-none stroke-pc-hairline" strokeWidth="3.5" />
             <circle

@@ -1,39 +1,79 @@
-# TeleBeli
+# Telebeli
 
 Enterprise B2B AI voice-agent platform — marketing site + dashboard shell.
 Built with **Next.js 16 (App Router, Turbopack)**, **React 19**, **Tailwind v4**,
-and **shadcn/ui** (new-york / Radix). Dark-first, token-driven, with a single
-signature motif: a live **voice waveform** reused across the hero, section
-dividers, agent cards, and empty states.
+and **shadcn/ui** (Radix). Light-first, token-driven marketing surface with a
+single signature motif — a live **voice waveform** — and a dark "operations
+mode" dashboard.
 
 ## Getting started
 
 ```bash
 npm install
-npm run dev      # Turbopack dev server on http://localhost:3000
-npm run build    # production build (Turbopack)
-npm run start    # serve the production build
-npm run lint     # eslint (next lint was removed in 16)
+npm run dev              # Turbopack dev server on http://localhost:3000
+npm run build            # production build (Turbopack)
+npm run start            # serve the production build
+npm run lint             # eslint
+npm run typecheck        # tsc --noEmit
+npm run test             # vitest unit project
+npm run e2e              # Playwright end-to-end tests
+npm run storybook        # Storybook on http://localhost:6006
 ```
 
-Node **20.9+** required (built on 22/24). Routes:
+Node **20.9+** required. Routes:
 
 - `/` — marketing landing page (route group `(marketing)`)
-- `/dashboard`, `/dashboard/{calls,agents,analytics,settings}` — dashboard (route group `(dashboard)`)
+- `/security` — security & trust page
+- `/dashboard`, `/dashboard/{calls,agents,analytics,settings}` — dashboard
+  (route group `(dashboard)`)
+
+## Environment variables
+
+**None required.** The app runs with zero configuration. The only environment
+read is `process.env.VERCEL` (set automatically by Vercel) which gates
+`@vercel/analytics` + `@vercel/speed-insights` so they never 404 locally.
+There are no secrets in this repository; `.env*` is gitignored should any be
+introduced later.
+
+## The Twilio + OpenAI Realtime flow
+
+The platform section (`src/components/landing/platform-capabilities.tsx`)
+presents the product's call architecture as an SVG system diagram:
+
+1. **Caller / User** — receives or answers a phone call.
+2. **Twilio Voice** — handles the call on a Twilio number and streams call
+   audio via Media Streams (WebSocket).
+3. **Node.js + Express WebSocket bridge** — relays caller audio to OpenAI and
+   assistant audio back to Twilio.
+4. **OpenAI Realtime API** — processes caller audio, understands intent, and
+   generates the assistant's voice response in real time.
+5. **Storage / tools fan-out** — recordings, notes, summaries, and CRM tasks
+   are saved when requested.
+
+This repository is the **marketing site and dashboard shell** for that
+product: the diagram documents the architecture, and the dashboard renders
+labeled demo data. No live telephony backend, Twilio SDK, or OpenAI key is
+part of this codebase — which is why no env vars are needed.
 
 ## Design system
 
-Tokens live in `src/app/globals.css` under `@theme` (OKLCH throughout):
-one violet **primary**, a teal **brand-accent**, semantic color/radius/elevation
-tokens, a 1.25 modular type scale (`text-display/h1/h2/h3/lead`), a 4px spacing
-rhythm, and soft layered shadows. Dark mode is designed first. Every screen
-consumes tokens — no magic hex or arbitrary spacing.
+Tokens live in `src/app/globals.css` under `@theme` (OKLCH throughout): a cool
+lavender-white paper + near-navy ink **Light** palette (the marketing theme),
+a blue→violet brand gradient for the headline accent and primary CTA, semantic
+call-state colors (live/resolved/handoff/flag), hairline borders, a tight
+4/8/12px radius scale, and fluid type + section-rhythm scales via `clamp()`.
+`.dark` is a true second theme ("operations mode") used by the dashboard.
 
-Motion is centralized in `src/lib/motion.ts` (easing `cubic-bezier(0.16,1,0.3,1)`,
-durations 150/250/400ms) and composed from four primitives in
-`src/components/motion/` (`FadeIn`, `Reveal`, `Stagger`, `Counter`). All reveal
-motion is gated behind `prefers-reduced-motion`. Above-the-fold hero entrance is
-pure CSS so it never blocks LCP on hydration.
+Type is a tri-voice system, self-hosted via `next/font`: **Poppins**
+(marketing display, the hero LCP face), **Instrument Sans** (body/UI),
+**JetBrains Mono** (evidence/metrics), with Source Serif 4 retained for
+editorial use.
+
+Motion is centralized in `src/lib/motion.ts` (easing
+`cubic-bezier(0.16,1,0.3,1)`, durations 150/250/400ms) and composed from
+primitives in `src/components/motion/` (`FadeIn`, `Reveal`, `Stagger`,
+`Counter`). All reveal motion respects `prefers-reduced-motion`; the
+above-the-fold hero entrance is pure CSS so it never blocks LCP on hydration.
 
 ## Dependencies — what and why
 
@@ -42,41 +82,29 @@ pure CSS so it never blocks LCP on hydration.
 | `next` / `react` / `react-dom` | Framework + runtime (16.2 / 19.2). |
 | `typescript`, `@types/*` | Strict TS (`noUncheckedIndexedAccess`, `noImplicitOverride`). |
 | `tailwindcss` + `@tailwindcss/postcss` | v4, CSS-first config via `@theme`. |
-| `tw-animate-css` | shadcn's current animation utilities (replaces `tailwindcss-animate`). |
+| `tw-animate-css` | shadcn's animation utilities (replaces `tailwindcss-animate`). |
 | `clsx` + `tailwind-merge` + `class-variance-authority` | The `cn()` util + variant API shadcn is built on. |
+| `radix-ui` | Primitive layer under the shadcn components (dialog, sheet, menu, …). |
 | `lucide-react` | Icon set — the only icon library. |
-| `motion` | Framer Motion (`motion/react`). Reveal animations + the `Counter` spring (no separate count-up dep). |
-| `lenis` | Smooth scroll — a capability `motion` doesn't provide; disabled under reduced-motion. |
-| `next-themes` | Class-strategy dark mode, `defaultTheme="dark"`. |
-| `sonner` | Toasts (replaces the deprecated shadcn `toast`). |
+| `motion` | Framer Motion (`motion/react`) — reveals + the `Counter` spring. |
+| `next-themes` | Class-strategy theming (light marketing / dark operations). |
+| `sonner` | Toasts. |
 | `react-hook-form` + `zod` + `@hookform/resolvers` | The settings form + schema validation. |
-| `@tanstack/react-query` | Async cache for dashboard data (calls table, charts). |
+| `@tanstack/react-query` | Async cache for dashboard data. |
 | `@tanstack/react-table` | Headless, sortable calls table. |
-| `recharts` | Call-volume + latency charts — dynamically imported so it stays out of the marketing bundle. |
+| `recharts` | Call-volume + latency charts, kept out of the marketing bundle. |
 | `date-fns` | Tree-shakeable relative timestamps in the calls table. |
 | `schema-dts` | Typed JSON-LD (`Organization`, `SoftwareApplication`, `FAQPage`). |
-| `geist` | Geist Sans (UI) + Geist Mono (metrics/latency), self-hosted via `next/font`. |
-| `@vercel/analytics` + `@vercel/speed-insights` | In root layout; mounted only on Vercel so there's no local 404. |
+| `@vercel/analytics` + `@vercel/speed-insights` | Mounted only when `VERCEL` is set, so there's no local 404. |
 
-### Deferred libraries intentionally left out
-
-- `gsap` — `motion` covered every animation; no timeline-heavy sequence needed.
-- `three` / `@react-three/fiber` / `drei` — the waveform motif is pure CSS/SVG; WebGL would be ~500KB for no visible gain.
-- `lottie-react` — no Lottie assets to ship.
-- `@phosphor-icons/react` — lucide had every icon; running two sets is waste.
-- `embla-carousel-react` — no carousel outside shadcn was needed.
-- `next-sitemap` — the App Router native `sitemap.ts` / `robots.ts` are sufficient.
-
-### Pruned vs. the original spec
-
-- `zustand` — installed per spec, but no global client state was needed
-  (local `useState` + react-query covered everything), so it was removed to keep
-  `depcheck` clean.
+Note: `depcheck` flags `tw-animate-css`, `tailwindcss`, `@tailwindcss/postcss`,
+and the Storybook addons as unused — all false positives (CSS `@import`,
+PostCSS config, and `.storybook/main.ts` respectively).
 
 ## Verification
 
-- `tsc --noEmit`, `eslint .`, `next build` — all clean, no warnings.
-- `npx depcheck` — no unused dependencies.
-- Lighthouse (desktop, `/`): **Accessibility 100 · Best Practices 100 · SEO 100**.
-- **LCP 311ms · CLS 0.00** — no layout shift; hero paints without waiting on JS.
-- Dashboard bundle is code-split from marketing (per-route chunks; recharts lazy).
+- `npm run typecheck`, `npm run lint`, `npm run build` — clean.
+- `scripts/check-contrast.mjs` — WCAG AA contrast gate over the token palette.
+- `scripts/check-bundle.mjs` — marketing-bundle budget check.
+- Storybook (`npm run storybook`) with a11y + vitest addons; Playwright e2e
+  with `@axe-core/playwright` accessibility assertions.

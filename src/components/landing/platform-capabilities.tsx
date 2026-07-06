@@ -1,7 +1,7 @@
 import { Reveal } from "@/components/motion";
 import { STAGGER_CAP, STAGGER_STEP } from "@/lib/motion";
 import { integrationsBuiltOn } from "@/constants/landing";
-import { BrandMark, OPENAI_MARK_PATH } from "./brand-marks";
+import { BrandMark, OPENAI_MARK_PATH, TWILIO_MARK_PATH } from "./brand-marks";
 
 const architectureDetails = [
   {
@@ -123,6 +123,26 @@ function Arrow({ x1, y1, x2, y2, dashed = false }: { x1: number; y1: number; x2:
   );
 }
 
+/**
+ * A horizontal flow arrow with a waveform sitting ON the line: the line is split
+ * into two segments with a clean gap around the wave, so no stroke ever crosses
+ * or sits on the waveform glyph. The arrowhead lands only on the destination end.
+ */
+function FlowArrow({ x1, x2, y, waveX, waveColor }: { x1: number; x2: number; y: number; waveX: number; waveColor: string }) {
+  const rightward = x2 > x1;
+  const gapL = waveX - 9; // 7 bars span waveX..waveX+60; clear a small margin each side
+  const gapR = waveX + 69;
+  const seg1End = rightward ? gapL : gapR;
+  const seg2Start = rightward ? gapR : gapL;
+  return (
+    <g>
+      <line x1={x1} y1={y} x2={seg1End} y2={y} stroke="#0f1a37" strokeWidth="3" className="arch-arrow-line" />
+      <line x1={seg2Start} y1={y} x2={x2} y2={y} stroke="#0f1a37" strokeWidth="3" className="arch-arrow-line" markerEnd="url(#arrow)" />
+      <Wave x={waveX} y={y} color={waveColor} />
+    </g>
+  );
+}
+
 function ToolItem({ y, label, icon }: { y: number; label: string; icon: "note" | "crm" | "task" }) {
   return (
     <g>
@@ -149,11 +169,14 @@ function SystemArchitectureDiagram() {
       viewBox="0 0 1920 1080"
       role="img"
       aria-label="Voice Calling Agent system architecture: caller, Twilio, Node.js bridge, OpenAI Realtime API, storage, notes, CRM, and call-flow summary."
-      className="block h-auto w-full"
+      className="block h-auto w-full min-w-[900px]"
     >
       <defs>
         <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
           <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f1a37" />
+        </marker>
+        <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#6bb04b" />
         </marker>
         <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
           <feDropShadow dx="0" dy="12" stdDeviation="16" floodColor="#10214a" floodOpacity="0.08" />
@@ -200,7 +223,7 @@ function SystemArchitectureDiagram() {
       <rect width="1920" height="1080" fill="#ffffff" />
 
       <text x="960" y="76" textAnchor="middle" className="fill-[#050a1f] text-[58px] font-extrabold">
-        Voice Calling Agent - System Architecture
+        Voice Calling Agent – System Architecture
       </text>
       <text x="960" y="126" textAnchor="middle" className="fill-[#596178] text-[29px] font-medium">
         Real-time voice conversation powered by Twilio + OpenAI Realtime API
@@ -211,13 +234,13 @@ function SystemArchitectureDiagram() {
         <text x="76" y="263" className="fill-[#101832] text-[21px] font-bold">Caller / User</text>
         <circle cx="104" cy="394" r="73" fill="#edf5ff" />
         <image
-          href="/user.webp"
-          x="18"
-          y="278"
-          width="172"
-          height="206"
+          href="/caller.webp"
+          x="31"
+          y="321"
+          width="146"
+          height="146"
           clipPath="url(#caller-user-clip)"
-          preserveAspectRatio="xMidYMid meet"
+          preserveAspectRatio="xMidYMid slice"
         />
         <circle cx="104" cy="394" r="73" fill="none" stroke="#dbeafe" strokeWidth="2" />
         <SvgLines x={104} y={513} lines={["Receives or", "answers a", "phone call"]} size={20} lineHeight={27} />
@@ -225,15 +248,19 @@ function SystemArchitectureDiagram() {
         <rect x="354" y="181" width="230" height="477" rx="13" fill="#ffffff" stroke="#1f6fe5" strokeWidth="1.5" />
         <StepBadge x={390} y={219} n="2" />
         <text x="417" y="226" className="fill-[#101832] text-[19px] font-bold">Twilio Voice Call</text>
-        <circle cx="420" cy="323" r="23" fill="none" stroke="#f22f46" strokeWidth="8" />
-        <circle cx="412" cy="315" r="5" fill="#f22f46" />
-        <circle cx="429" cy="315" r="5" fill="#f22f46" />
-        <circle cx="412" cy="333" r="5" fill="#f22f46" />
-        <circle cx="429" cy="333" r="5" fill="#f22f46" />
-        <text x="450" y="337" className="fill-[#f22f46] text-[45px] font-extrabold">twilio</text>
-        <path d="M416 461c-5-49 60-66 82-22c35-11 68 24 52 58h-116c-18 0-30-16-18-36z" fill="none" stroke="#146fe4" strokeWidth="5" />
-        <path d="M470 427c21 24 33 38 58 60" fill="none" stroke="#146fe4" strokeWidth="7" strokeLinecap="round" />
-        <path d="M473 431l-15 15c-6 6 25 42 32 35l15-16z" fill="#146fe4" />
+        <path d={TWILIO_MARK_PATH} transform="translate(384 295) scale(0.211)" fill="#F12E45" />
+        <text x="449" y="339" className="fill-[#F12E45] text-[44px] font-extrabold" style={{ letterSpacing: "-0.02em" }}>
+          twilio
+        </text>
+        <image
+          href="/cloud-phone.webp"
+          x="408"
+          y="403"
+          width="122"
+          height="86"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden
+        />
         <SvgLines x={469} y={526} lines={["Twilio handles the", "phone call using a", "Twilio phone number"]} size={19} lineHeight={27} />
 
         <rect x="778" y="181" width="368" height="477" rx="13" fill="#fbfffb" stroke="#55ad45" strokeWidth="1.5" />
@@ -270,7 +297,7 @@ function SystemArchitectureDiagram() {
           ["2", "blue", ["Twilio handles the call", "using a Twilio number."]],
           ["3", "blue", ["Twilio sends call audio", "via Media Stream", "(WebSocket) to our", "server."]],
           ["4", "green", ["Server connects to", "OpenAI Realtime API", "via WebSocket."]],
-          ["5", "violet", ["Caller audio flows from", "Twilio -> Server ->", "OpenAI Realtime."]],
+          ["5", "violet", ["Caller audio flows from", "Twilio → Server →", "OpenAI Realtime."]],
           ["6", "green", ["OpenAI generates", "assistant voice", "response."]],
           ["7", "green", ["Server sends audio", "response back to", "Twilio."]],
           ["8", "blue", ["Twilio plays assistant", "voice to the caller."]],
@@ -301,50 +328,42 @@ function SystemArchitectureDiagram() {
 
       <StepBadge x={667} y={246} n="3" />
       <SvgLines x={668} y={285} lines={["Twilio Media", "Stream", "(WebSocket)"]} size={17} lineHeight={25} />
-      <Wave x={647} y={362} />
-      <Arrow x1={584} y1={361} x2={775} y2={361} />
-      <Wave x={638} y={481} color="#16a34a" />
-      <Arrow x1={779} y1={481} x2={587} y2={481} />
-      <circle r="6" fill="#1f6fe5" className="arch-flow-dot">
-        <animateMotion dur="1.8s" repeatCount="indefinite" path="M584 361 L775 361" />
-      </circle>
-      <circle r="6" fill="#16a34a" className="arch-flow-dot">
-        <animateMotion dur="1.8s" repeatCount="indefinite" path="M779 481 L587 481" />
-      </circle>
+      <FlowArrow x1={584} x2={775} y={361} waveX={647} waveColor="#1f6fe5" />
+      <FlowArrow x1={779} x2={587} y={481} waveX={638} waveColor="#16a34a" />
       <SvgLines x={665} y={524} lines={["Audio response", "sent back to Twilio"]} size={16} lineHeight={25} />
       <StepBadge x={676} y={590} n="7" tone="green" />
 
       <StepBadge x={1244} y={245} n="4" tone="green" />
       <SvgLines x={1244} y={284} lines={["WebSocket", "Connection"]} size={17} lineHeight={25} />
-      <Wave x={1224} y={362} color="#5b3be8" />
-      <Arrow x1={1147} y1={361} x2={1334} y2={361} />
-      <Wave x={1215} y={481} color="#16a34a" />
-      <Arrow x1={1338} y1={481} x2={1150} y2={481} />
-      <circle r="6" fill="#5b3be8" className="arch-flow-dot">
-        <animateMotion dur="1.9s" repeatCount="indefinite" path="M1147 361 L1334 361" />
-      </circle>
-      <circle r="6" fill="#16a34a" className="arch-flow-dot">
-        <animateMotion dur="1.9s" repeatCount="indefinite" path="M1338 481 L1150 481" />
-      </circle>
+      <FlowArrow x1={1147} x2={1334} y={361} waveX={1224} waveColor="#1f6fe5" />
+      <FlowArrow x1={1338} x2={1150} y={481} waveX={1215} waveColor="#16a34a" />
       <StepBadge x={1242} y={528} n="6" tone="green" />
       <SvgLines x={1242} y={554} lines={["Assistant voice", "(audio response)"]} size={16} lineHeight={25} />
 
-      <Arrow x1={902} y1={658} x2={902} y2={688} dashed />
-      <path className="arch-dash" d="M902 700v-30h-235c-17 0-28 11-28 28v18" fill="none" stroke="#1f3a7a" strokeWidth="3" strokeDasharray="10 10" markerEnd="url(#arrow)" />
-      <path className="arch-dash" d="M902 700v-30h198c17 0 28 11 28 28v18" fill="none" stroke="#1f3a7a" strokeWidth="3" strokeDasharray="10 10" markerEnd="url(#arrow)" />
+      {/* Dashed fan-out from the server to storage + notes: a trunk down from the
+          box centre, a branch bar that clears the "9" badge, and two drops that
+          land on each box's top edge — no stray arrowhead, no crossing the flow. */}
+      <path className="arch-dash" d="M962 658V680M654 680H1126" fill="none" stroke="#1f3a7a" strokeWidth="3" strokeDasharray="10 10" />
+      <path className="arch-dash" d="M654 680V754" fill="none" stroke="#1f3a7a" strokeWidth="3" strokeDasharray="10 10" markerEnd="url(#arrow)" />
+      <path className="arch-dash" d="M1126 680V754" fill="none" stroke="#1f3a7a" strokeWidth="3" strokeDasharray="10 10" markerEnd="url(#arrow)" />
       <circle r="5" fill="#16a34a" className="arch-flow-dot">
-        <animateMotion dur="2.4s" repeatCount="indefinite" path="M902 658 L902 688" />
+        <animateMotion dur="2.4s" repeatCount="indefinite" path="M962 658 L962 680" />
       </circle>
-      <StepBadge x={900} y={713} n="9" tone="green" />
-      <SvgLines x={900} y={743} lines={["Save & Store", "(When requested)"]} size={14} lineHeight={20} />
+      <StepBadge x={895} y={716} n="9" tone="green" />
+      <SvgLines x={895} y={745} lines={["Save & Store", "(When requested)"]} size={14} lineHeight={20} />
 
       <g filter="url(#soft-shadow)">
         <rect x="514" y="760" width="280" height="126" rx="12" fill="#fbfdff" stroke="#77a9ff" strokeWidth="1.6" />
         <ellipse cx="565" cy="806" rx="28" ry="12" fill="#1f6fe5" />
         <path d="M537 806v40c0 7 13 13 28 13s28-6 28-13v-40" fill="#1f6fe5" opacity="0.92" />
         <ellipse cx="565" cy="846" rx="28" ry="12" fill="#1f6fe5" />
-        <circle cx="587" cy="848" r="19" fill="#4e8ff5" stroke="#ffffff" strokeWidth="3" />
-        <Wave x={574} y={848} color="#ffffff" />
+        <circle cx="543" cy="851" r="16" fill="#ffffff" stroke="#2563eb" strokeWidth="2" />
+        <g stroke="#2563eb" strokeWidth="2.6" strokeLinecap="round">
+          <line x1="537" y1="847" x2="537" y2="855" />
+          <line x1="541.5" y1="844" x2="541.5" y2="858" />
+          <line x1="546" y1="846" x2="546" y2="856" />
+          <line x1="550.5" y1="848.5" x2="550.5" y2="853.5" />
+        </g>
         <text x="638" y="800" className="fill-[#101832] text-[17px] font-extrabold">Recording Storage</text>
         <SvgLines x={638} y={831} lines={["Store recordings", "for compliance,", "quality review"]} size={13} anchor="start" lineHeight={19} />
 
@@ -355,8 +374,13 @@ function SystemArchitectureDiagram() {
         <SvgLines x={1102} y={833} lines={["Save notes,", "summaries, outcomes,", "CRM tasks"]} size={12} anchor="start" lineHeight={18} />
       </g>
 
-      <path className="arch-dash" d="M1269 862h88c0-56 12-78 32-78" fill="none" stroke="#6bb04b" strokeWidth="3" strokeDasharray="9 9" markerStart="url(#arrow)" />
-      <path className="arch-dash" d="M1357 862c0 30 12 52 32 52" fill="none" stroke="#6bb04b" strokeWidth="3" strokeDasharray="9 9" />
+      {/* Support Notes → tools: clean green bracket. A dashed spine at x=1345 sits
+          in the gap between the box (left) and the tool rows (right); one arm returns
+          to the box with a small green arrowhead landing ON its right border, three
+          arms branch to the tool icons. Orthogonal, no curves, nothing crosses. */}
+      <path className="arch-dash" d="M1345 824H1272" fill="none" stroke="#6bb04b" strokeWidth="3" strokeDasharray="9 9" markerEnd="url(#arrow-green)" />
+      <path className="arch-dash" d="M1345 784V914" fill="none" stroke="#6bb04b" strokeWidth="3" strokeDasharray="9 9" />
+      <path className="arch-dash" d="M1345 784H1386M1345 849H1386M1345 914H1386" fill="none" stroke="#6bb04b" strokeWidth="3" strokeDasharray="9 9" />
       <ToolItem y={784} label="Notes / Summaries" icon="note" />
       <ToolItem y={849} label="CRM Integration" icon="crm" />
       <ToolItem y={914} label="Task / Follow-up" icon="task" />
@@ -382,7 +406,7 @@ function SystemArchitectureDiagram() {
 export function PlatformCapabilities() {
   return (
     <section id="capabilities" className="container-page scroll-mt-24 py-12 sm:py-16">
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm font-medium text-ink-muted">
           Built on infrastructure you already trust
         </p>
@@ -393,8 +417,17 @@ export function PlatformCapabilities() {
         </div>
       </div>
 
-      <Reveal className="overflow-hidden rounded-md bg-surface">
-        <SystemArchitectureDiagram />
+      <Reveal>
+        {/* The diagram is authored at 1920×1080; below ~940px it can't shrink to
+            fit and stay legible, so it keeps a legible min-width and the frame
+            scrolls horizontally (page never overflows). Cards below summarise the
+            same four stages for anyone who doesn't pan. */}
+        <div className="overflow-x-auto rounded-md bg-surface">
+          <SystemArchitectureDiagram />
+        </div>
+        <p className="mt-2 text-center text-xs text-ink-faint lg:hidden">
+          Swipe to explore the full architecture &rarr;
+        </p>
       </Reveal>
 
       <div className="mt-6 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">

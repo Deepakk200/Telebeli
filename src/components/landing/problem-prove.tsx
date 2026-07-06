@@ -26,7 +26,7 @@ export function ProblemProve() {
     <div
       role="img"
       aria-label="One Telebeli platform connecting six enterprise capabilities: self-serve launch, audit logs and compliance, enterprise-grade security, no long-term contracts, SOC 2 / HIPAA ready, and scaling without limits"
-      className="relative mx-auto mt-3 h-[204px] w-full max-w-[290px]"
+      className="relative mx-auto mt-2.5 h-[176px] w-full max-w-[290px]"
     >
       {/* Dashed spokes + guide ring behind the nodes. */}
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden>
