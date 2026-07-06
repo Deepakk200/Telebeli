@@ -13,19 +13,19 @@ export function Problem() {
   return (
     <section
       id="problems"
-      className="scroll-mt-24 px-[var(--gutter)] py-12 [--pc-h:404px] lg:py-14 xl:[--pc-h:420px]"
+      className="scroll-mt-28 px-[var(--gutter)] py-10 lg:py-12"
     >
       <div className="mx-auto w-full max-w-[1240px]">
         <div className="mx-auto max-w-4xl text-center">
           <span className="inline-flex items-center rounded-full bg-lavender-tint px-3.5 py-1 text-label uppercase text-solution-strong">
             The Problem — And The Answer
           </span>
-          <h2 className="mx-auto mt-5 max-w-3xl text-balance font-display text-[clamp(2.125rem,4.8vw,3.5rem)] font-extrabold leading-[1.06] tracking-[-0.02em] text-ink-900">
+          <h2 className="mx-auto mt-4 max-w-3xl text-balance font-display text-[clamp(1.875rem,3.4vw,2.75rem)] font-extrabold leading-[1.08] tracking-[-0.02em] text-ink-900">
             You&apos;ve seen voice AI fail.
             <br />
             <span className="bg-grad-hero bg-clip-text text-transparent">So have your customers.</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-pretty text-[1.0625rem] leading-relaxed text-ink-600 sm:text-lg">
+          <p className="mx-auto mt-3 max-w-xl text-pretty text-[0.9375rem] leading-relaxed text-ink-600">
             The demo is flawless; production is where it falls apart. Here&apos;s each
             failure we kept seeing — and what we built so it doesn&apos;t happen on your
             lines.
@@ -34,7 +34,7 @@ export function Problem() {
 
         <Stagger
           role="list"
-          className="mt-11 grid grid-cols-1 gap-7 min-[1100px]:grid-cols-2"
+          className="mt-8 grid grid-cols-1 gap-6 min-[1100px]:grid-cols-2"
         >
           {problemScars.map((scar, index) => (
             <StaggerItem key={scar.visual} role="listitem" className="h-full">

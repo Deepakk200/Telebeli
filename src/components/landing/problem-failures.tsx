@@ -17,11 +17,11 @@ function FloatBadge({ icon: Icon, className }: { icon: LucideIcon; className?: s
     <span
       aria-hidden
       className={cn(
-        "absolute z-20 flex size-[30px] items-center justify-center rounded-full bg-problem-alert text-white ring-2 ring-white glow-alert",
+        "absolute z-20 flex size-[28px] items-center justify-center rounded-full bg-problem-alert text-white ring-2 ring-white glow-alert",
         className,
       )}
     >
-      <Icon className="size-4" strokeWidth={2.25} />
+      <Icon className="size-3.5" strokeWidth={2.25} />
     </span>
   );
 }
@@ -30,28 +30,60 @@ function FloatBadge({ icon: Icon, className }: { icon: LucideIcon; className?: s
    floating badges: ⚠ by the caller bubble, ↻ by the agent bubble. */
 export function FailScript() {
   return (
-    <div className="relative mt-4">
-      <FloatBadge icon={AlertTriangle} className="right-0 top-6" />
-      <FloatBadge icon={RefreshCw} className="-bottom-2 right-1" />
-
-      {/* caller — neutral bubble with an avatar dot */}
-      <div className="flex items-start gap-2 pr-7">
-        <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-white text-ink-400 ring-1 ring-pc-hairline">
-          <UserRound className="size-3.5" aria-hidden />
+    <div className="mt-3">
+      {/* caller — narrow rose bubble with an avatar attached top-left; the ⚠
+          alert stands to its right (not overlapping the corner). */}
+      <div className="flex items-start gap-2.5">
+        <div className="relative max-w-[200px]">
+          <span
+            aria-hidden
+            className="absolute -left-2 -top-2 z-10 flex size-[22px] items-center justify-center rounded-full bg-white text-ink-400 shadow-sm ring-1 ring-rose-200"
+          >
+            <UserRound className="size-3" />
+          </span>
+          <p className="rounded-widget rounded-tl-sm bg-rose-100 px-3 py-2 text-[0.8125rem] leading-snug text-ink-700 ring-1 ring-rose-200">
+            Can I change my delivery address after placing the order?
+          </p>
+        </div>
+        <span
+          aria-hidden
+          className="mt-3 flex size-[26px] shrink-0 items-center justify-center rounded-full bg-problem-alert text-white ring-2 ring-white glow-alert"
+        >
+          <AlertTriangle className="size-3.5" strokeWidth={2.25} />
         </span>
-        <p className="rounded-widget rounded-tl-sm bg-white px-3.5 py-2.5 text-small leading-snug text-ink-700 shadow-sm ring-1 ring-pc-hairline">
-          Can I change my delivery address after placing the order?
-        </p>
       </div>
 
-      {/* dashed connector down to the canned reply */}
-      <div aria-hidden className="my-1 ml-3 h-4 w-px border-l border-dashed border-rose-300" />
+      {/* dashed curved elbow connector — from the caller bubble's bottom-left,
+          down and to the right, arrowhead into the top of the agent bubble */}
+      <svg viewBox="0 0 200 32" className="my-1 w-full" aria-hidden>
+        <defs>
+          <marker id="chatArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+            <path d="M0 0 10 5 0 10 3 5Z" className="fill-rose-300" />
+          </marker>
+        </defs>
+        <path
+          d="M14 3C14 24 118 8 172 28"
+          className="fill-none stroke-rose-300"
+          strokeWidth="1.6"
+          strokeDasharray="4 4"
+          strokeLinecap="round"
+          markerEnd="url(#chatArrow)"
+        />
+      </svg>
 
-      {/* agent — rose bubble, the loop-back */}
-      <div className="flex justify-end pr-3">
-        <p className="rounded-widget rounded-tr-sm bg-rose-100 px-3.5 py-2.5 text-small leading-snug text-ink-700 ring-1 ring-rose-200">
-          Let me connect you with an agent. Have a nice day!
-        </p>
+      {/* agent — narrow rose bubble offset right; ↻ overlaps its bottom-right corner */}
+      <div className="flex justify-end">
+        <div className="relative max-w-[200px]">
+          <p className="rounded-widget rounded-tr-sm bg-rose-100 px-3 py-2 text-[0.8125rem] leading-snug text-ink-700 ring-1 ring-rose-200">
+            Let me connect you with an agent. Have a nice day!
+          </p>
+          <span
+            aria-hidden
+            className="absolute -bottom-2.5 -right-2.5 flex size-[26px] items-center justify-center rounded-full bg-problem-alert text-white ring-2 ring-white glow-alert"
+          >
+            <RefreshCw className="size-3.5" strokeWidth={2.25} />
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -60,12 +92,12 @@ export function FailScript() {
 /* 02 — black box: a sealed dark panel, nothing to inspect. */
 export function FailBlackBox() {
   return (
-    <div className="relative mt-4">
-      <FloatBadge icon={AlertTriangle} className="-bottom-3 -right-3" />
+    <div className="relative mt-3">
+      <FloatBadge icon={AlertTriangle} className="bottom-0 right-0 translate-x-[38%] translate-y-[38%]" />
       <div
         role="img"
         aria-label="A sealed black box — nothing to inspect"
-        className="relative flex h-36 items-center justify-center overflow-hidden rounded-widget bg-blackbox ring-1 ring-black/40"
+        className="relative flex h-28 items-center justify-center overflow-hidden rounded-widget bg-blackbox ring-1 ring-black/40"
       >
         {/* faint concentric + cross guides */}
         <svg
@@ -85,7 +117,7 @@ export function FailBlackBox() {
           </g>
         </svg>
         {/* thin-stroke 3D hexagon with a faint fill */}
-        <svg viewBox="0 0 64 64" className="relative size-[64px]" aria-hidden>
+        <svg viewBox="0 0 64 64" className="relative size-[46px]" aria-hidden>
           <path
             d="M32 6 54 19 54 45 32 58 10 45 10 19Z"
             className="fill-white/[0.04] stroke-white/60"
@@ -108,7 +140,7 @@ export function FailBlackBox() {
             ?
           </text>
         </svg>
-        <p className="absolute bottom-3 left-0 right-0 text-center text-label uppercase tracking-[0.2em] text-white/55">
+        <p className="absolute bottom-2.5 left-0 right-0 text-center text-[0.6875rem] font-medium tracking-[0.14em] text-white/55">
           Unknown
         </p>
       </div>
@@ -119,53 +151,49 @@ export function FailBlackBox() {
 /* 03 — strands hardest callers: AI hits its limit, handoff fumbled. */
 export function FailHandoff() {
   return (
-    <div className="mt-4">
-      <div className="flex items-center justify-center gap-3 sm:gap-5">
+    <div className="mt-3">
+      <div className="flex items-end justify-center gap-3 sm:gap-5">
         <div className="flex flex-col items-center gap-1.5">
-          <span className="flex size-16 items-center justify-center rounded-full bg-rose-100 text-problem ring-1 ring-rose-200">
-            <RobotFace className="size-9" />
-            <span className="sr-only">AI hits its limit</span>
-          </span>
           <span className="text-[0.625rem] font-semibold uppercase tracking-wide text-problem-strong">
             AI hits limit
           </span>
+          <span className="flex size-14 items-center justify-center rounded-full bg-rose-100 text-problem ring-1 ring-rose-200">
+            <RobotFace className="size-8" />
+            <span className="sr-only">AI hits its limit</span>
+          </span>
         </div>
 
-        {/* dashed red curved arrow */}
-        <svg
-          viewBox="0 0 64 40"
-          className="h-10 w-14 shrink-0 sm:w-16"
-          role="img"
-          aria-label="fumbled handoff"
-        >
+        {/* dashed red curved arrow — points right into the poor-handoff face,
+            sized to the icons so it centres on them */}
+        <svg viewBox="0 0 60 56" className="h-14 w-14 shrink-0 self-end sm:w-16" aria-hidden>
+          <defs>
+            <marker id="handoffArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+              <path d="M0 0 10 5 0 10 3 5Z" className="fill-problem" />
+            </marker>
+          </defs>
           <path
-            d="M6 26C22 6 42 6 56 22"
+            d="M6 32C20 16 42 16 52 30"
             className="fill-none stroke-problem"
-            strokeWidth="1.6"
+            strokeWidth="1.8"
             strokeDasharray="4 3"
             strokeLinecap="round"
-          />
-          <path
-            d="M56 22l-2-6M56 22l-6 2"
-            className="fill-none stroke-problem"
-            strokeWidth="1.6"
-            strokeLinecap="round"
+            markerEnd="url(#handoffArrow)"
           />
         </svg>
 
         <div className="flex flex-col items-center gap-1.5">
-          <span className="flex size-16 items-center justify-center overflow-hidden rounded-full bg-rose-100 ring-1 ring-rose-200">
-            <FrownFace className="size-[3.25rem]" />
-            <span className="sr-only">A frustrated caller after a poor handoff</span>
-          </span>
           <span className="text-[0.625rem] font-semibold uppercase tracking-wide text-problem-strong">
             Poor handoff
+          </span>
+          <span className="flex size-14 items-center justify-center overflow-hidden rounded-full bg-rose-100 ring-1 ring-rose-200">
+            <FrownFace className="size-11" />
+            <span className="sr-only">A frustrated caller after a poor handoff</span>
           </span>
         </div>
       </div>
 
       {/* Inline warning — no container, left-aligned under the characters. */}
-      <p className="mt-4 flex items-start gap-2 text-small leading-snug text-ink-700">
+      <p className="mt-3.5 flex items-start gap-2 text-small leading-snug text-ink-700">
         <AlertTriangle className="mt-0.5 size-4 shrink-0 text-problem" aria-hidden />
         Customer repeats everything. Frustration. Lost trust.
       </p>
@@ -183,9 +211,9 @@ const REJECTED = [
 
 export function FailTradeoff() {
   return (
-    <div className="relative mt-4">
-      <FloatBadge icon={AlertTriangle} className="-bottom-3 -right-2" />
-      <ul className="space-y-2.5">
+    <div className="relative mt-3">
+      <FloatBadge icon={AlertTriangle} className="bottom-0 right-0 translate-x-1/2 translate-y-1/2" />
+      <ul className="space-y-2">
         {REJECTED.map((opt) => (
           <li
             key={opt.label}

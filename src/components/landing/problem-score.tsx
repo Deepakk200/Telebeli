@@ -26,8 +26,8 @@ const AREA = `M${LINE.split(" ").join(" L")} L209,84 L6,84 Z`;
 
 export function ProblemScore() {
   return (
-    <div className="mt-4 rounded-widget bg-white p-3.5 shadow-sm ring-1 ring-pc-hairline">
-      <p className="text-label uppercase text-ink-400">Call Score</p>
+    <div className="mt-3 rounded-widget bg-white p-3.5 shadow-sm ring-1 ring-pc-hairline">
+      <p className="text-[0.75rem] font-semibold tracking-[0.01em] text-ink-600">Call Score</p>
 
       {/* Ring + area trend, side by side. */}
       <div className="mt-2 flex items-center gap-3">
@@ -62,7 +62,8 @@ export function ProblemScore() {
           <svg viewBox="0 0 220 84" className="mt-3.5 w-full" role="img" aria-label="Quality trend rising then regressing">
             <defs>
               <linearGradient id="scoreFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" style={{ stopColor: "var(--indigo-600)" }} stopOpacity="0.28" />
+                <stop offset="0%" style={{ stopColor: "var(--indigo-600)" }} stopOpacity="0.4" />
+                <stop offset="70%" style={{ stopColor: "var(--indigo-600)" }} stopOpacity="0.12" />
                 <stop offset="100%" style={{ stopColor: "var(--indigo-600)" }} stopOpacity="0" />
               </linearGradient>
             </defs>
@@ -70,7 +71,7 @@ export function ProblemScore() {
             <polyline
               points={LINE}
               className="fill-none stroke-solution"
-              strokeWidth="2"
+              strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
@@ -93,7 +94,7 @@ export function ProblemScore() {
 
       {/* Footer caption + regression chip */}
       <div className="mt-2 flex items-center justify-between">
-        <span className="text-label uppercase text-ink-400">Quality Trend</span>
+        <span className="text-[0.75rem] font-semibold tracking-[0.01em] text-ink-600">Quality Trend</span>
         <span className="rounded-full bg-rose-100 px-2.5 py-0.5 text-[0.6875rem] font-semibold text-problem-strong">
           ↓ 18% vs last week
         </span>
