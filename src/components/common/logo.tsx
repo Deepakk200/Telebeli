@@ -38,7 +38,6 @@ export function LogoMark({ className }: { className?: string }) {
         fill="url(#tb-mark-gradient)"
         d="M16 2.5c7.18 0 13 5.6 13 12.5s-5.82 12.5-13 12.5c-1.6 0-3.13-.28-4.55-.78L4.3 29.7a.9.9 0 0 1-1.17-1.1l1.8-5.53A12.1 12.1 0 0 1 3 15C3 8.1 8.82 2.5 16 2.5Z"
       />
-      {/* Headset glyph. */}
       <path
         d="M10.4 15.6v-1.4a5.6 5.6 0 0 1 11.2 0v1.4"
         stroke="white"

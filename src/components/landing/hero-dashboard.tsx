@@ -303,7 +303,6 @@ export function HeroDashboard() {
           compress to any phone width; the sidebar is desktop furniture and
           hides below sm — the composed mobile view leads with the KPIs. */}
       <div className="grid grid-cols-[18.5%_minmax(0,1fr)]">
-        {/* ── Sidebar ─────────────────────────────────────────────── */}
         <div className="flex min-h-[clamp(16rem,41vw,27rem)] flex-col gap-[clamp(0.25rem,0.8vw,0.75rem)] border-r border-border bg-sunken/50 p-[clamp(0.25rem,0.85vw,0.75rem)]">
           <div className="flex items-center gap-[clamp(0.15rem,0.55vw,0.5rem)] px-1 py-1">
             <LogoMark className="size-[clamp(0.85rem,1.9vw,1.5rem)]" />
@@ -341,7 +340,7 @@ export function HeroDashboard() {
           </div>
         </div>
 
-        {/* ── Main area — named slots filled by P008–P013 ─────────── */}
+        {/* Main area — named slots filled by P008–P013. */}
         <div className="flex flex-col gap-[clamp(0.25rem,0.8vw,0.75rem)] p-[clamp(0.35rem,1vw,0.875rem)]">
           {/* P008 — greeting header */}
           <div className="flex flex-col gap-2">

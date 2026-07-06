@@ -390,44 +390,62 @@ export type ProblemScar = {
   icon: LucideIcon;
   claim: string;
   consequence: string;
-  /** The pillar this answer belongs to — shown as a text label, not colour alone. */
-  answerPillar: "Watch" | "Score" | "Handoff" | "Prove";
+  /** Final "sting" clause of the consequence, rendered in the flag colour.
+      Optional split, not new copy: consequence + " " + sting must read as the
+      original sentence. */
+  sting?: string;
   answer: string;
-};
+} & PillarVisual;
+
+/** The pillar this answer belongs to — shown as a text label, not colour alone.
+    `visual` keys the per-card storytelling component (M4); pairing it with
+    `answerPillar` in one discriminated union means label and visual can never
+    disagree. */
+type PillarVisual =
+  | { answerPillar: "Watch"; visual: "watch" }
+  | { answerPillar: "Score"; visual: "score" }
+  | { answerPillar: "Handoff"; visual: "handoff" }
+  | { answerPillar: "Prove"; visual: "prove" };
+
+export type ProblemVisual = ProblemScar["visual"];
 
 export const problemScars: ProblemScar[] = [
   {
+    visual: "score",
     icon: Repeat2,
     claim: "It breaks off-script.",
-    consequence:
-      "One unexpected question and the agent loops back to a canned line. You find out when a customer complains.",
+    consequence: "One unexpected question and the agent loops back to a canned line.",
+    sting: "You find out when a customer complains.",
     answerPillar: "Score",
     answer:
       "Every call is scored automatically, so a regression surfaces on your dashboard before a customer runs into it — not after they complain.",
   },
   {
+    visual: "watch",
     icon: EyeOff,
     claim: "It's a black box.",
-    consequence:
-      "Once it's live on your lines, you can't see what it's saying. You're asked to trust a system you can't inspect.",
+    consequence: "Once it's live on your lines, you can't see what it's saying.",
+    sting: "You're asked to trust a system you can't inspect.",
     answerPillar: "Watch",
     answer:
       "Every call is observable live and after the fact, with searchable transcripts on demand. You inspect the system instead of trusting it.",
   },
   {
+    visual: "handoff",
     icon: PhoneMissed,
     claim: "It strands your hardest callers.",
-    consequence:
-      "When AI hits its limit, most platforms treat the handoff as an afterthought — so the highest-stakes calls end worst.",
+    consequence: "When AI hits its limit, most platforms treat the handoff as an afterthought —",
+    sting: "so the highest-stakes calls end worst.",
     answerPillar: "Handoff",
     answer:
       "When a call reaches the agent's limit, it warm-transfers to a person with the full transcript and detected intent attached. The caller never repeats themselves.",
   },
   {
+    visual: "prove",
     icon: Scale,
     claim: "It forces a bad trade-off.",
-    consequence:
-      "Build it yourself, outgrow a no-code tool, or sign a six-month managed contract. Enterprise and self-serve shouldn't be a choice.",
+    consequence: "Build it yourself, outgrow a no-code tool, or sign a six-month managed contract.",
+    sting: "Enterprise and self-serve shouldn't be a choice.",
     answerPillar: "Prove",
     answer:
       "Deploy self-serve and grow into enterprise on one platform — audit logs and SOC 2 / HIPAA-class controls, without a six-month contract.",

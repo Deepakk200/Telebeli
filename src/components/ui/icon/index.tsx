@@ -38,8 +38,6 @@ export function Icon({ size = 24, label, children, ...props }: IconProps) {
   );
 }
 
-/* ------------------------------- Core UI ------------------------------- */
-
 export function IconX(props: IconProps) {
   return (
     <Icon {...props}>
@@ -141,8 +139,6 @@ export function IconLoader(props: IconProps) {
     </Icon>
   );
 }
-
-/* -------------------- Annotation family (DNA-1/DNA-2) ------------------- */
 
 /** A node sitting on the call-timeline hairline. */
 export function IconTimelineNode(props: IconProps) {

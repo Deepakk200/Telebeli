@@ -27,6 +27,8 @@
   /* One scarce accent (brand-blue): links, primary action, focus, selection. */
   --accent-ink: oklch(0.47 0.19 268);
   --accent-wash: oklch(from var(--accent) l c h / 0.08);
+  /* Warm problem tint — derived from the flag state, never a new hue. */
+  --flag-wash: oklch(from var(--state-flag) l c h / 0.06);
 
   /* Brand gradient — blue→violet, the approved headline accent + primary CTA.
      Endpoints kept ≤0.6 L so white text on the gradient stays AA (verified by
@@ -112,6 +114,48 @@
   --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--hairline);
   --sidebar-ring: var(--accent);
+
+  /* ── Problem-section infographic palette (P05 refactor canon). Exact hexes
+     from the approved reference; every rose / indigo / ink accent resolves
+     from these tokens so no component hardcodes a colour. Exposed as Tailwind
+     utilities in the @theme inline block below. ── */
+  --ink-900: #0b1020; /* headings */
+  --ink-700: #344054; /* strong labels / bubble copy */
+  --ink-600: #475467; /* body */
+  --ink-400: #98a2b3; /* meta / timestamps */
+
+  --rose-600: #e11d48; /* problem accent — borders, rings, icons, dots */
+  --rose-700: #be123c; /* problem TEXT on the pink wash — AA-safe */
+  --rose-500: #ef4444; /* alert / refresh floating badges */
+  --rose-tint: #fff1f2; /* problem panel base */
+  --rose-tint-2: #fff5f5; /* problem panel gradient top */
+  --rose-100: #ffe4e6;
+  --rose-200: #fecdd3;
+  --rose-300: #fda4af;
+
+  --indigo-600: #6366f1; /* solution accent, arrow, hub */
+  --indigo-700: #4f46e5; /* solution TEXT — AA-safe on white */
+  --violet-600: #7c3aed;
+  --lavender-tint: #eef0ff; /* eyebrow pill + solution chip wash */
+  --surface-2: #fcfcfd; /* solution panel / widget field */
+
+  --problem: var(--rose-600);
+  --problem-strong: var(--rose-700);
+  --problem-alert: var(--rose-500);
+  --problem-wash: var(--rose-tint);
+  --solution: var(--indigo-600);
+  --solution-strong: var(--indigo-700);
+
+  --pc-hairline: rgba(16, 24, 40, 0.08);
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 12px 32px -12px rgba(16, 24, 40, 0.1);
+  --glow-arrow: 0 8px 20px -6px rgba(99, 102, 241, 0.5);
+  --glow-arrow-strong: 0 10px 26px -6px rgba(99, 102, 241, 0.65);
+  --glow-alert: 0 6px 16px -4px rgba(239, 68, 68, 0.45);
+  --glow-hub: 0 10px 30px -8px rgba(124, 58, 237, 0.5);
+  --grad-arrow: linear-gradient(135deg, var(--indigo-600), var(--violet-600));
+  --grad-hero: linear-gradient(90deg, var(--indigo-600), var(--violet-600));
+  --grad-problem-panel: linear-gradient(160deg, var(--rose-tint-2), var(--rose-tint));
+  --grad-blackbox: linear-gradient(160deg, #0b1220, #111827);
 }
 
 /* Operations mode — a true second theme (deep warm slate), not an inversion.
@@ -138,6 +182,19 @@
   --accent-foreground: oklch(0.17 0.008 260);
   --destructive-foreground: oklch(0.17 0.008 260);
   --sidebar-primary-foreground: oklch(0.17 0.008 260);
+
+  /* Problem-section palette — dark surface variants (the section is light-first,
+     but these re-resolve if operations mode is toggled). Rose/indigo accents
+     stay vivid; only surfaces and ink flip. */
+  --ink-900: #f2f4f7;
+  --ink-700: #d0d5dd;
+  --ink-600: #98a2b3;
+  --ink-400: #667085;
+  --rose-tint: oklch(0.3 0.06 12);
+  --rose-tint-2: oklch(0.33 0.06 12);
+  --lavender-tint: oklch(0.3 0.05 276);
+  --surface-2: oklch(0.21 0.008 260);
+  --pc-hairline: rgba(255, 255, 255, 0.1);
 }
 
 /* ---------------------------------------------------------------------------
@@ -180,6 +237,7 @@
   --color-hairline: var(--hairline);
   --color-accent-ink: var(--accent-ink);
   --color-accent-wash: var(--accent-wash);
+  --color-flag-wash: var(--flag-wash);
   --color-state-live: var(--state-live);
   --color-state-resolved: var(--state-resolved);
   --color-state-handoff: var(--state-handoff);
@@ -269,6 +327,29 @@
   --dur-base: 250ms;
   --dur-slow: 400ms;
   --dur-entrance: 500ms;
+
+  /* Problem-section infographic palette → utilities (text-problem, bg-problem-wash,
+     border-pc-hairline, ring-problem, text-ink-900, bg-surface-2, rounded-card…). */
+  --color-ink-900: var(--ink-900);
+  --color-ink-700: var(--ink-700);
+  --color-ink-600: var(--ink-600);
+  --color-ink-400: var(--ink-400);
+  --color-problem: var(--problem);
+  --color-problem-strong: var(--problem-strong);
+  --color-problem-alert: var(--problem-alert);
+  --color-problem-wash: var(--problem-wash);
+  --color-solution: var(--solution);
+  --color-solution-strong: var(--solution-strong);
+  --color-rose-100: var(--rose-100);
+  --color-rose-200: var(--rose-200);
+  --color-rose-300: var(--rose-300);
+  --color-indigo-600: var(--indigo-600);
+  --color-violet-600: var(--violet-600);
+  --color-lavender-tint: var(--lavender-tint);
+  --color-surface-2: var(--surface-2);
+  --color-pc-hairline: var(--pc-hairline);
+  --radius-card: 20px;
+  --radius-widget: 14px;
 }
 
 /* Elevation: paper and ink — warm-ink-tinted, short, soft, no glow.
@@ -322,6 +403,52 @@
 @utility glass {
   background-color: oklch(from var(--card) l c h / 0.72);
   backdrop-filter: blur(16px);
+}
+
+/* ── Problem-section (P05) infographic surfaces. Soft/low/large card shadow,
+   the brand gradients, and the coloured glows for the seam arrow + alert
+   badges. Variable-backed so a single token edit re-skins every card. ── */
+@utility shadow-card {
+  --tw-shadow: var(--shadow-card);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+@utility bg-grad-arrow {
+  background-image: var(--grad-arrow);
+}
+@utility bg-grad-hero {
+  background-image: var(--grad-hero);
+}
+@utility bg-problem-panel {
+  background-image: var(--grad-problem-panel);
+}
+@utility bg-blackbox {
+  background-image: var(--grad-blackbox);
+}
+@utility glow-arrow {
+  box-shadow: var(--glow-arrow);
+}
+@utility glow-arrow-strong {
+  box-shadow: var(--glow-arrow-strong);
+}
+@utility glow-alert {
+  box-shadow: var(--glow-alert);
+}
+@utility glow-hub {
+  box-shadow: var(--glow-hub);
+}
+
+/* Call-score ring sweep (P05 card 01) — plays once on paint, reduced-motion
+   collapses it to the resting 92% via animation-fill-mode: both. */
+@keyframes score-ring {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 8;
+  }
+}
+.animate-score-ring {
+  animation: score-ring 900ms var(--ease-out-expo) both;
 }
 
 @layer base {

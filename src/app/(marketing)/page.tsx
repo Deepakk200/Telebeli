@@ -67,9 +67,11 @@ function Band({ tone = "base", children }: { tone?: "base" | "muted"; children: 
 export default function HomePage() {
   return (
     <>
-      {/* Beat 0 — Hero + approved value strip (hero region). */}
+      {/* Beat 0 — Hero + approved value strip + trust marquee (hero region):
+          institutional backing lands up front, before the wound. */}
       <Hero />
       <Features />
+      <Logos />
 
       {/* Beat 1 — the wound. */}
       <Band tone="muted">
@@ -114,10 +116,10 @@ export default function HomePage() {
       <Metrics />
       <Reliability />
 
-      {/* Beat 9 — trust & legitimacy: Sagenex / industries. */}
+      {/* Beat 9 — legitimacy: built-for industries. (Trust marquee moved to
+          the hero region, Beat 0.) */}
       <Band tone="muted">
         <Industries />
-        <Logos />
       </Band>
 
       {/* Beat 10 — security & candor. */}

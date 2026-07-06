@@ -41,7 +41,7 @@ export function Logos() {
     <section
       id="trust"
       aria-label="Institutional backing and customers"
-      className="container-page pb-[var(--spacing-section)]"
+      className="container-page py-[var(--spacing-section)]"
     >
       <SectionHeading eyebrow={trust.eyebrow} title={trust.title} />
 

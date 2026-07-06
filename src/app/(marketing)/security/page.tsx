@@ -85,7 +85,6 @@ export default function SecurityPage() {
         </p>
       </div>
 
-      {/* Certifications */}
       <div className="mt-12 flex flex-wrap gap-3">
         {certifications.map((cert) => (
           <span
@@ -102,7 +101,6 @@ export default function SecurityPage() {
         attestation reports and our latest audit status.
       </p>
 
-      {/* Pillars */}
       <div className="mt-14 grid gap-4 sm:grid-cols-2">
         {pillars.map((pillar) => (
           <div key={pillar.title} className={cn(surface({ elevation: "subtle" }), "p-6")}>
@@ -122,7 +120,6 @@ export default function SecurityPage() {
         ))}
       </div>
 
-      {/* Subprocessors */}
       <div className="mt-14">
         <h2 className="text-h3 font-semibold tracking-tight">Subprocessors</h2>
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
@@ -132,7 +129,6 @@ export default function SecurityPage() {
         </p>
       </div>
 
-      {/* CTA */}
       <div
         className={cn(
           surface({ elevation: "elevated" }),
