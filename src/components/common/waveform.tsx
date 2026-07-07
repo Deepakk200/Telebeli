@@ -6,6 +6,13 @@ type WaveformProps = {
   barClassName?: string;
   /** Render static (no animation) — used for decorative dividers. */
   animated?: boolean;
+  /**
+   * When `false`, the running CSS animation is frozen in place
+   * (`animation-play-state: paused`) rather than removed — the bars hold their
+   * current shape instead of resetting. Defaults to `true`, so every existing
+   * call site behaves exactly as before.
+   */
+  playing?: boolean;
 };
 
 /**
@@ -18,6 +25,7 @@ export function Waveform({
   className,
   barClassName,
   animated = true,
+  playing = true,
 }: WaveformProps) {
   const items = Array.from({ length: bars }, (_, i) => {
     // Symmetric, organic profile via layered sines.
@@ -44,6 +52,7 @@ export function Waveform({
           className={cn(
             "w-[3px] shrink-0 rounded-full bg-brand/70",
             animated && "animate-wave",
+            animated && !playing && "[animation-play-state:paused]",
             barClassName,
           )}
           style={{

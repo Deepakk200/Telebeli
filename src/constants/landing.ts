@@ -30,12 +30,6 @@ import {
   PhoneForwarded,
   Webhook,
   KeyRound,
-  BookOpen,
-  Cross,
-  Home,
-  Landmark,
-  Plane,
-  ShoppingBag,
   BadgeCheck,
   Focus,
   Layers,
@@ -62,7 +56,7 @@ export const hero = {
   subhead:
     "Telebeli builds and configures your complete voice AI calling system using Twilio and OpenAI — from infrastructure to personalized dashboards.",
   primaryCta: { label: "Book a Demo", href: bookDemoHref },
-  secondaryCta: { label: "See How It Works", href: "/#lifecycle" },
+  secondaryCta: { label: "See How It Works", href: "/#workflow" },
 };
 
 // Trust row under the hero CTAs (approved image): recognized infrastructure and
@@ -126,26 +120,19 @@ export const integrationsConnect: Integration[] = [
   },
 ];
 
-// P04 — Interactive voice-workflow demo (position 4). Synthetic script only —
-// never real customer data; the UI labels it "Labeled demo". A full call that
-// visibly resolves, then reaches the human-handoff moment (the climax).
-export type WorkflowTurn = { speaker: "caller" | "agent" | "system"; text: string };
+// P04 — Interactive voice-demo (position 4). The audio itself is the content:
+// a recorded, labeled sample AI support call the visitor can play in English,
+// Hindi, or Telugu. The player derives its timer, progress, and waveform from
+// the file. Files live in public/audio and are served as /audio/*.mp3 —
+// referenced by path, never imported or base64-embedded. The whole player is
+// driven by this array: add a language by appending one entry (code is a stable
+// key, label is the button text, src is the public path).
+export type DemoCallTrack = { code: "en" | "hi" | "te"; label: string; src: string };
 
-export const workflowScript: readonly WorkflowTurn[] = [
-  { speaker: "caller", text: "Hi, I need to move my delivery to Thursday." },
-  {
-    speaker: "agent",
-    text: "Done — order #40128 is set for Thursday, 9am to noon. Anything else?",
-  },
-  { speaker: "caller", text: "Yeah — I think I was double-charged last month." },
-  {
-    speaker: "agent",
-    text: "That one needs a billing specialist. Let me bring a human in with your details.",
-  },
-  {
-    speaker: "system",
-    text: "Warm transfer → Billing. Full transcript and detected intent attached.",
-  },
+export const demoCallTracks: readonly DemoCallTrack[] = [
+  { code: "en", label: "English", src: "/audio/english.mp3" },
+  { code: "hi", label: "Hindi", src: "/audio/hindi.mp3" },
+  { code: "te", label: "Telugu", src: "/audio/telugu.mp3" },
 ] as const;
 
 // P02 — Product-tour live view: synthetic seed data (labeled in the UI).
@@ -615,18 +602,23 @@ export const securityCandor = {
   disclaimer: "We will not claim a certification before it is attestable.",
 };
 
-// P09 — Industries (position 9). "Built for" framing, sourced from the posters —
-// never fabricated customers or outcomes. Icons match logos.tsx (the trusted-by
-// row) for consistency. One candor-safe use case each; no names, no metrics.
-export type Industry = { icon: LucideIcon; name: string; useCase: string };
+// P09 — Industries ("Radial Hub"). Telebeli is the hub; six industries orbit it.
+// Content-only: name + one-line description. All layout/tint/icon/position lives
+// in industries.tsx. Copy is candor-safe (what it's built for, not who we name).
+// Order = reading order (also the mobile spine order).
+export type Industry = {
+  key: "realestate" | "education" | "ecommerce" | "healthcare" | "travel" | "finance";
+  name: string;
+  description: string;
+};
 
 export const industries: Industry[] = [
-  { icon: Home, name: "Real Estate", useCase: "Lead qualification and viewing scheduling, around the clock." },
-  { icon: BookOpen, name: "Education", useCase: "Admissions and enrolment questions, answered on the first ring." },
-  { icon: Cross, name: "Healthcare", useCase: "Patient access and appointment booking, with PII redaction." },
-  { icon: ShoppingBag, name: "E-commerce", useCase: "Order status, returns, and support — handled or escalated." },
-  { icon: Plane, name: "Travel & Hospitality", useCase: "Booking, changes, and dispatch, at any hour." },
-  { icon: Landmark, name: "Finance", useCase: "Collections and account servicing, with full audit logs." },
+  { key: "realestate", name: "Real Estate", description: "Lead qualification and viewing scheduling, around the clock." },
+  { key: "education", name: "Education", description: "Admissions and enrolment questions, answered on the first ring." },
+  { key: "ecommerce", name: "E-commerce", description: "Order status, returns, and support — handled or escalated." },
+  { key: "healthcare", name: "Healthcare", description: "Patient access and appointment booking, with PII redaction." },
+  { key: "travel", name: "Travel & Hospitality", description: "Booking, changes, and dispatch, at any hour." },
+  { key: "finance", name: "Finance", description: "Collections and account servicing, with full audit logs." },
 ];
 
 // P05 — AI vs Human (spine beat "why this over hiring"). Echoes whyvshuman.png

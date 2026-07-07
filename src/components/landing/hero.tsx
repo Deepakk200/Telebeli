@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { BrandMark } from "./brand-marks";
 import { HeroDashboard } from "./hero-dashboard";
+import { PlayDemoCta } from "./play-demo-cta";
 import { hero, heroTrustBadges } from "@/constants/landing";
 
 const line2Words = hero.headline.line2.split(" ");
@@ -44,14 +45,7 @@ export function Hero() {
                 <ArrowRight className="size-4" aria-hidden />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="secondary" className="h-11 w-full px-5 text-sm sm:h-12 sm:px-6 min-[480px]:w-auto">
-              <Link href={hero.secondaryCta.href}>
-                <span className="flex size-5 items-center justify-center rounded-full bg-gradient-brand text-white sm:size-6">
-                  <Play className="size-3 fill-current" aria-hidden />
-                </span>
-                {hero.secondaryCta.label}
-              </Link>
-            </Button>
+            <PlayDemoCta href={hero.secondaryCta.href} label={hero.secondaryCta.label} />
           </div>
 
           {/* Trust row — recognized infrastructure + a security signal. */}

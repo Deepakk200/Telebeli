@@ -9,7 +9,7 @@ const columns = [
     links: [
       { label: "Platform", href: "/#capabilities" },
       { label: "Dashboard", href: "/dashboard" },
-      { label: "Security", href: "/security" },
+      { label: "Pricing", href: "/#pricing" },
     ],
   },
   {
@@ -89,12 +89,7 @@ export function SiteFooter() {
             <p>
               {siteConfig.name} © {year} — An initiative of {siteConfig.parent}
             </p>
-            <Link
-              href="/security"
-              className="rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-            >
-              <Status state="resolved">All systems operational</Status>
-            </Link>
+            <Status state="resolved">All systems operational</Status>
           </div>
         </div>
       </div>

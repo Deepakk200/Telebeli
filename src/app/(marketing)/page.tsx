@@ -12,8 +12,8 @@ import { Handoff } from "@/components/landing/handoff";
 import { Metrics } from "@/components/landing/metrics";
 import { Industries } from "@/components/landing/industries";
 import { Logos } from "@/components/landing/logos";
-import { SecuritySection } from "@/components/landing/security-section";
 import { Faq } from "@/components/landing/faq";
+import { Pricing } from "@/components/landing/pricing";
 import { Cta } from "@/components/landing/cta";
 import { SectionHeading } from "@/components/landing/section-heading";
 import { ChatFAB } from "@/components/common/chat-fab";
@@ -81,7 +81,7 @@ export default function HomePage() {
         <SectionHeading
           eyebrow="SEE IT WORK"
           title="Watch a call resolve — then hand off to a human"
-          description="A scripted demonstration of the real workflow: the agent resolves what it can and warm-transfers what it shouldn't handle, with full context attached. Labeled demo — never real customer data."
+          description="Press play to hear a full support call handled end to end — switch between English, Hindi, and Telugu to hear it in any language. A recorded, labeled demo, never real customer data."
         />
         <div className="mx-auto mt-14 max-w-4xl">
           <LiveConsole />
@@ -117,13 +117,13 @@ export default function HomePage() {
         <Industries />
       </Band>
 
-      {/* Beat 10 — security & candor. */}
-      <SecuritySection />
-
       {/* Beat 11 — FAQ. */}
       <Band tone="muted">
         <Faq />
       </Band>
+
+      {/* Beat 11.5 — custom pricing (talk-to-sales), just before the ask. */}
+      <Pricing />
 
       {/* Beat 12 — the invitation (single major transition into the ask). */}
       <div aria-hidden className="h-[var(--spacing-section-major)]" />

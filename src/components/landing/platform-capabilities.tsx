@@ -405,8 +405,8 @@ function SystemArchitectureDiagram() {
 
 export function PlatformCapabilities() {
   return (
-    <section id="capabilities" className="container-page scroll-mt-24 py-12 sm:py-16">
-      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <section id="capabilities" className="container-page scroll-mt-24 pt-6 pb-12 sm:pt-8 sm:pb-16">
+      <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm font-medium text-ink-muted">
           Built on infrastructure you already trust
         </p>

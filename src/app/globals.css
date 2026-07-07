@@ -461,6 +461,8 @@
     color-scheme: light;
     /* Firefox: subtle thumb, transparent track so the page shows edge-to-edge. */
     scrollbar-color: var(--border) transparent;
+    /* Smooth in-page anchor scrolling (reduced-motion resets it to auto below). */
+    scroll-behavior: smooth;
   }
   html.dark {
     color-scheme: dark;
