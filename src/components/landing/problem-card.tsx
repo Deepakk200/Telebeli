@@ -46,7 +46,7 @@ export function ProblemCard({ scar, index }: Props) {
       {/* Problem half — rose wash; content top-aligned so the schematic follows
           the body copy with a modest gap; spare height falls away at the bottom.
           Header stays first, so every card's eyebrow + heading line up on one row. */}
-      <div className="flex min-w-0 flex-col justify-start bg-problem-panel p-5 sm:pr-6">
+      <div className="flex min-w-0 flex-col justify-start bg-problem-panel px-4 py-3.5 sm:pr-5">
         <div>
           <p className="flex items-center gap-2.5 text-label uppercase tracking-[0.08em] text-problem">
             <span
@@ -57,10 +57,10 @@ export function ProblemCard({ scar, index }: Props) {
             </span>
             The problem
           </p>
-          <h3 className="mt-2 text-balance text-[1.25rem] font-bold leading-[1.15] tracking-[-0.01em] text-ink-900 sm:text-[1.375rem]">
+          <h3 className="mt-1.5 text-balance text-[1.1875rem] font-bold leading-[1.15] tracking-[-0.01em] text-ink-900">
             {scar.claim}
           </h3>
-          <p className="mt-2 text-pretty text-small leading-snug text-ink-600">
+          <p className="mt-1.5 text-pretty text-small leading-snug text-ink-600">
             {scar.consequence}
             {scar.sting ? <span className="text-problem-strong"> {scar.sting}</span> : null}
           </p>
@@ -71,13 +71,13 @@ export function ProblemCard({ scar, index }: Props) {
       {/* Internal hairline divider — full content height, centred on the seam. */}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-y-6 left-1/2 hidden w-px -translate-x-1/2 bg-pc-hairline sm:block"
+        className="pointer-events-none absolute inset-y-5 left-1/2 hidden w-px -translate-x-1/2 bg-pc-hairline sm:block"
       />
 
       {/* Answer half — cool surface; content top-aligned so the visual follows
           the body copy with a modest gap; spare height falls away at the bottom.
           Hosts the seam arrow (centred on the divider, any content). */}
-      <div className="relative flex min-w-0 flex-col justify-start border-t border-pc-hairline bg-surface-2 p-5 sm:border-t-0 sm:pl-6">
+      <div className="relative flex min-w-0 flex-col justify-start border-t border-pc-hairline bg-surface-2 px-4 py-3.5 sm:border-t-0 sm:pl-5">
         <span
           aria-hidden
           className="absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-1/2 sm:left-0 sm:top-1/2"
@@ -92,7 +92,7 @@ export function ProblemCard({ scar, index }: Props) {
           <p className="text-label uppercase text-solution-strong">
             Telebeli · {scar.answerPillar}
           </p>
-          <p className="mt-2.5 text-pretty text-small leading-snug text-ink-600">{scar.answer}</p>
+          <p className="mt-1.5 text-pretty text-small leading-snug text-ink-600">{scar.answer}</p>
         </div>
         <Visual />
       </div>

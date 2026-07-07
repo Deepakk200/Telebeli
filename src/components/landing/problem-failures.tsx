@@ -32,7 +32,7 @@ export function FailScript() {
   return (
     // grow + justify-center: the chat block (whose curved arrow must stay glued to
     // both bubbles, so it can't be stretched apart) centres in the panel's leftover height.
-    <div className="mt-3 flex grow flex-col justify-center">
+    <div className="mt-2.5 flex grow flex-col justify-center">
       {/* caller — narrow rose bubble with an avatar attached top-left; the ⚠
           alert stands to its right (not overlapping the corner). */}
       <div className="flex items-start gap-2.5">
@@ -57,7 +57,7 @@ export function FailScript() {
 
       {/* dashed curved elbow connector — from the caller bubble's bottom-left,
           down and to the right, arrowhead into the top of the agent bubble */}
-      <svg viewBox="0 0 200 32" className="my-1 w-full" aria-hidden>
+      <svg viewBox="0 0 200 32" preserveAspectRatio="none" className="my-0.5 h-6 w-full" aria-hidden>
         <defs>
           <marker id="chatArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
             <path d="M0 0 10 5 0 10 3 5Z" className="fill-rose-300" />
@@ -96,12 +96,12 @@ export function FailBlackBox() {
   return (
     // grow lets the box fill the panel's leftover height; the inner box flex-grows
     // from a min-h-24 floor so the centred art bottom-aligns with the other cards.
-    <div className="relative mt-4 flex grow flex-col">
+    <div className="relative mt-3 flex grow flex-col">
       <FloatBadge icon={AlertTriangle} className="bottom-0 right-0 translate-x-[38%] translate-y-[38%]" />
       <div
         role="img"
         aria-label="A sealed black box — nothing to inspect"
-        className="relative flex min-h-24 grow items-center justify-center overflow-hidden rounded-widget bg-blackbox ring-1 ring-black/40"
+        className="relative flex min-h-20 grow items-center justify-center overflow-hidden rounded-widget bg-blackbox ring-1 ring-black/40"
       >
         {/* faint concentric + cross guides */}
         <svg
@@ -155,21 +155,21 @@ export function FailBlackBox() {
 /* 03 — strands hardest callers: AI hits its limit, handoff fumbled. */
 export function FailHandoff() {
   return (
-    <div className="mt-3 flex grow flex-col justify-center">
+    <div className="mt-2.5 flex grow flex-col justify-center">
       <div className="flex items-end justify-center gap-3 sm:gap-5">
         <div className="flex flex-col items-center gap-1.5">
           <span className="text-[0.625rem] font-semibold uppercase tracking-wide text-problem-strong">
             AI hits limit
           </span>
-          <span className="flex size-14 items-center justify-center rounded-full bg-rose-100 text-problem ring-1 ring-rose-200">
-            <RobotFace className="size-8" />
+          <span className="flex size-12 items-center justify-center rounded-full bg-rose-100 text-problem ring-1 ring-rose-200">
+            <RobotFace className="size-7" />
             <span className="sr-only">AI hits its limit</span>
           </span>
         </div>
 
         {/* dashed red curved arrow — points right into the poor-handoff face,
             sized to the icons so it centres on them */}
-        <svg viewBox="0 0 60 56" className="h-14 w-14 shrink-0 self-end overflow-visible sm:w-16" aria-hidden>
+        <svg viewBox="0 0 60 56" className="h-12 w-12 shrink-0 self-end overflow-visible sm:w-14" aria-hidden>
           <defs>
             <marker id="handoffArrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto">
               <path d="M0 0 10 5 0 10 3 5Z" className="fill-problem" />
@@ -189,15 +189,15 @@ export function FailHandoff() {
           <span className="text-[0.625rem] font-semibold uppercase tracking-wide text-problem-strong">
             Poor handoff
           </span>
-          <span className="flex size-14 items-center justify-center overflow-hidden rounded-full bg-rose-100 ring-1 ring-rose-200">
-            <FrownFace className="size-11" />
+          <span className="flex size-12 items-center justify-center overflow-hidden rounded-full bg-rose-100 ring-1 ring-rose-200">
+            <FrownFace className="size-9" />
             <span className="sr-only">A frustrated caller after a poor handoff</span>
           </span>
         </div>
       </div>
 
       {/* Inline warning — no container, left-aligned under the characters. */}
-      <p className="mt-3.5 flex items-start gap-2 text-small leading-snug text-ink-700">
+      <p className="mt-2.5 flex items-start gap-2 text-small leading-snug text-ink-700">
         <AlertTriangle className="mt-0.5 size-4 shrink-0 text-problem" aria-hidden />
         Customer repeats everything. Frustration. Lost trust.
       </p>
@@ -215,13 +215,13 @@ const REJECTED = [
 
 export function FailTradeoff() {
   return (
-    <div className="relative mt-3 flex grow flex-col justify-center">
+    <div className="relative mt-2.5 flex grow flex-col justify-center">
       <FloatBadge icon={AlertTriangle} className="bottom-0 right-0 translate-x-1/2 translate-y-1/2" />
-      <ul className="space-y-2">
+      <ul className="space-y-1">
         {REJECTED.map((opt) => (
           <li
             key={opt.label}
-            className="flex items-center gap-2.5 rounded-widget bg-rose-100 px-3.5 py-2.5 text-small font-medium text-ink-700 ring-1 ring-rose-200"
+            className="flex items-center gap-2.5 rounded-widget bg-rose-100 px-3.5 py-2 text-small font-medium text-ink-700 ring-1 ring-rose-200"
           >
             <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-white text-problem ring-1 ring-rose-200">
               <opt.icon className="size-3.5" aria-hidden />

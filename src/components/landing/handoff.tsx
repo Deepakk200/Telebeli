@@ -5,6 +5,7 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 import { SectionHeading } from "./section-heading";
 import { handoffSteps } from "@/constants/landing";
 import { transition, viewportOnce } from "@/lib/motion";
+import { useRevealFallback } from "@/components/motion/use-reveal-fallback";
 import { surface } from "@/lib/surface";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +31,7 @@ const flowConnector: Variants = {
  */
 export function Handoff() {
   const reduce = useReducedMotion();
+  const fallback = useRevealFallback();
   const isLast = (index: number) => index === handoffSteps.length - 1;
 
   return (
@@ -55,7 +57,10 @@ export function Handoff() {
                 <motion.div
                   aria-hidden
                   variants={flowConnector}
-                  className="mx-auto h-8 w-px origin-top bg-border sm:mx-0 sm:h-px sm:w-auto sm:min-w-6 sm:flex-1 sm:origin-left"
+                  className={cn(
+                    "mx-auto h-8 w-px origin-top bg-border sm:mx-0 sm:h-px sm:w-auto sm:min-w-6 sm:flex-1 sm:origin-left",
+                    fallback,
+                  )}
                 />
               )}
               <motion.div
@@ -65,6 +70,7 @@ export function Handoff() {
                   surface({ elevation: isLast(index) ? "elevated" : "subtle" }),
                   "flex-shrink-0 p-5 sm:max-w-56",
                   isLast(index) && "border-foreground/30",
+                  fallback,
                 )}
               >
                 <div

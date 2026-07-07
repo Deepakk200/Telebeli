@@ -9,6 +9,7 @@ import { useAnnounce } from "@/components/common/live-region";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { workflowScript as SCRIPT, type WorkflowTurn } from "@/constants/landing";
 import { fadeUp, tokens, viewportOnce } from "@/lib/motion";
+import { useRevealFallback } from "@/components/motion/use-reveal-fallback";
 import { formatDuration } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +34,7 @@ const speakerLabel: Record<WorkflowTurn["speaker"], string> = {
  */
 export function LiveConsole() {
   const reduce = usePrefersReducedMotion();
+  const fallback = useRevealFallback();
   // Reduced motion: fully resolved state, no timers. Otherwise: armed, paused.
   const [step, setStep] = useState(reduce ? SCRIPT.length : 1);
   const [seconds, setSeconds] = useState(reduce ? 47 : 0);
@@ -123,7 +125,10 @@ export function LiveConsole() {
       whileInView={reduce ? undefined : "visible"}
       viewport={viewportOnce}
       variants={fadeUp}
-      className="rounded-2xl border border-border bg-card/70 p-2 shadow-floating backdrop-blur focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className={cn(
+        "rounded-2xl border border-border bg-card/70 p-2 shadow-floating backdrop-blur focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        fallback,
+      )}
     >
       <div className="rounded-xl border border-border/70 bg-background/60">
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/70 px-5 py-2">

@@ -42,3 +42,12 @@ jobs:
 
       - name: Web Vitals gate (Lighthouse)
         run: npx --yes @lhci/cli@0.14.x autorun
+
+      # On failure, keep the full Lighthouse reports so the failing metric's
+      # element attribution (e.g. which node shifted for CLS) is inspectable.
+      - name: Upload Lighthouse reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci

@@ -2,6 +2,8 @@
 
 import { m, useReducedMotion, type HTMLMotionProps } from "motion/react";
 import { staggerContainer, fadeUp, STAGGER_STEP, viewportOnce } from "@/lib/motion";
+import { cn } from "@/lib/utils";
+import { useRevealFallback } from "./use-reveal-fallback";
 
 type StaggerProps = HTMLMotionProps<"div"> & {
   stagger?: number;
@@ -29,9 +31,10 @@ export function Stagger({
   );
 }
 
-export function StaggerItem({ children, ...props }: HTMLMotionProps<"div">) {
+export function StaggerItem({ className, children, ...props }: HTMLMotionProps<"div">) {
+  const fallback = useRevealFallback();
   return (
-    <m.div variants={fadeUp} {...props}>
+    <m.div variants={fadeUp} className={cn(className, fallback)} {...props}>
       {children}
     </m.div>
   );

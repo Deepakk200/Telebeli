@@ -26,13 +26,13 @@ const AREA = `M${LINE.split(" ").join(" L")} L209,84 L6,84 Z`;
 
 export function ProblemScore() {
   return (
-    <div className="mt-2.5 flex grow flex-col rounded-widget bg-white p-3 shadow-sm ring-1 ring-pc-hairline">
+    <div className="mt-2.5 flex grow flex-col rounded-widget bg-white p-2.5 shadow-sm ring-1 ring-pc-hairline">
       <p className="text-[0.75rem] font-semibold tracking-[0.01em] text-ink-600">Call Score</p>
 
       {/* Ring + area trend, side by side. flex-1 lets this row absorb the card's
           extra height and keeps the chart vertically centred (label top, footer bottom). */}
-      <div className="mt-2 flex flex-1 items-center gap-3">
-        <div className="relative size-14 shrink-0">
+      <div className="mt-1.5 flex flex-1 items-center gap-3">
+        <div className="relative size-[52px] shrink-0">
           <svg viewBox="0 0 40 40" className="size-full -rotate-90" aria-hidden>
             <circle cx="20" cy="20" r="16" pathLength={100} className="fill-none stroke-pc-hairline" strokeWidth="3.5" />
             <circle
@@ -48,7 +48,7 @@ export function ProblemScore() {
             />
           </svg>
           <p className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-[1.25rem] font-bold leading-none tabular-nums text-ink-900">
+            <span className="text-[1.20rem] font-bold leading-none tabular-nums text-ink-900">
               <Counter value={SCORE} />
             </span>
             <span className="text-[0.6rem] font-medium text-ink-400">/ 100</span>
@@ -60,7 +60,7 @@ export function ProblemScore() {
             <span aria-hidden className="size-1.5 rounded-full bg-problem" />
             Regression
           </span>
-          <svg viewBox="0 0 220 84" className="mt-3.5 w-full" role="img" aria-label="Quality trend rising then regressing">
+          <svg viewBox="0 0 220 84" preserveAspectRatio="none" className="mt-2.5 h-[72px] w-full" role="img" aria-label="Quality trend rising then regressing">
             <defs>
               <linearGradient id="scoreFill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" style={{ stopColor: "var(--indigo-600)" }} stopOpacity="0.4" />
@@ -94,7 +94,7 @@ export function ProblemScore() {
       </div>
 
       {/* Footer caption + regression chip */}
-      <div className="mt-2 flex items-center justify-between">
+      <div className="mt-1.5 flex items-center justify-between">
         <span className="text-[0.75rem] font-semibold tracking-[0.01em] text-ink-600">Quality Trend</span>
         <span className="rounded-full bg-rose-100 px-2.5 py-0.5 text-[0.6875rem] font-semibold text-problem-strong">
           ↓ 18% vs last week

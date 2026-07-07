@@ -2,6 +2,8 @@
 
 import { m, useReducedMotion, type HTMLMotionProps } from "motion/react";
 import { tokens, viewportOnce } from "@/lib/motion";
+import { cn } from "@/lib/utils";
+import { useRevealFallback } from "./use-reveal-fallback";
 
 type FadeInProps = HTMLMotionProps<"div"> & {
   delay?: number;
@@ -12,10 +14,12 @@ type FadeInProps = HTMLMotionProps<"div"> & {
  * @deprecated Use `Reveal` — identical `enter` behavior. Kept only because
  * its remaining consumers are section components deferred to later milestones.
  */
-export function FadeIn({ delay = 0, y = 16, children, ...props }: FadeInProps) {
+export function FadeIn({ delay = 0, y = 16, className, children, ...props }: FadeInProps) {
   const reduce = useReducedMotion();
+  const fallback = useRevealFallback();
   return (
     <m.div
+      className={cn(className, fallback)}
       initial={reduce ? false : { opacity: 0, y }}
       whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
       viewport={viewportOnce}

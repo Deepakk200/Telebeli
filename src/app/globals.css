@@ -630,6 +630,29 @@
   mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
 }
 
+/* Reveal fail-open. Motion primitives SSR their hidden state (inline
+   opacity:0 / transform) and rely on JS + IntersectionObserver to reveal. If
+   hydration is slow or never happens (mobile on a slow connection, blocked
+   scripts), this delayed animation forces content visible — a CSS animation
+   is the only thing that overrides an inline style without JS. The first
+   client render strips the class (useRevealFallback), so with working JS the
+   reveals are untouched. */
+@keyframes reveal-fallback {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.reveal-fallback {
+  animation: reveal-fallback 0.4s ease 2.5s forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* No JS yet either — show content immediately, no delay. */
+  .reveal-fallback {
+    animation-delay: 0s;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

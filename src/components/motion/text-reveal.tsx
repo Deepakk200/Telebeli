@@ -3,6 +3,7 @@
 import { Fragment } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { viewportOnce } from "@/lib/motion";
+import { useRevealFallback } from "./use-reveal-fallback";
 
 type Tag = "h1" | "h2" | "h3" | "p" | "span";
 type Props = { children: string; as?: Tag; delay?: number; className?: string };
@@ -22,6 +23,7 @@ const word = {
  */
 export function TextReveal({ children, as: Tag = "span", delay = 0, className }: Props) {
   const reduced = useReducedMotion();
+  const fallback = useRevealFallback();
   if (reduced) return <Tag className={className}>{children}</Tag>;
 
   const words = children.split(" ");
@@ -47,7 +49,11 @@ export function TextReveal({ children, as: Tag = "span", delay = 0, className }:
                 marginBottom: "-0.15em",
               }}
             >
-              <motion.span variants={word} style={{ display: "inline-block", willChange: "transform" }}>
+              <motion.span
+                variants={word}
+                className={fallback}
+                style={{ display: "inline-block", willChange: "transform" }}
+              >
                 {w}
               </motion.span>
             </span>
